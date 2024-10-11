@@ -83,3 +83,5 @@ ehthumbs.db
 
 # Rider generated files
 .idea/
+
+.env
