@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# OpenLayers Integration with React POC
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This Proof of Concept (POC) demonstrates the integration of OpenLayers into a React application.
 
-## Available Scripts
+## Research Findings
 
-In the project directory, you can run:
+### Choice of Map Library
+We chose OpenLayers for this POC for several reasons:
 
-### `npm start`
+1. **Open Source**: OpenLayers is a fully open-source library, which allows for greater flexibility and customization.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. **Rich Feature Set**: OpenLayers offers a comprehensive set of mapping features, including support for various data formats, projections, and interaction models.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3. **React Integration**: While not specifically designed for React, OpenLayers can be easily integrated into React applications using hooks and refs.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Implementation Results
+Our POC successfully demonstrated:
 
-### `npm run build`
+- Basic map integration in a React application
+- Use of MapTiler as a tile provider
+- User interaction (clicking to select locations)
+- Display of clicked coordinates
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Requirements
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To run this POC, you'll need:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Node.js and npm installed on your system
+2. A MapTiler account and API key
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Comparison with Google Maps
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+While Google Maps is a popular choice, OpenLayers offers several advantages for our use case:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. **Cost**: OpenLayers is free and open-source, potentially reducing costs for high-volume usage.
+2. **Customization**: OpenLayers offers more flexibility in terms of map styles and data sources.
+3. **Data Ownership**: With OpenLayers, we have more control over our data and are not tied to Google's ecosystem.

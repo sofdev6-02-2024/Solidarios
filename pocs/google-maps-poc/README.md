@@ -24,7 +24,6 @@ Our POC successfully demonstrated:
 - Basic map integration in a React application
 - Custom marker placement
 - User interaction (clicking to select locations)
-- Responsive design
 
 ## Requirements
 
