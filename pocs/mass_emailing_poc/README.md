@@ -5,10 +5,8 @@ This project demonstrates how to send a transactional email using the Sendinblue
 ## Requirements
 
 - **Sendinblue API Key**: You need to obtain your API key from your Sendinblue account.
-- **.env file**: A `.env` file is required to store your Sendinblue API key. For testing purposes, add the following to the `.env` file in the root of the project:
-
- ```plain` 
-  SENDINBLUE_API_KEY=xkeysib-838fb1f3bc4d8ebc185e76f67ff82778c8d7ab38465e41ed882d55e25822a5a0-h0enXBzxh0guExo` 
+- **.env file**: A `.env` file is required to store your Sendinblue API key with the name **SENDINBLUE_API_KEY=** YOUR_API_KEY
+ 
 - **Sendinblue SDK (`sib_api_v3_sdk`)**: This should be installed as a dependency in your project. You can install it with NuGet:
   ```bash
   Install-Package sib_api_v3_sdk
@@ -22,7 +20,7 @@ The code follows these steps to send a transactional email:
 
 Load the API key from the `.env` file to authenticate requests to the Sendinblue API:
 ```csharp
-Env.Load(); // Loads the .env file
+Env.Load();
 string apiKey = Environment.GetEnvironmentVariable("SENDINBLUE_API_KEY");
 ```
 
