@@ -8,6 +8,7 @@ node_modules/
 dist/
 web-build/
 
+
 # Native
 *.orig.*
 *.jks
@@ -33,3 +34,7 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+obj
+Debug/net8.0
+Solidarios.sln

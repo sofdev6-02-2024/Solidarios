@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CEventService.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+58a5502fd92c89216b354aebd4a483318dde9ee7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b2f7f24127a0cbc83b61615347dbd519401f993")]
 [assembly: System.Reflection.AssemblyProductAttribute("CEventService.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CEventService.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
