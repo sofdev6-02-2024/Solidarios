@@ -18,7 +18,5 @@ public class Program
     {
         var eventMessage = JsonConvert.DeserializeObject<Event>(message);
         Console.WriteLine($"Received Event: {eventMessage.EventType} at {eventMessage.EventTime}. Details: {eventMessage.EventDetails}");
-
-        // Simular acciones al recibir un evento
     }
 }
