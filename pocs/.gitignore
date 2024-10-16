@@ -85,3 +85,5 @@ ehthumbs.db
 .idea/
 
 .env
+obj/
+bin/
