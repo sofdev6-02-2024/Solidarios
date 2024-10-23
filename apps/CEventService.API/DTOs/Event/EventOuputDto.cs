@@ -1,6 +1,9 @@
-﻿namespace CEventService.API.DTOs.Event;
+﻿using AutoMapper;
 
-public class EventOutputDto
+namespace CEventService.API.DTOs.Event;
+using Models;
+
+public class EventOutputDto : IMapFrom<Event>
 {
     public int EventId { get; set; }
     public required string Name { get; set; }
@@ -9,6 +12,7 @@ public class EventOutputDto
     public DateTime EventDate { get; set; }
     public required LocationDto Location { get; set; }
     public required string Venue { get; set; }
+    public required string Address { get; set; }
     public decimal TicketPrice { get; set; }
     public required string CoverPhotoUrl { get; set; }
     public bool AttendanceTrackingEnabled { get; set; }
@@ -16,4 +20,9 @@ public class EventOutputDto
     public int Capacity { get; set; }
     public required string OrganizerUserId { get; set; }
     public DateTime CreatedAt { get; set; }
+    
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<Event, EventOutputDto>().ReverseMap();
+    }
 }

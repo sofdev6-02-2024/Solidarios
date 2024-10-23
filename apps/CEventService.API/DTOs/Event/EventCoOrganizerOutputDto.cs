@@ -1,6 +1,8 @@
-﻿namespace CEventService.API.DTOs.Event;
+﻿using CEventService.API.Models;
 
-public class EventCoOrganizerOutputDto
+namespace CEventService.API.DTOs.Event;
+
+public class EventCoOrganizerOutputDto : IMapFrom<EventCoOrganizer>
 {
     public int CoOrganizerId { get; set; }
     public required string UserId { get; set; }
