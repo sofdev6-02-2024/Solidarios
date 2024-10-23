@@ -1,25 +1,27 @@
 @import "@fontsource/inter";
 
 :root {
-  --primary-main: #490075;
-  --primary-light: #7c43bd;
+  --primary-main: #035AE1;
+  --primary-light: #4d7bf3;
   --primary-contrastText: #fff;
-  --secondary-main: #1C39FF;
-  --secondary-light: #7c43bd;
+  --secondary-main: #0A2140;
+  --secondary-light: #3A4C6B;
   --secondary-contrastText: #fff;
-  --tertiary-main: #FFC107;
-  --tertiary-light: #FFD54F;
+  --tertiary-main: #F6B835;
+  --tertiary-light: #F6B835;
   --tertiary-contrastText: #000;
-  --pink : #FF1CC1;
-  --orange : #FF686B;
-  --gray : #3D3144;
+  --white : #fff;
+  --black : #000;
+  --black-light : rgba(0, 0, 0, 0.6);
+  --gray : #F2F2F2;
+  --gray-light : #E5E5E5;
   --error-main: #f44336;
   --warning-main: #ff9800;
   --info-main: #2196f3;
   --success-main: #4caf50;
-  --background-default: #1a182f;
+  --background-default: #fff;
   --background-paper: #fff;
-  --text-primary: #fff;
+  --text-primary: #000;
   --text-secondary: #000;
 }
 
