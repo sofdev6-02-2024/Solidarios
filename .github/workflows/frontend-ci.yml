@@ -19,13 +19,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
           cache: 'npm'
-          
+          cache-dependency-path: apps/cevent_frontend/package-lock.json
+
       - name: Install dependencies
         working-directory: apps/cevent_frontend
         run: npm install
 
       - name: Run CI checks (TypeScript, Prettier, ESLint)
         working-directory: apps/cevent_frontend
-        run: npm run ci-check 
+        run: npm run ci-check
