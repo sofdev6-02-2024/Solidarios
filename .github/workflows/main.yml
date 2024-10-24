@@ -1,12 +1,13 @@
 name: Frontend CI
 
 on:
+  pull_request: 
+    branches:
+      - main
+      - develop
   push:
-    paths:
-      - 'apps/cevent_frontend/**'
-  pull_request:
-    paths:
-      - 'apps/cevent_frontend/**'
+    branches:
+      - main 
 
 jobs:
   type-check-and-format:
