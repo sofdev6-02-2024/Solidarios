@@ -12,7 +12,7 @@ import styles from "@/styles/components/Header.module.css";
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const theme = useTheme(); 
+  const theme = useTheme();
 
   const handleNavigation = (route: string) => {
     router.push(route);
@@ -38,12 +38,12 @@ export default function Header() {
             Home
           </Button>
           <Button
-            className={`${styles.navButton} ${isActive(routes.myTickets) ? styles.activeNavButton : ""}`} 
+            className={`${styles.navButton} ${isActive(routes.myTickets) ? styles.activeNavButton : ""}`}
             onClick={() => handleNavigation(routes.myTickets)}>
             My Tickets
           </Button>
           <Button
-            className={`${styles.navButton} ${isActive(routes.myEvents) ? styles.activeNavButton : ""}`} 
+            className={`${styles.navButton} ${isActive(routes.myEvents) ? styles.activeNavButton : ""}`}
             onClick={() => handleNavigation(routes.myEvents)}>
             My Events
           </Button>
@@ -62,10 +62,10 @@ export default function Header() {
         </IconButton>
 
         <AccountCircle
-          style={{ fontSize: 40 }} 
+          style={{ fontSize: 40 }}
           onClick={() => handleNavigation(routes.profile)}
-          alt="Profile Icon"
         />
+
       </Toolbar>
     </AppBar>
   );
