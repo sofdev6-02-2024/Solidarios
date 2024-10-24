@@ -12,7 +12,7 @@ import styles from "@/styles/components/Header.module.css";
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const theme = useTheme(); // Accede al tema
+  const theme = useTheme(); 
 
   const handleNavigation = (route: string) => {
     router.push(route);
