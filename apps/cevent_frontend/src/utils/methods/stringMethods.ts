@@ -1,4 +1,3 @@
-
 /**
  * Capitalize the first letter of a word
  * @param word string to capitalize

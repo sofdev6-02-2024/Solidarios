@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { RootState } from "@/redux/store";
-import { routes } from "@/utils/navigation/Routes";
-import { Button, Typography, Stack } from "@mui/material";
-import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { setAuthID } from "@/redux/slices/authSlice";
-import { setUserInfo } from "@/redux/slices/userSlice";
+import { RootState } from '@/redux/store';
+import { routes } from '@/utils/navigation/Routes';
+import { Button, Typography, Stack } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthID } from '@/redux/slices/authSlice';
+import { setUserInfo } from '@/redux/slices/userSlice';
 
 export default function Home() {
   const router = useRouter();
@@ -15,13 +15,13 @@ export default function Home() {
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
 
   const handleLogin = () => {
-    dispatch(setAuthID("123"));
+    dispatch(setAuthID('123'));
     dispatch(
       setUserInfo({
-        id: "1",
-        fullname: "John Doe",
-        email: "john@example.com",
-      })
+        id: '1',
+        fullname: 'John Doe',
+        email: 'john@example.com',
+      }),
     );
   };
 
@@ -36,7 +36,7 @@ export default function Home() {
       </Typography>
 
       <Typography variant="h4">
-        User ID: {userID || "No user logged in"}
+        User ID: {userID || 'No user logged in'}
       </Typography>
 
       {userInfo ? (
@@ -51,7 +51,7 @@ export default function Home() {
         variant="contained"
         color="primary"
         onClick={handleLogin}
-        sx={{ width: "200px" }}
+        sx={{ width: '200px' }}
       >
         Login
       </Button>
@@ -60,7 +60,7 @@ export default function Home() {
         variant="contained"
         color="secondary"
         onClick={handleCreateEvent}
-        sx={{ width: "200px" }}
+        sx={{ width: '200px' }}
       >
         Create Event
       </Button>
