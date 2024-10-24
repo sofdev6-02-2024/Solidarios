@@ -1,13 +1,12 @@
 name: Frontend CI
 
 on:
-  pull_request: 
+  pull_request:
     branches:
       - main
       - develop
-  push:
-    branches:
-      - main 
+    paths:
+      - 'apps/cevent_frontend/**'
 
 jobs:
   type-check-and-format:
@@ -16,11 +15,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
         with:
-          node-version: 18
+          fetch-depth: 0 
+
+      - name: List project files (Debug)
+        run: ls -R apps/cevent_frontend || echo "Directory not found"
 
       - name: Install dependencies
         working-directory: apps/cevent_frontend
