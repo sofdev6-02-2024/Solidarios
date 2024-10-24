@@ -4,16 +4,19 @@ import { AppBar, Toolbar, IconButton, Button, InputBase } from "@mui/material";
 import { AccountCircle } from "@mui/icons-material";
 import { MdSearch, MdNotifications } from "react-icons/md";
 import { Box } from "@mui/system";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { routes } from "@/utils/navigation/Routes";
-import styles from "@/styles/Header.module.css";
+import styles from "@/styles/components/Header.module.css";
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleNavigation = (route: string) => {
     router.push(route);
   };
+
+  const isActive = (route: string) => pathname === route;
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#f4f4f4", color: "#000", boxShadow: "none" }}>
@@ -27,10 +30,21 @@ export default function Header() {
               onClick={() => handleNavigation(routes.home)}
             />
           </IconButton>
-
-          <Button className={styles.navButton} onClick={() => handleNavigation(routes.home)}>Home</Button>
-          <Button className={styles.navButton} onClick={() => handleNavigation(routes.myTickets)}>My Tickets</Button>
-          <Button className={styles.navButton} onClick={() => handleNavigation(routes.myEvents)}>My Events</Button>
+          <Button
+            className={`${styles.navButton} ${isActive(routes.home) ? styles.activeNavButton : ""}`}
+            onClick={() => handleNavigation(routes.home)}>
+            Home
+          </Button>
+          <Button
+            className={`${styles.navButton} ${isActive(routes.myTickets) ? styles.activeNavButton : ""}`} 
+            onClick={() => handleNavigation(routes.myTickets)}>
+            My Tickets
+          </Button>
+          <Button
+            className={`${styles.navButton} ${isActive(routes.myEvents) ? styles.activeNavButton : ""}`} 
+            onClick={() => handleNavigation(routes.myEvents)}>
+            My Events
+          </Button>
         </Box>
 
         <Box className={styles.searchBox}>
