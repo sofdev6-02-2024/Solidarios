@@ -1,3 +1,4 @@
+
 name: CI - FRONTEND
 
 on:
@@ -22,11 +23,11 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: apps/cevent_frontend/package-lock.json
-
+          
       - name: Install dependencies
         working-directory: apps/cevent_frontend
         run: npm install
 
       - name: Run CI checks (TypeScript, Prettier, ESLint)
         working-directory: apps/cevent_frontend
-        run: npm run ci-check
+        run: npm run ci-check 
