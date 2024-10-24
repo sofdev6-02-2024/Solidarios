@@ -27,6 +27,15 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dbContext = services.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
+
+    await DataSeeder.SeedData(dbContext);
+}
+
 
 if (app.Environment.IsDevelopment())
 {
