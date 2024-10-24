@@ -2,9 +2,6 @@
 name: CI - FRONTEND
 
 on:
-  push:
-    paths:
-      - 'apps/cevent_frontend/**'
   pull_request:
     paths:
       - 'apps/cevent_frontend/**'
