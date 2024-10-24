@@ -1,6 +1,6 @@
-import { TypographyVariantsOptions } from "@mui/material/styles";
+import { TypographyVariantsOptions } from '@mui/material/styles';
 
-declare module "@mui/material/styles" {
+declare module '@mui/material/styles' {
   interface TypographyVariants {
     displayLarge: React.CSSProperties;
     display: React.CSSProperties;
@@ -18,12 +18,12 @@ declare module "@mui/material/styles" {
   }
 }
 
-declare module "@mui/material/Typography" {
+declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     displayLarge: true;
     display: true;
     bodyLarge: true;
     body: true;
-    tiny: true
+    tiny: true;
   }
 }

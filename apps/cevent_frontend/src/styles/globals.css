@@ -1,20 +1,20 @@
-@import "@fontsource/inter";
+@import '@fontsource/inter';
 
 :root {
-  --primary-main: #035AE1;
+  --primary-main: #035ae1;
   --primary-light: #4d7bf3;
   --primary-contrastText: #fff;
-  --secondary-main: #0A2140;
-  --secondary-light: #3A4C6B;
+  --secondary-main: #0a2140;
+  --secondary-light: #3a4c6b;
   --secondary-contrastText: #fff;
-  --tertiary-main: #F6B835;
-  --tertiary-light: #F6B835;
+  --tertiary-main: #f6b835;
+  --tertiary-light: #f6b835;
   --tertiary-contrastText: #000;
-  --white : #fff;
-  --black : #000;
-  --black-light : rgba(0, 0, 0, 0.6);
-  --gray : #F2F2F2;
-  --gray-light : #E5E5E5;
+  --white: #fff;
+  --black: #000;
+  --black-light: rgba(0, 0, 0, 0.6);
+  --gray: #f2f2f2;
+  --gray-light: #e5e5e5;
   --error-main: #f44336;
   --warning-main: #ff9800;
   --info-main: #2196f3;
@@ -25,9 +25,8 @@
   --text-secondary: #000;
 }
 
-
 .font-inter {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 html,
@@ -40,7 +39,7 @@ body {
   size: 16px;
   color: var(--text-primary);
   background: var(--background-default);
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -20,19 +20,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
+          cache: 'npm'
+          
       - name: Install dependencies
         working-directory: apps/cevent_frontend
         run: npm install
 
-      - name: Check TypeScript types
+      - name: Run CI checks (TypeScript, Prettier, ESLint)
         working-directory: apps/cevent_frontend
-        run: npx tsc --noEmit
-
-      - name: Run Prettier to check formatting
-        working-directory: apps/cevent_frontend
-        run: npx prettier --check 'src/**/*.{ts,tsx,js,json}'
-
-      - name: Run ESLint to check code quality
-        working-directory: apps/cevent_frontend
-        run: npx eslint 'src/**/*.{ts,tsx,js}'
+        run: npm run ci-check 
