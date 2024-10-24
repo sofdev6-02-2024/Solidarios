@@ -14,6 +14,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { title, description } = metadata;
   return (
     <html lang="en">
       <body className="font-inter">
