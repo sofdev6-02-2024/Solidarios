@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { AppBar, Toolbar, IconButton, Button, InputBase } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
-import { MdSearch, MdNotifications } from "react-icons/md";
-import { Box } from "@mui/system";
-import { useRouter, usePathname } from "next/navigation";
-import { routes } from "@/utils/navigation/Routes";
-import { useTheme } from "@mui/material/styles";
-import styles from "@/styles/components/Header.module.css";
+import { AppBar, Toolbar, IconButton, Button, InputBase } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
+import { MdSearch, MdNotifications } from 'react-icons/md';
+import { Box } from '@mui/system';
+import { useRouter, usePathname } from 'next/navigation';
+import { routes } from '@/utils/navigation/Routes';
+import { useTheme } from '@mui/material/styles';
+import styles from '@/styles/components/Header.module.css';
 
 export default function Header() {
   const router = useRouter();
@@ -21,9 +21,16 @@ export default function Header() {
   const isActive = (route: string) => pathname === route;
 
   return (
-    <AppBar position="static" style={{ backgroundColor: theme.palette.background.default, color: theme.palette.text.secondary, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}>
+    <AppBar
+      position="static"
+      style={{
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.text.secondary,
+        boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+      }}
+    >
       <Toolbar>
-        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <IconButton size="large" edge="start" className={styles.logoButton}>
             <img
               src="/LogoCevent.svg"
@@ -33,28 +40,28 @@ export default function Header() {
             />
           </IconButton>
           <Button
-            className={`${styles.navButton} ${isActive(routes.home) ? styles.activeNavButton : ""}`}
-            onClick={() => handleNavigation(routes.home)}>
+            className={`${styles.navButton} ${isActive(routes.home) ? styles.activeNavButton : ''}`}
+            onClick={() => handleNavigation(routes.home)}
+          >
             Home
           </Button>
           <Button
-            className={`${styles.navButton} ${isActive(routes.myTickets) ? styles.activeNavButton : ""}`}
-            onClick={() => handleNavigation(routes.myTickets)}>
+            className={`${styles.navButton} ${isActive(routes.myTickets) ? styles.activeNavButton : ''}`}
+            onClick={() => handleNavigation(routes.myTickets)}
+          >
             My Tickets
           </Button>
           <Button
-            className={`${styles.navButton} ${isActive(routes.myEvents) ? styles.activeNavButton : ""}`}
-            onClick={() => handleNavigation(routes.myEvents)}>
+            className={`${styles.navButton} ${isActive(routes.myEvents) ? styles.activeNavButton : ''}`}
+            onClick={() => handleNavigation(routes.myEvents)}
+          >
             My Events
           </Button>
         </Box>
 
         <Box className={styles.searchBox}>
           <MdSearch className={styles.searchIcon} />
-          <InputBase
-            placeholder="Search"
-            className={styles.searchInput}
-          />
+          <InputBase placeholder="Search" className={styles.searchInput} />
         </Box>
 
         <IconButton size="large" color="inherit">
@@ -65,7 +72,6 @@ export default function Header() {
           style={{ fontSize: 40 }}
           onClick={() => handleNavigation(routes.profile)}
         />
-
       </Toolbar>
     </AppBar>
   );
