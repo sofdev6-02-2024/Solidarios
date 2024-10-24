@@ -1,6 +1,10 @@
 using Microsoft.OpenApi.Models;
 using CEventService.API.Data;
 using Microsoft.EntityFrameworkCore;
+using CEventService.API.DAO;
+using CEventService.API.Models;
+using CEventService.API.Services;
+using CEventService.API.DTOs.Event;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IRepository<Event>, EventRepository>();
+builder.Services.AddScoped<IService<Event, EventHomePageDto>, EventService>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "CEvent.API", Version = "v1" });

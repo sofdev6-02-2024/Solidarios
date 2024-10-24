@@ -5,7 +5,7 @@ using CEventService.API.Models;
 
 namespace CEventService.API.Services
 {
-    public class EventService : IEventService<Event, EventHomePageDto>
+    public class EventService : IService<Event, EventHomePageDto>
     {
         private readonly IRepository<Event> _eventRepository;
         private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ namespace CEventService.API.Services
 
         public async Task<IEnumerable<Event>> GetAllEventsAsync(int skip, int take)
         {
-            return await _eventRepository.GetAllEventsAsync(skip, take);
+            return await _eventRepository.GetAllEventsAsync((skip - 1) * take, take);
         }
 
         public async Task<Event?> GetEventByIdAsync(int id)

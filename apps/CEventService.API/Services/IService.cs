@@ -1,6 +1,6 @@
 namespace CEventService.API.Services
 {
-    public interface IEventService<T,T_DTO>
+    public interface IService<T,T_DTO>
     {
         Task<IEnumerable<T>> GetAllEventsAsync(int skip, int take);
         Task<T?> GetEventByIdAsync(int id);

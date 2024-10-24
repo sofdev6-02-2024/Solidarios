@@ -29,10 +29,6 @@ namespace CEventService.API.DAO
         public async Task<IEnumerable<Event>> GetEventsForHomePageAsync()
         {
             return await _context.Events
-                .Include(e => e.Location)
-                .Where(e => e.Status == "Active" && e.EventDate > DateTime.UtcNow)
-                .OrderBy(e => e.EventDate)
-                .Take(10)
                 .ToListAsync();
         }
     }
