@@ -6,11 +6,13 @@ import { MdSearch, MdNotifications } from "react-icons/md";
 import { Box } from "@mui/system";
 import { useRouter, usePathname } from "next/navigation";
 import { routes } from "@/utils/navigation/Routes";
+import { useTheme } from "@mui/material/styles";
 import styles from "@/styles/components/Header.module.css";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  const theme = useTheme(); // Accede al tema
 
   const handleNavigation = (route: string) => {
     router.push(route);
@@ -19,7 +21,7 @@ export default function Header() {
   const isActive = (route: string) => pathname === route;
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#f4f4f4", color: "#000", boxShadow: "none" }}>
+    <AppBar position="static" style={{ backgroundColor: theme.palette.background.default, color: theme.palette.text.secondary, boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)" }}>
       <Toolbar>
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
           <IconButton size="large" edge="start" className={styles.logoButton}>
