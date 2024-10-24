@@ -30,8 +30,15 @@ namespace CEventService.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("AttendanceTrackingEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<int>("AttendeeCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");

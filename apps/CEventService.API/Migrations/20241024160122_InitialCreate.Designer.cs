@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CEventService.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241024152416_InitialCreate")]
+    [Migration("20241024160122_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,8 +33,15 @@ namespace CEventService.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EventId"));
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("AttendanceTrackingEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<int>("AttendeeCount")
+                        .HasColumnType("int");
 
                     b.Property<int>("Capacity")
                         .HasColumnType("int");

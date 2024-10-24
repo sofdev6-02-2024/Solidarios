@@ -28,7 +28,9 @@ namespace CEventService.API.Data
                         { 
                             Latitude = 37.7749m, 
                             Longitude = -122.4194m 
-                        }
+                        },
+                        Address = "123 Tech St, San Francisco, CA",
+                        AttendeeCount = 0
                     },
                     new Event
                     {
@@ -48,7 +50,9 @@ namespace CEventService.API.Data
                         { 
                             Latitude = 40.7128m, 
                             Longitude = -74.0060m 
-                        }
+                        },
+                        Address = "123 Tech St, San Francisco, CA",
+                        AttendeeCount = 0
                     },
                     new Event
                     {
@@ -68,7 +72,9 @@ namespace CEventService.API.Data
                         { 
                             Latitude = 34.0522m, 
                             Longitude = -118.2437m 
-                        }
+                        },
+                        Address = "123 Tech St, San Francisco, CA",
+                        AttendeeCount = 0
                     },
                     new Event
                     {
@@ -88,7 +94,9 @@ namespace CEventService.API.Data
                         { 
                             Latitude = 51.5074m, 
                             Longitude = -0.1278m 
-                        }
+                        },
+                        Address = "123 Tech St, San Francisco, CA",
+                        AttendeeCount = 0
                     },
                     new Event
                     {
@@ -108,7 +116,9 @@ namespace CEventService.API.Data
                         { 
                             Latitude = 48.8566m, 
                             Longitude = 2.3522m 
-                        }
+                        },
+                        Address = "123 Tech St, San Francisco, CA",
+                        AttendeeCount = 0
                     }
                 );
 

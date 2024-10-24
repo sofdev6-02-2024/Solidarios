@@ -16,4 +16,6 @@ public class Event
     public int Capacity { get; set; }
     public required string OrganizerUserId { get; set; } 
     public DateTime CreatedAt { get; set; }
+    public required string Address { get; set; }
+    public int AttendeeCount { get; set; }
 }
