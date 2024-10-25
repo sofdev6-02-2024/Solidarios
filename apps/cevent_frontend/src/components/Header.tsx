@@ -112,6 +112,7 @@ export default function Header() {
                 <List>
                   <ListItem
                     button
+                    component="div"
                     onClick={() => handleNavigation(routes.home)}
                     className={styles.drawerMenuItem}
                   >
@@ -119,6 +120,7 @@ export default function Header() {
                   </ListItem>
                   <ListItem
                     button
+                    component="div"
                     onClick={() => handleNavigation(routes.myTickets)}
                     className={styles.drawerMenuItem}
                   >
@@ -126,6 +128,7 @@ export default function Header() {
                   </ListItem>
                   <ListItem
                     button
+                    component="div"
                     onClick={() => handleNavigation(routes.myEvents)}
                     className={styles.drawerMenuItem}
                   >
@@ -134,6 +137,7 @@ export default function Header() {
                   <Divider />
                   <ListItem
                     button
+                    component="div"
                     onClick={() => handleNavigation(routes.profile)}
                     className={styles.drawerMenuItem}
                   >
@@ -149,7 +153,10 @@ export default function Header() {
               <MdNotifications />
             </IconButton>
 
-            <IconButton size="large" onClick={() => handleNavigation(routes.profile)}>
+            <IconButton
+              size="large"
+              onClick={() => handleNavigation(routes.profile)}
+            >
               <AccountCircle style={{ fontSize: 40 }} />
             </IconButton>
           </>
