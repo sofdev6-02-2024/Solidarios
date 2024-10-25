@@ -1,6 +1,18 @@
 'use client';
 
-import { AppBar, Toolbar, IconButton, Button, InputBase, Drawer, List, ListItem, ListItemText, Divider, useMediaQuery } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
+  InputBase,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+  useMediaQuery,
+} from '@mui/material';
 import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import { MdSearch, MdNotifications } from 'react-icons/md';
 import { Box } from '@mui/system';
@@ -15,13 +27,11 @@ export default function Header() {
   const pathname = usePathname();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
-  // Estado para controlar la apertura/cierre del Drawer
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleNavigation = (route: string) => {
     router.push(route);
-    setDrawerOpen(false); // Cerrar el menú después de la navegación
+    setDrawerOpen(false);
   };
 
   const isActive = (route: string) => pathname === route;
@@ -78,12 +88,11 @@ export default function Header() {
         )}
 
         {isMobile ? (
-          // Botón de hamburguesa
           <>
             <IconButton
               size="large"
               color="inherit"
-              onClick={() => setDrawerOpen(true)} // Abrir Drawer
+              onClick={() => setDrawerOpen(true)}
               className={styles.burgerMenuButton}
             >
               <MenuIcon />
@@ -92,7 +101,7 @@ export default function Header() {
             <Drawer
               anchor="right"
               open={drawerOpen}
-              onClose={() => setDrawerOpen(false)} // Cerrar Drawer
+              onClose={() => setDrawerOpen(false)}
             >
               <Box
                 sx={{ width: 250 }}
@@ -101,19 +110,35 @@ export default function Header() {
                 onKeyDown={() => setDrawerOpen(false)}
               >
                 <List>
-                  <ListItem button onClick={() => handleNavigation(routes.home)} className={styles.drawerMenuItem}>
+                  <ListItem
+                    button
+                    onClick={() => handleNavigation(routes.home)}
+                    className={styles.drawerMenuItem}
+                  >
                     <ListItemText primary="Home" />
                   </ListItem>
-                  <ListItem button onClick={() => handleNavigation(routes.myTickets)} className={styles.drawerMenuItem}>
+                  <ListItem
+                    button
+                    onClick={() => handleNavigation(routes.myTickets)}
+                    className={styles.drawerMenuItem}
+                  >
                     <ListItemText primary="My Tickets" />
                   </ListItem>
-                  <ListItem button onClick={() => handleNavigation(routes.myEvents)} className={styles.drawerMenuItem}>
+                  <ListItem
+                    button
+                    onClick={() => handleNavigation(routes.myEvents)}
+                    className={styles.drawerMenuItem}
+                  >
                     <ListItemText primary="My Events" />
                   </ListItem>
                   <Divider />
-                  <ListItem button onClick={() => handleNavigation(routes.profile)} className={styles.drawerMenuItem}>
+                  <ListItem
+                    button
+                    onClick={() => handleNavigation(routes.profile)}
+                    className={styles.drawerMenuItem}
+                  >
                     <ListItemText primary="Profile" />
-                  </ListItem>                  
+                  </ListItem>
                 </List>
               </Box>
             </Drawer>
