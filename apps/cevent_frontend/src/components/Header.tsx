@@ -111,24 +111,21 @@ export default function Header() {
               >
                 <List>
                   <ListItem
-                    button
-                    component="div"
+                    component="li"
                     onClick={() => handleNavigation(routes.home)}
                     className={styles.drawerMenuItem}
                   >
                     <ListItemText primary="Home" />
                   </ListItem>
                   <ListItem
-                    button
-                    component="div"
+                    component="li"
                     onClick={() => handleNavigation(routes.myTickets)}
                     className={styles.drawerMenuItem}
                   >
                     <ListItemText primary="My Tickets" />
                   </ListItem>
                   <ListItem
-                    button
-                    component="div"
+                    component="li"
                     onClick={() => handleNavigation(routes.myEvents)}
                     className={styles.drawerMenuItem}
                   >
@@ -136,8 +133,7 @@ export default function Header() {
                   </ListItem>
                   <Divider />
                   <ListItem
-                    button
-                    component="div"
+                    component="li"
                     onClick={() => handleNavigation(routes.profile)}
                     className={styles.drawerMenuItem}
                   >

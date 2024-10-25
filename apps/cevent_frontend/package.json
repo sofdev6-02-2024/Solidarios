@@ -9,7 +9,7 @@
     "lint": "next lint",
     "check-types": "tsc --noEmit --project tsconfig.json",
     "check-format": "prettier --check 'src/**/*.{ts,tsx,js,json}'",
-    "check-lint": "eslint 'src/**/*.{ts,tsx,js}'",
+    "check-lint": "eslint src/**/*.{ts,tsx,js}",
     "ci-check": "npm run check-types && npm run check-format && npm run check-lint",
     "format": "prettier --write 'src/**/*.{ts,tsx,js,json}'"
   },
