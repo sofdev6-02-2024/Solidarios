@@ -55,3 +55,34 @@
   position: relative;
   z-index: 0;
 }
+
+.burgerMenuButton {
+  display: none;
+  color: #000;
+  font-size: 28px;
+}
+
+@media (max-width: 850px) {
+
+  .searchBox {
+    display: none;
+  }
+
+  .logoButton img {
+    height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .burgerMenuButton {
+    display: block; 
+    position: absolute;
+    right: 16px;
+  }
+  
+  .drawerMenuItem {
+    color: #000;
+  }
+
+
+}

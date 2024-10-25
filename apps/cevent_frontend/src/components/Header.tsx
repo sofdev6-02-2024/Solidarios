@@ -1,21 +1,27 @@
 'use client';
 
-import { AppBar, Toolbar, IconButton, Button, InputBase } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+import { AppBar, Toolbar, IconButton, Button, InputBase, Drawer, List, ListItem, ListItemText, Divider, useMediaQuery } from '@mui/material';
+import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import { MdSearch, MdNotifications } from 'react-icons/md';
 import { Box } from '@mui/system';
 import { useRouter, usePathname } from 'next/navigation';
 import { routes } from '@/utils/navigation/Routes';
 import { useTheme } from '@mui/material/styles';
+import { useState } from 'react';
 import styles from '@/styles/components/Header.module.css';
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  // Estado para controlar la apertura/cierre del Drawer
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleNavigation = (route: string) => {
     router.push(route);
+    setDrawerOpen(false); // Cerrar el menú después de la navegación
   };
 
   const isActive = (route: string) => pathname === route;
@@ -39,39 +45,91 @@ export default function Header() {
               onClick={() => handleNavigation(routes.home)}
             />
           </IconButton>
-          <Button
-            className={`${styles.navButton} ${isActive(routes.home) ? styles.activeNavButton : ''}`}
-            onClick={() => handleNavigation(routes.home)}
-          >
-            Home
-          </Button>
-          <Button
-            className={`${styles.navButton} ${isActive(routes.myTickets) ? styles.activeNavButton : ''}`}
-            onClick={() => handleNavigation(routes.myTickets)}
-          >
-            My Tickets
-          </Button>
-          <Button
-            className={`${styles.navButton} ${isActive(routes.myEvents) ? styles.activeNavButton : ''}`}
-            onClick={() => handleNavigation(routes.myEvents)}
-          >
-            My Events
-          </Button>
+
+          {!isMobile && (
+            <>
+              <Button
+                className={`${styles.navButton} ${isActive(routes.home) ? styles.activeNavButton : ''}`}
+                onClick={() => handleNavigation(routes.home)}
+              >
+                Home
+              </Button>
+              <Button
+                className={`${styles.navButton} ${isActive(routes.myTickets) ? styles.activeNavButton : ''}`}
+                onClick={() => handleNavigation(routes.myTickets)}
+              >
+                My Tickets
+              </Button>
+              <Button
+                className={`${styles.navButton} ${isActive(routes.myEvents) ? styles.activeNavButton : ''}`}
+                onClick={() => handleNavigation(routes.myEvents)}
+              >
+                My Events
+              </Button>
+            </>
+          )}
         </Box>
 
-        <Box className={styles.searchBox}>
-          <MdSearch className={styles.searchIcon} />
-          <InputBase placeholder="Search" className={styles.searchInput} />
-        </Box>
+        {!isMobile && (
+          <Box className={styles.searchBox}>
+            <MdSearch className={styles.searchIcon} />
+            <InputBase placeholder="Search" className={styles.searchInput} />
+          </Box>
+        )}
 
-        <IconButton size="large" color="inherit">
-          <MdNotifications />
-        </IconButton>
+        {isMobile ? (
+          // Botón de hamburguesa
+          <>
+            <IconButton
+              size="large"
+              color="inherit"
+              onClick={() => setDrawerOpen(true)} // Abrir Drawer
+              className={styles.burgerMenuButton}
+            >
+              <MenuIcon />
+            </IconButton>
 
-        <AccountCircle
-          style={{ fontSize: 40 }}
-          onClick={() => handleNavigation(routes.profile)}
-        />
+            <Drawer
+              anchor="right"
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)} // Cerrar Drawer
+            >
+              <Box
+                sx={{ width: 250 }}
+                role="presentation"
+                onClick={() => setDrawerOpen(false)}
+                onKeyDown={() => setDrawerOpen(false)}
+              >
+                <List>
+                  <ListItem button onClick={() => handleNavigation(routes.home)} className={styles.drawerMenuItem}>
+                    <ListItemText primary="Home" />
+                  </ListItem>
+                  <ListItem button onClick={() => handleNavigation(routes.myTickets)} className={styles.drawerMenuItem}>
+                    <ListItemText primary="My Tickets" />
+                  </ListItem>
+                  <ListItem button onClick={() => handleNavigation(routes.myEvents)} className={styles.drawerMenuItem}>
+                    <ListItemText primary="My Events" />
+                  </ListItem>
+                  <Divider />
+                  <ListItem button onClick={() => handleNavigation(routes.profile)} className={styles.drawerMenuItem}>
+                    <ListItemText primary="Profile" />
+                  </ListItem>                  
+                </List>
+              </Box>
+            </Drawer>
+          </>
+        ) : (
+          <>
+            <IconButton size="large" color="inherit">
+              <MdNotifications />
+            </IconButton>
+
+            <AccountCircle
+              style={{ fontSize: 40 }}
+              onClick={() => handleNavigation(routes.profile)}
+            />
+          </>
+        )}
       </Toolbar>
     </AppBar>
   );
