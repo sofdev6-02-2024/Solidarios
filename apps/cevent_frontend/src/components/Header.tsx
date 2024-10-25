@@ -149,10 +149,9 @@ export default function Header() {
               <MdNotifications />
             </IconButton>
 
-            <AccountCircle
-              style={{ fontSize: 40 }}
-              onClick={() => handleNavigation(routes.profile)}
-            />
+            <IconButton size="large" onClick={() => handleNavigation(routes.profile)}>
+              <AccountCircle style={{ fontSize: 40 }} />
+            </IconButton>
           </>
         )}
       </Toolbar>
