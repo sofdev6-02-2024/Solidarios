@@ -6,8 +6,16 @@ using CEventService.API.Models;
 using CEventService.API.Services;
 using CEventService.API.DTOs.Event;
 using dotenv.net;
+using dotenv.net.Utilities;
 
-DotEnv.Load();
+DotEnv.Load(options: new DotEnvOptions(
+            envFilePaths: new[] { ".env" },
+            ignoreExceptions: false,
+            probeForEnv: true,
+            probeLevelsToSearch: 6
+        ));
+
+var connectionString = EnvReader.GetStringValue("CONNECTION_STRING");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -23,7 +31,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
