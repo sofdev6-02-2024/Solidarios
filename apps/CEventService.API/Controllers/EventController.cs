@@ -10,9 +10,9 @@ namespace CEventService.API.Controllers
     public class EventController : ControllerBase
     {
         
-         private readonly IService<Event, EventHomePageDto> _eventService;
+         private readonly IEventService _eventService;
 
-        public EventController(IService<Event, EventHomePageDto> eventService)
+        public EventController(IEventService eventService)
         {
             _eventService = eventService;
         }
@@ -20,21 +20,21 @@ namespace CEventService.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> GetAllEvents([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var events = await _eventService.GetAllEventsAsync(page, pageSize);
+            var events = await _eventService.GetAllAsync(page, pageSize);
             return Ok(events);
         }
 
         [HttpGet("homepage")]
-        public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage()
+        public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var events = await _eventService.GetEventsForHomePageAsync();
+            var events = await _eventService.GetEventsForHomePageAsync(page, pageSize);
             return Ok(events);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> GetEventById(int id)
         {
-            var @event = await _eventService.GetEventByIdAsync(id);
+            var @event = await _eventService.GetByIdAsync(id);
             
             if (@event == null)
             {

@@ -5,31 +5,31 @@ using CEventService.API.Models;
 
 namespace CEventService.API.Services
 {
-    public class EventService : IService<Event, EventHomePageDto>
+    public class EventService : IEventService
     {
-        private readonly IRepository<Event> _eventRepository;
+        private readonly IEventRepository _eventRepository;
         private readonly IMapper _mapper;
 
-        public EventService(IRepository<Event> eventRepository, IMapper mapper)
+        public EventService(IEventRepository eventRepository, IMapper mapper)
         {
             _eventRepository = eventRepository;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Event>> GetAllEventsAsync(int skip, int take)
+        public async Task<IEnumerable<Event>> GetAllAsync(int page, int pageSize)
         {
-            return await _eventRepository.GetAllEventsAsync((skip - 1) * take, take);
+            return await _eventRepository.GetAllAsync((page - 1) * page, pageSize);
         }
 
-        public async Task<Event?> GetEventByIdAsync(int id)
+        public async Task<Event?> GetByIdAsync(int id)
         {
-            return await _eventRepository.GetEventByIdAsync(id);
+            return await _eventRepository.GetByIdAsync(id);
         }
 
-        public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync()
+        public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize)
         {
-            var events = await _eventRepository.GetEventsForHomePageAsync();
-            return _mapper.Map<IEnumerable<EventHomePageDto>>(events);
+            return await _eventRepository.GetEventsForHomePageAsync(page, pageSize);
+            
         }
     }
 }

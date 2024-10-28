@@ -25,23 +25,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddScoped<IRepository<Event>, EventRepository>();
-builder.Services.AddScoped<IService<Event, EventHomePageDto>, EventService>();
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "CEvent.API", Version = "v1" });
 });
 
 var app = builder.Build();
-using(var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var dbContext = services.GetRequiredService<AppDbContext>();
-    dbContext.Database.Migrate();
-
-    await DataSeeder.SeedData(dbContext);
-}
-
 
 if (app.Environment.IsDevelopment())
 {
