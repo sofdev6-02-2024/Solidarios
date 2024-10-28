@@ -5,7 +5,9 @@ using CEventService.API.DAO;
 using CEventService.API.Models;
 using CEventService.API.Services;
 using CEventService.API.DTOs.Event;
+using dotenv.net;
 
+DotEnv.Load();
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
