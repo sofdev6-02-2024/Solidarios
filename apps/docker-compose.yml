@@ -43,7 +43,7 @@ services:
     build:
       context: ./CEventService.API
       dockerfile: Dockerfile
-    container_name: servicediscovery
+    container_name: ceventserviceapi
     ports:
       - "5000:5000"               
     environment:
@@ -52,6 +52,17 @@ services:
     networks:
       - shared-network        
 
-networks:
-  shared-network:
-    driver: bridge
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver_container
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@pers123
+      - MSSQL_PID=Developer 
+      - MSSQL_DB=DesarrolloDB
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD"]
+      interval: 10s
+      retries: 10
