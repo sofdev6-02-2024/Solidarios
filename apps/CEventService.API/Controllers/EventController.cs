@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using CEventService.API.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using CEventService.API.Services;
 using CEventService.API.DTOs.Event;
+using CEventService.API.Models;
 
 namespace CEventService.API.Controllers
 {
@@ -12,24 +10,41 @@ namespace CEventService.API.Controllers
     public class EventController : ControllerBase
     {
         
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<EventOutputDto>>> GetAllEvents()
+         private readonly IEventService _eventService;
+
+        public EventController(IEventService eventService)
         {
-            return Ok();
+            _eventService = eventService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Event>>> GetAllEvents([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var events = await _eventService.GetAllAsync(page, pageSize);
+            return Ok(events);
         }
 
         [HttpGet("homepage")]
-        public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage()
+        public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            return Ok();
+            var events = await _eventService.GetEventsForHomePageAsync(page, pageSize);
+            return Ok(events);
         }
-        
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<EventOutputDto>> GetEventById(int id)
+        public async Task<ActionResult<Event>> GetEventById(int id)
         {
-            return Ok();
+            var @event = await _eventService.GetByIdAsync(id);
+            
+            if (@event == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(@event);
         }
-        
+
+
         [HttpPost]
         public async Task<ActionResult<EventInputDto>> CreateEvent(EventInputDto eventInputDto)
         {
