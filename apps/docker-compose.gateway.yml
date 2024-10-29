@@ -1,0 +1,46 @@
+
+
+services:
+  consul:
+    image: consul:1.14.3
+    container_name: consul
+    ports:
+      - "8500:8500"
+    command: agent -dev -client=0.0.0.0
+    networks:
+      - shared-network
+
+  apigateway:
+    build:
+      context: ./ApiGateway      # Point to ApiGateway directory
+      dockerfile: Dockerfile      # Dockerfile is inside ApiGateway
+    container_name: apigateway
+    ports:
+      - "5149:5149"                 # Expose port 5105 on host to port 80 in container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SERVICE_DISCOVERY_URL=http://servicediscovery:5198/api/service-registry/services
+    depends_on:
+      - consul
+      - servicediscovery
+    networks:
+      - shared-network
+
+  servicediscovery:
+    build:
+      context: ./ServiceDiscovery
+      dockerfile: Dockerfile
+    container_name: servicediscovery
+    ports:
+      - "5198:5198"                 # Expose port 5198 on host to port 80 in container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Consul__Address=http://consul:8500
+    depends_on:
+      - consul
+    networks:
+      - shared-network  
+
+networks:
+  shared-network:
+    driver: bridge
