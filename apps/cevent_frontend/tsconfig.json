@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/redux"
-  ],
+, "src/app/api/auth/[...nextauth]/route.ts", "src/utils/encription.ts", "src/utils/sessionProviderWrapper.js"  ],
   "exclude": ["node_modules"]
 }
