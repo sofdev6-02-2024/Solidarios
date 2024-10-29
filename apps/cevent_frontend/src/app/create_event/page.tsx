@@ -6,15 +6,15 @@ import '@/styles/sign-auth/signup.css';
 
 export default function Signup() {
   return (
-    <Container maxWidth="md" className="container">
-      <Grid container spacing={2}>
+    <Container maxWidth="lg" className="container">
+      <Grid container spacing={1}> 
         <Grid item xs={12} md={6}>
           <Box className="box-login">
             <img src="/LogoCevent.svg" alt="logo" className="logo" />
             <Typography variant="h5" gutterBottom>
               Welcome
             </Typography>
-            <Typography variant="body1" align="center" paragraph>
+            <Typography variant="body1" className='welcome'>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry.
             </Typography>
             <Button variant="contained" className="sign-in-button">
@@ -24,7 +24,7 @@ export default function Signup() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Box className="box-signup">
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h1" gutterBottom>
               Sign Up
             </Typography>
             <Button

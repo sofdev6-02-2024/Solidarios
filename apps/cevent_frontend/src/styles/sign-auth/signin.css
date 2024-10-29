@@ -1,55 +1,58 @@
 .container {
-    margin-top: 50px;
-  }
-  
-  .sign-in-box, .welcome-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 160px; /* equivalente a 20 * 8px en MUI */
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-  }
-  
-  .sign-in-box .icon {
-    font-size: 130px;
-  }
-  
-  .google-button {
-    width: 150%;
-    margin-bottom: 16px;
-    margin-top: 24px;
-    padding: 10px;
-    border-radius: 30px;
-  }
-  
-  .facebook-button {
-    width: 150%;
-    background-color: #1877f2;
-    color: white;
-    padding: 10px;
-    border-radius: 30px;
-  }
-  
-  .welcome-box {
-    background-color: #1976d2;
-    color: #fff;
-  }
-  
-  .welcome-box .logo {
-    height: 100px;
-    filter: invert(1);
-  }
-  
-  .sign-up-button {
-    background-color: #f0f0f0;
-    color: #000;
-    width: 130%;
-    border-radius: 30px;
-    margin-top: 20px;
-  }
-  
-  .welcome-text {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
+  width: 100vw;
+  height: 100vh;
+  margin-top: 50px;  
+}
+
+.sign-in-box,
+.welcome-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 160px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sign-in-box .icon {
+  font-size: 123px;
+}
+
+.google-button {
+  width: 150%;
+  margin-bottom: 16px;
+  margin-top: 24px;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+.facebook-button {
+  width: 150%;
+  background-color: #1877f2;
+  color: white;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+.welcome-box {
+  background-color: #1976d2;
+  color: #fff;
+}
+
+.welcome-box .logo {
+  height: 100px;
+  filter: invert(1);
+}
+
+.sign-up-button {
+  background-color: #f0f0f0;
+  color: #000;
+  width: 130%;
+  border-radius: 30px;
+  margin-top: 20px;
+}
+
+.welcome-text {
+
+  margin-bottom: 20px;
+  text-align: center;
+}

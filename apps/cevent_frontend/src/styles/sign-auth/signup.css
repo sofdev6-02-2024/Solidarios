@@ -1,54 +1,63 @@
 .container {
-    margin-top: 50px;
-  }
-  
-  .box-login {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 88px; /* equivalente a 11 * 8px en MUI */
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 16px;
-    background-color: #0e2148;
-    color: white;
-  }
-  
-  .logo {
-    height: 100px;
-    filter: invert(1);
-  }
-  
-  .sign-in-button {
-    background-color: #f0f0f0;
-    color: #000;
-    width: 80%;
-    border-radius: 30px;
-    margin-top: 20px;
-  }
-  
-  .box-signup {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 128px; /* equivalente a 16 * 8px en MUI */
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
-    background-color: #f4f6f8;
-  }
-  
-  .google-button {
-    width: 160%;
-    margin-bottom: 16px;
-    margin-top: 40px;
-    padding: 10px;
-    border-radius: 30px;
-  }
-  
-  .facebook-button {
-    width: 160%;
-    background-color: #1877f2;
-    color: white;
-    padding: 10px;
-    border-radius: 30px;
-  }
-  
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px; 
+}
+
+.box-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 160px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  background-color: #0e2148;
+  color: white;
+}
+
+.logo {
+  height: 120px;
+  filter: invert(1);
+}
+
+.sign-in-button {
+  background-color: #f0f0f0;
+  color: #000;
+  width: 120%;
+  border-radius: 30px;
+  margin-top: 20px;
+}
+
+.box-signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 220px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  background-color: #f4f6f8; 
+}
+
+.google-button, .facebook-button {
+  width: 250%;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+.google-button {
+  margin-bottom: 16px;
+  margin-top: 10px;
+}
+
+.facebook-button {
+  background-color: #1877f2;
+  color: white;
+}
+
+.welcome {
+  margin-bottom: 20px;
+  text-align: center;
+}
