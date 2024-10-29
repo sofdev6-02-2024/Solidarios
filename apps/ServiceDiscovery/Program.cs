@@ -10,11 +10,9 @@ builder.Services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient
     config.Address = new Uri(consulAddress);
 }));
 
-// Register IServiceRegistrar and its implementation
 builder.Services.AddSingleton<IServiceRegister, ConsulServiceRegister>();
 builder.Services.AddControllers();
 
-// Add Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -34,18 +32,16 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Enable Swagger in the application
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Service Discovery API V1");
-        c.RoutePrefix = string.Empty; // Makes Swagger available at the root URL
+        c.RoutePrefix = string.Empty; 
     });
 }
 
-// Map Controllers
 app.MapControllers();
 
 app.Run();
