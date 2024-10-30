@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthID } from '@/redux/slices/authSlice';
 import { setUserInfo } from '@/redux/slices/userSlice';
+import AuthStatus from '@/components/AuthStatus';
 
 export default function Home() {
   const router = useRouter();
@@ -35,27 +36,6 @@ export default function Home() {
         Cevent App
       </Typography>
 
-      <Typography variant="h4">
-        User ID: {userID || 'No user logged in'}
-      </Typography>
-
-      {userInfo ? (
-        <Typography variant="h6">
-          Welcome, {userInfo.fullname} ({userInfo.email})
-        </Typography>
-      ) : (
-        <Typography variant="h6">Please log in.</Typography>
-      )}
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleLogin}
-        sx={{ width: '200px' }}
-      >
-        Login
-      </Button>
-
       <Button
         variant="contained"
         color="secondary"
@@ -64,6 +44,8 @@ export default function Home() {
       >
         Create Event
       </Button>
+
+      <AuthStatus />
     </Stack>
   );
 }

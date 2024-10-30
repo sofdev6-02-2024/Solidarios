@@ -82,6 +82,16 @@ services:
       retries: 10
     networks:
       - shared-network
+      
+  keycloak:
+      image: quay.io/keycloak/keycloak:latest
+      environment:
+        - KEYCLOAK_ADMIN=admin
+        - KEYCLOAK_ADMIN_PASSWORD=admin
+      ports:
+        - "8080:8080"
+      command:
+        - start-dev      
 
 networks:
   shared-network:
