@@ -47,20 +47,20 @@ const Footer: React.FC = () => {
         </h2>
       </div>
       <div>
-        <h1>Información</h1>
+        <h1>Information</h1>
         <h2>
           <a href="/terms" style={{ color: '#FFF', textDecoration: 'none' }}>
-            Términos de Uso
+            Terms of use
           </a>
         </h2>
         <h2>
           <a href="/privacy" style={{ color: '#FFF', textDecoration: 'none' }}>
-            Política de Privacidad
+            Privacy Policy
           </a>
         </h2>
         <h2>
           <a href="/about" style={{ color: '#FFF', textDecoration: 'none' }}>
-            Sobre Nosotros
+            About us
           </a>
         </h2>
       </div>
