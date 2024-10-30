@@ -12,23 +12,23 @@ services:
       - shared-network
 
   # API Gateway
-#  apigateway:
-#    build:
-#      context: ./ApiGateway      
-#      dockerfile: Dockerfile     
-#    container_name: apigateway
-#    ports:
-#      - "5149:5149"              
-#    environment:
-#      - ASPNETCORE_ENVIRONMENT=Development
-#      - SERVICE_DISCOVERY_URL=http://servicediscovery:5198/api/service-registry/services
+  apigateway:
+    build:
+      context: ./ApiGateway      
+      dockerfile: Dockerfile     
+    container_name: apigateway
+    ports:
+      - "5149:5149"              
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SERVICE_DISCOVERY_URL=http://servicediscovery:5198/api/service-registry/services
 
-#    depends_on:
-#      - consul
-#      - servicediscovery
-#      - sqlserver
-#    networks:
-#      - shared-network
+    depends_on:
+      - consul
+      - servicediscovery
+      - sqlserver
+    networks:
+      - shared-network
 
   # Service Discovery
   servicediscovery:
@@ -48,22 +48,22 @@ services:
       - shared-network  
 
   # CEvent Service API
-#  ceventservice:
-#    build:
-#      context: ./CEventService.API
-#      dockerfile: Dockerfile
-#    container_name: ceventservice
-#    ports:
-#      - "5000:5000"               
-#    environment:
-#      - ASPNETCORE_ENVIRONMENT=Development
-#      - CONNECTION_STRING="Server=sqlserver_container,1433;Database=DesarrolloDB;User Id=SA;Password=P@pers123;Encrypt=True;TrustServerCertificate=True;"
-#    depends_on:
-#      - sqlserver
-#    networks:
-#      - shared-network
-#    volumes:
-#      - ./CEventService.API/.env:/app/.env
+  ceventservice:
+    build:
+      context: ./CEventService.API
+      dockerfile: Dockerfile
+    container_name: ceventservice
+    ports:
+      - "5000:5000"               
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CONNECTION_STRING="Server=sqlserver_container,1433;Database=DesarrolloDB;User Id=SA;Password=P@pers123;Encrypt=True;TrustServerCertificate=True;"
+    depends_on:
+      - sqlserver
+    networks:
+      - shared-network
+    volumes:
+      - ./CEventService.API/.env:/app/.env
 
   # SQL Server
   sqlserver:
@@ -82,7 +82,7 @@ services:
       retries: 10
     networks:
       - shared-network
-      
+
   keycloak:
       image: quay.io/keycloak/keycloak:latest
       environment:
