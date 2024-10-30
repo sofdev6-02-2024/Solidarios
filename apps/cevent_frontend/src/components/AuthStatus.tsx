@@ -1,5 +1,6 @@
 "use client";
 
+import { Button, Typography } from "@mui/material";
 import { Session } from "next-auth";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect } from "react";
@@ -31,33 +32,40 @@ export default function AuthStatus(): JSX.Element {
  }, [customSession, status]);
 
  if (status === "loading") {
-   return <div className="my-3">Loading...</div>;
+   return <Typography variant="h6">Loding ...</Typography>;
  } else if (customSession) {
    return (
-     <div className="my-3">
-       Logged in as{" "}
-       <span className="text-yellow-100">{customSession.user?.email}</span>{" "}
-       <button
-         className="bg-blue-900 font-bold text-white py-1 px-2 rounded border border-gray-50"
-         onClick={() => {
-           keycloakSessionLogOut().then(() => signOut({ callbackUrl: "/" }));
-         }}
-       >
-         Log out
-       </button>
+     <div>
+      <Typography variant="h6">Welcome, {session?.user?.name}.</Typography>
+      <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            keycloakSessionLogOut()
+              .then(() => {
+                signOut( {callbackUrl: "/"})
+              }
+            )}
+          }
+          sx={{ width: '200px' }}
+        >
+          Log Out
+        </Button>
      </div>
    );
  }
 
  return (
-   <div className="my-3">
-     Not logged in.{" "}
-     <button
-       className="bg-blue-900 font-bold text-white py-1 px-2 rounded border border-gray-50"
-       onClick={() => signIn("keycloak")}
-     >
-       Log in
-     </button>
+   <div>
+     <Typography variant="h6">Please log in.</Typography>
+     <Button
+        variant="contained"
+        color="primary"
+        onClick={() => signIn("keycloak")}
+        sx={{ width: '200px' }}
+      >
+        Login
+      </Button>
    </div>
  );
 }

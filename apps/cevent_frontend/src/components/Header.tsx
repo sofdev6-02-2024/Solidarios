@@ -21,7 +21,6 @@ import { routes } from '@/utils/navigation/Routes';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import styles from '@/styles/components/Header.module.css';
-import AuthStatus from './authStatus';
 
 export default function Header() {
   const router = useRouter();
@@ -46,7 +45,6 @@ export default function Header() {
         boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
       }}
     >
-      <AuthStatus />
       <Toolbar>
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <IconButton size="large" edge="start" className={styles.logoButton}>
