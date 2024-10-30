@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import ThemeRegistry from './ThemeProvider';
 import Header from '@/components/Header';
 import ReduxProvider from '@/redux/redux-provider';
+import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: 'CEvent',
@@ -21,6 +22,7 @@ export default function RootLayout({
           <ThemeRegistry>
             <Header />
             {children}
+            <Footer />
           </ThemeRegistry>
         </ReduxProvider>
       </body>
