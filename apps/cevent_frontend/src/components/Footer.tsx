@@ -7,8 +7,10 @@ const Footer: React.FC = () => {
       <div>
         <h1>Cvent</h1>
         <h2>
-          Descripción sobre qué es Cvent, Descripción sobre qué es Cvent,
-          Descripción sobre qué es Cvent ,Descripción sobre qué es Cvent
+          Discover and organize events with ease through our events app,
+          designed to connect people with unique experiences in your city and
+          beyond. Our platform allows users to explore a wide variety of events,
+          from concerts and exhibitions to conferences and outdoor activities.
         </h2>
       </div>
       <div>
@@ -46,9 +48,21 @@ const Footer: React.FC = () => {
       </div>
       <div>
         <h1>Información</h1>
-        <h2>Subinfo</h2>
-        <h2>Subinfo</h2>
-        <h2>Subinfo</h2>
+        <h2>
+          <a href="/terms" style={{ color: '#FFF', textDecoration: 'none' }}>
+            Términos de Uso
+          </a>
+        </h2>
+        <h2>
+          <a href="/privacy" style={{ color: '#FFF', textDecoration: 'none' }}>
+            Política de Privacidad
+          </a>
+        </h2>
+        <h2>
+          <a href="/about" style={{ color: '#FFF', textDecoration: 'none' }}>
+            Sobre Nosotros
+          </a>
+        </h2>
       </div>
     </div>
   );
