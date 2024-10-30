@@ -22,6 +22,6 @@
 
 ### Accessing the Application
 
-Once the above steps are completed, your frontend and all services should be running smoothly. 
+Once the above steps are completed, your frontend and all services should be running smoothly.
 
 **Important:** To start keycloak you should build and start the docker compose file in `/apps`
