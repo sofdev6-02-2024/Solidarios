@@ -49,6 +49,13 @@ export const extractWordByComma = (
   return text;
 };
 
+/**
+ * Truncate a text to a maximum length
+ * 
+ * @param text text to truncate 
+ * @param maxLength max number of characters to keep
+ * @returns text cut to the max length
+ */
 export const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) {
     return text;
