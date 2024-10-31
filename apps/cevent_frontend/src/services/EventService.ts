@@ -17,8 +17,6 @@ export const getEvents = async (
   page: number,
   pageSize: number,
 ): Promise<EventHomePageDto[]> => {
-  console.log('Fetching events...');
-  console.log('BASE_URL:', BASE_URL);
   try {
     const response = await axios.get<EventHomePageDto[]>(
       `${BASE_URL}/event/homepage`,
@@ -31,7 +29,6 @@ export const getEvents = async (
     );
     return response.data;
   } catch (error) {
-    console.error('Error fetching events:', error);
     return [];
   }
 };
