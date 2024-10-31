@@ -48,7 +48,7 @@ namespace CEventService.API.Controllers
         [HttpPost]
         public async Task<ActionResult<EventInputDto>> CreateEvent(EventInputDto eventInputDto)
         {
-            return Ok();
+            return Ok(eventInputDto);
         }
         
         [HttpPut("{id}")]
