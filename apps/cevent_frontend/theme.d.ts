@@ -1,4 +1,8 @@
-import { TypographyVariantsOptions, Palette, PaletteOptions } from '@mui/material/styles';
+import {
+  TypographyVariantsOptions,
+  Palette,
+  PaletteOptions,
+} from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -27,7 +31,6 @@ declare module '@mui/material/Typography' {
     tiny: true;
   }
 }
-
 
 declare module '@mui/material/styles' {
   interface Palette {

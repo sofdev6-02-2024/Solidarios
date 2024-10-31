@@ -11,9 +11,13 @@ import {
 import EventIcon from '@mui/icons-material/Event';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
-import { extractWordByComma, formatDate, truncateText } from '@/utils/methods/stringMethods';
+import {
+  extractWordByComma,
+  formatDate,
+  truncateText,
+} from '@/utils/methods/stringMethods';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import styles from "@/styles/components/CardEventStyles";
+import styles from '@/styles/components/CardEventStyles';
 
 interface CardEventProps {
   eventData: EventHomePageDto;

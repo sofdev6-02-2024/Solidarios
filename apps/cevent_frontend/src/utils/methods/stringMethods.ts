@@ -9,42 +9,45 @@ export function capitalizeFirstLetter(word: string) {
 
 /**
  * Format a date to a string
- * 
+ *
  * @param date Date to format
  * @returns  A string with the date formatted as "Month Day, Year"
  */
-export const formatDate = (date: Date):string => {
+export const formatDate = (date: Date): string => {
   return new Date(date).toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
   });
-}
+};
 /**
- * Cut the last words of a string by commas 
+ * Cut the last words of a string by commas
  * @param text sentence with commas to cut
  * @param numberCommas number sentences to conserve in the string starting from the end
  */
-export const cutByComma = (text: string, numberCommas: number):string => {
+export const cutByComma = (text: string, numberCommas: number): string => {
   const words = text.split(',');
   if (words.length > numberCommas) {
     return words.slice(words.length - numberCommas).join(',');
   }
-  return "no";
-}
+  return 'no';
+};
 
 /**
  * Extract a word from a string by commas
  * @param text sentence with commas to extract
  * @param numberWord number of the word to extract starting from the end
- * @returns 
+ * @returns
  */
-export const extractWordByComma = (text: string, numberWord: number): string => {
+export const extractWordByComma = (
+  text: string,
+  numberWord: number,
+): string => {
   const words = text.split(',');
-  if(words.length >= numberWord-1){
+  if (words.length >= numberWord - 1) {
     return words[words.length - numberWord];
   }
   return text;
-}
+};
 
 export const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) {

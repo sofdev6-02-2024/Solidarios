@@ -6,7 +6,7 @@ interface LayoutProps {
 }
 /**
  * Layout component, the main layout for the app
- * 
+ *
  * @param children page content
  */
 const Layout: React.FC<LayoutProps> = ({ children }) => {
