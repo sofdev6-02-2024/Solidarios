@@ -30,6 +30,29 @@ export default function Home() {
     router.push(routes.createEvent);
   };
 
+  const handleGetAllEvent = async () => {
+    const resp = await fetch('/api/events?page=1&pageSize=10');
+    const data =  await resp.json()
+    alert("Check the console");
+    console.log(data);
+  };
+
+  const handleGetEventById = async () => {
+    const resp = await fetch('/api/events?id=2');
+    const data =  await resp.json()
+    alert("Check the console");
+    console.log(data);
+  };
+
+  const handleGetAllEventHomeDTOs = async () => {
+    const resp = await fetch('/api/events?homepage=true&page=1&pageSize=10');
+    const data =  await resp.json()
+    alert("Check the console");
+    console.log(data);
+  };
+
+
+
   return (
     <Stack spacing={3} alignItems="center" sx={{ mt: 4 }}>
       <Typography variant="h1" textAlign="center">
@@ -44,7 +67,30 @@ export default function Home() {
       >
         Create Event
       </Button>
-
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleGetAllEvent}
+        sx={{ width: '200px' }}
+      >
+        Get All Events
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleGetEventById}
+        sx={{ width: '200px' }}
+      >
+        Get by ID Events
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleGetAllEventHomeDTOs}
+        sx={{ width: '200px' }}
+      >
+        Get All HomeDTOs Events
+      </Button>
       <AuthStatus />
     </Stack>
   );
