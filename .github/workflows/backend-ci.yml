@@ -2,18 +2,10 @@
 
 on:
   push:
-    branches:
-      - main
-      - develop
-      - "feature/*"
-      - "fix/*"
+    branches: [main, develop, "feature/*", "fix/*"]
   pull_request:
-    branches:
-      - main
-      - develop
-      - "feature/*"
-      - "fix/*"
-
+    branches: [main, develop, "feature/*", "fix/*"]
+    
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
@@ -49,7 +41,7 @@ jobs:
 
       - name: Upload test coverage results
         if: success()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: coverage-results
           path: apps/CEventService.Tests/TestResults
