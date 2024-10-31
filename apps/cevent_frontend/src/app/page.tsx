@@ -32,26 +32,24 @@ export default function Home() {
 
   const handleGetAllEvent = async () => {
     const resp = await fetch('/api/events?page=1&pageSize=10');
-    const data =  await resp.json()
-    alert("Check the console");
+    const data = await resp.json();
+    alert('Check the console');
     console.log(data);
   };
 
   const handleGetEventById = async () => {
     const resp = await fetch('/api/events?id=2');
-    const data =  await resp.json()
-    alert("Check the console");
+    const data = await resp.json();
+    alert('Check the console');
     console.log(data);
   };
 
   const handleGetAllEventHomeDTOs = async () => {
     const resp = await fetch('/api/events?homepage=true&page=1&pageSize=10');
-    const data =  await resp.json()
-    alert("Check the console");
+    const data = await resp.json();
+    alert('Check the console');
     console.log(data);
   };
-
-
 
   return (
     <Stack spacing={3} alignItems="center" sx={{ mt: 4 }}>

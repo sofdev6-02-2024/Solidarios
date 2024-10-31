@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
-import React, { useState, useEffect } from "react";
+import { useSession } from 'next-auth/react';
+import { redirect, useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
 
 interface Event {
   name: string;
@@ -24,16 +24,16 @@ interface Event {
 export default function CreateEvent() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/unauthorized");
+    if (status === 'unauthenticated') {
+      router.push('/unauthorized');
       router.refresh();
     }
   }, [session, status, router]);
 
-  if (status === "loading") {
+  if (status === 'loading') {
     return (
       <main>
         <h1 className="text-4xl text-center">Create Event</h1>
@@ -47,40 +47,40 @@ export default function CreateEvent() {
       event.preventDefault();
 
       const postBody: Event = {
-        name: "Wilsterman",
-        description: "A fun and engaging event",
-        category: "Music",
-        eventDate: "2024-10-30T20:29:28.738Z",
+        name: 'Wilsterman',
+        description: 'A fun and engaging event',
+        category: 'Music',
+        eventDate: '2024-10-30T20:29:28.738Z',
         location: {
           latitude: 40.7128,
-          longitude: -74.0060,
+          longitude: -74.006,
         },
-        venue: "Downtown Hall",
-        address: "123 Main St, New York, NY",
+        venue: 'Downtown Hall',
+        address: '123 Main St, New York, NY',
         ticketPrice: 1000,
-        coverPhotoUrl: "https://example.com/photo.jpg",
+        coverPhotoUrl: 'https://example.com/photo.jpg',
         attendanceTrackingEnabled: true,
-        capacity: 100
+        capacity: 100,
       };
 
       try {
-        const resp = await fetch("/api/events", {
-          method: "POST",
+        const resp = await fetch('/api/events', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(postBody),
         });
 
         if (resp.ok) {
-          router.push("/");
+          router.push('/');
           router.refresh();
         } else {
           const json = await resp.json();
-          setErrorMsg("Unable to call the API: " + json.error);
+          setErrorMsg('Unable to call the API: ' + json.error);
         }
       } catch (err) {
-        setErrorMsg("Unable to call the API: " + (err as Error).message);
+        setErrorMsg('Unable to call the API: ' + (err as Error).message);
       }
     };
 
@@ -92,5 +92,5 @@ export default function CreateEvent() {
     );
   }
 
-  redirect("/unauthorized");
+  redirect('/unauthorized');
 }

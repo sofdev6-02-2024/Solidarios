@@ -30,7 +30,8 @@
     "src/redux",
     "src/app/api/auth/[...nextauth]/route.ts",
     "src/utils/encription.ts",
-    "src/utils/sessionProviderWrapper.js"
-, "src/app/create_event/page.tsx"  ],
+    "src/utils/sessionProviderWrapper.js",
+    "src/app/create_event/page.tsx"
+  ],
   "exclude": ["node_modules"]
 }
