@@ -9,8 +9,7 @@ namespace CEventService.API.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        
-         private readonly IEventService _eventService;
+        private readonly IEventService _eventService;
 
         public EventController(IEventService eventService)
         {
@@ -62,5 +61,6 @@ namespace CEventService.API.Controllers
         {
             return Ok();
         }
+        
     }
 }
