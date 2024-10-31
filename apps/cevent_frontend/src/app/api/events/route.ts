@@ -71,6 +71,7 @@ export async function POST(
         { status: 401 }
       );
     }
+    console.log(accessToken)
 
     const response = await fetch(url, {
       method: 'POST',
