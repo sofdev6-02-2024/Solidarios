@@ -1,0 +1,60 @@
+﻿name: Backend CI for CEventService
+
+on:
+  # Ejecuta el flujo de CI en cada push y pull request hacia main o cualquier rama feature
+  push:
+    branches:
+      - main
+      - "feature/*"
+  pull_request:
+    branches:
+      - main
+      - "feature/*"
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del código
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Paso 2: Configura .NET con la versión específica
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.x'  # Cambia a la versión .NET que uses
+
+      # Paso 3: Restaurar dependencias para el proyecto API
+      - name: Restore dependencies for CEventService.API
+        working-directory: ./apps/CEventService.API
+        run: dotnet restore
+
+      # Paso 4: Compilar el proyecto API en modo Release
+      - name: Build CEventService.API
+        working-directory: ./apps/CEventService.API
+        run: dotnet build --no-restore --configuration Release
+
+      # Paso 5: Restaurar dependencias para el proyecto de pruebas
+      - name: Restore dependencies for CEventService.Tests
+        working-directory: ./apps/CEventService.Tests
+        run: dotnet restore
+
+      # Paso 6: Compilar el proyecto de pruebas en modo Release
+      - name: Build CEventService.Tests
+        working-directory: ./apps/CEventService.Tests
+        run: dotnet build --no-restore --configuration Release
+
+      # Paso 7: Ejecutar pruebas
+      - name: Run tests
+        working-directory: ./apps/CEventService.Tests
+        run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+
+      # Paso 8: Publicar resultados de cobertura
+      - name: Upload test coverage results
+        if: success()  # Solo si las pruebas pasaron
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-results
+          path: apps/CEventService.Tests/TestResults
