@@ -16,7 +16,7 @@
 }
 
 .activeNavButton::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   right: 0;
@@ -63,7 +63,6 @@
 }
 
 @media (max-width: 850px) {
-
   .searchBox {
     display: none;
   }
@@ -75,11 +74,11 @@
 
 @media (max-width: 600px) {
   .burgerMenuButton {
-    display: block; 
+    display: block;
     position: absolute;
     right: 16px;
   }
-  
+
   .drawerMenuItem {
     color: #000;
   }
