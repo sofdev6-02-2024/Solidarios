@@ -51,8 +51,8 @@ export const extractWordByComma = (
 
 /**
  * Truncate a text to a maximum length
- * 
- * @param text text to truncate 
+ *
+ * @param text text to truncate
  * @param maxLength max number of characters to keep
  * @returns text cut to the max length
  */
