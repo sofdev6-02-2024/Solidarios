@@ -30,6 +30,17 @@ namespace CEventService.API.DAO
             return await _context.Events.FindAsync(id);
         }
 
+        public async Task<Event> CreateEventAsync(Event newEvent)
+        {
+            _context.Events.Add(newEvent);
+            newEvent.Status = "PENDING";
+            newEvent.OrganizerUserId = "Users-Not-Implemented-Yet";
+            newEvent.CreatedAt = DateTime.Now;
+            newEvent.AttendeeCount = 0;
+            await _context.SaveChangesAsync();
+            return newEvent;
+        }
+
         public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize)
         {
             var events =  await _context.Events
