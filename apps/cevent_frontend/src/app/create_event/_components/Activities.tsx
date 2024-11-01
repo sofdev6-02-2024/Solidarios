@@ -21,7 +21,7 @@ const Activities = () => {
   };
 
   return (
-    <Box mb={4} p={3} className="info-box">
+    <Box mb={4} p={3} border="1px solid #4a88e9" borderRadius="8px" className="info-box">
       <Typography variant="h6" fontWeight="bold">Activities</Typography>
       <Box display="flex" alignItems="center" mt={2}>
         <Typography>Keep your event schedule organized by adding activities and notifying users when they are about to start.</Typography>
@@ -31,7 +31,7 @@ const Activities = () => {
           sx={{ ml: 2 }}
           variant="outlined"
         >
-          Add Activity
+          {showActivityInputs ? 'No Add Activity' : 'Add Activity'}
         </Button>
       </Box>
       {showActivityInputs && (
@@ -41,11 +41,24 @@ const Activities = () => {
             fullWidth
             value={activityTitle}
             onChange={(e) => setActivityTitle(e.target.value)}
+            InputProps={{
+              sx: {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#4a88e9', 
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#4a88e9', 
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#4a88e9', 
+                },
+              },
+            }}
           />
           <Button
             onClick={() => setActivityDescription(activityDescription ? '' : 'Show')}
             variant="outlined"
-            sx={{ mt: 1 }}
+            sx={{ mr: 2, mt: 2 }} 
           >
             {activityDescription ? 'Remove Description' : 'Add Description'}
           </Button>
@@ -56,12 +69,25 @@ const Activities = () => {
               margin="normal"
               value={activityDescription}
               onChange={(e) => setActivityDescription(e.target.value)}
+              InputProps={{
+                sx: {
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#4a88e9',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#4a88e9',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#4a88e9',
+                  },
+                },
+              }}
             />
           )}
           <Button
             onClick={addActivity}
             variant="contained"
-            sx={{ mt: 1 }}
+            sx={{ mt: 2 }}
           >
             Add Activity
           </Button>

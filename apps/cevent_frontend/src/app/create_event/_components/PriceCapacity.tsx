@@ -4,14 +4,27 @@ import { AttachMoney } from '@mui/icons-material';
 
 const PriceCapacity = () => {
   return (
-    <Box mb={4} p={3} border="1px solid #d0d0d0" borderRadius="8px">
+    <Box mb={4} p={3} border="1px solid #4a88e9" borderRadius="8px" className="info-box"> 
       <Typography variant="h6" fontWeight="bold">Price and capacity</Typography>
       <Box display="flex" gap={2} mt={2}>
         <TextField
           label="Capacity"
           fullWidth
           margin="normal"
-          InputProps={{ style: { color: 'black' } }}
+          InputProps={{
+            sx: {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#4a88e9',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#4a88e9',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#4a88e9',
+              },
+            },
+            style: { color: 'black' },
+          }}
         />
         <TextField
           label="Ticket price"
@@ -23,6 +36,17 @@ const PriceCapacity = () => {
                 <AttachMoney />
               </InputAdornment>
             ),
+            sx: {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#4a88e9',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#4a88e9',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#4a88e9',
+              },
+            },
             style: { color: 'black' },
           }}
         />
