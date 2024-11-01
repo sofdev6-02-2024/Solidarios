@@ -111,21 +111,19 @@ export async function GET(
 
     const { searchParams, pathname } = new URL(req.url);
 
-    const eventId = searchParams.get('id') || '1';
+    const eventId = searchParams.get('id');
     const page = searchParams.get('page') || '1';
     const pageSize = searchParams.get('pageSize') || '10';
 
     let url: string;
-    console.log(eventId);
-    if (eventId && !isNaN(Number(eventId))) {
+    if (eventId) {
       url = `${process.env.BACKEND_URL}/api/Event/${eventId}`;
     } else if (searchParams.has('homepage')) {
       url = `${process.env.BACKEND_URL}/api/Event/homepage?page=${page}&pageSize=${pageSize}`;
     } else {
       url = `${process.env.BACKEND_URL}/api/Event?page=${page}&pageSize=${pageSize}`;
     }
-    console.log(url);
-
+    
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -144,7 +142,6 @@ export async function GET(
     const data = await response.json();
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
-    console.error('Error fetching events:', error);
     return NextResponse.json(
       { error: 'Failed to fetch events' },
       { status: 500 },

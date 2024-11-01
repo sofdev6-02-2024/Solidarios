@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthID } from '@/redux/slices/authSlice';
 import { setUserInfo } from '@/redux/slices/userSlice';
 import AuthStatus from '@/components/AuthStatus';
+import {SetDynamicRoute} from '@/utils/setDinamicRoute';
 
 export default function Home() {
   const router = useRouter();
@@ -52,7 +53,9 @@ export default function Home() {
   };
 
   return (
-    <Stack spacing={3} alignItems="center" sx={{ mt: 4 }}>
+    <main>
+      <SetDynamicRoute /> 
+      <Stack spacing={3} alignItems="center" sx={{ mt: 4 }}>
       <Typography variant="h1" textAlign="center">
         Cevent App
       </Typography>
@@ -91,5 +94,6 @@ export default function Home() {
       </Button>
       <AuthStatus />
     </Stack>
+    </main>
   );
 }

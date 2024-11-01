@@ -84,15 +84,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(connectionString, sqlOptions =>
-    {
-        sqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(30),
-            errorNumbersToAdd: null
-        );
-        sqlOptions.CommandTimeout(30);
-    });
+    options.UseSqlServer(connectionString);
 });
 
 builder.Services.AddEndpointsApiExplorer();
