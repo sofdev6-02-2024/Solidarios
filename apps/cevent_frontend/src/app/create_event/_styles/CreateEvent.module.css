@@ -1,0 +1,23 @@
+/* styles/CreateEvent.css */
+.info-box {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .image-upload {
+    margin: 16px 0;
+  }
+  
+  .selected-image {
+    max-width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .modal-box {
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
