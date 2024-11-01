@@ -1,5 +1,10 @@
+export interface Location {
+  longitude: number;
+  latitude: number;
+}
+
 export interface EventHomePageDto {
-  id: number;
+  eventId: number;
   name: string;
   category: string;
   eventDate: Date;
@@ -10,4 +15,13 @@ export interface EventHomePageDto {
   coverPhotoUrl: string;
 }
 
-//TODO: Extend this interface to include the rest of the event properties
+export interface EventDetailDto extends EventHomePageDto {
+  location: Location;
+  venue: string;
+  attendanceTrackingEnabled: boolean;
+  status: string;
+  capacity: number;
+  organizerUserId: number;
+  createdAt: Date;
+}
+

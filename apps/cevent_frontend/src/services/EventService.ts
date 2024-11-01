@@ -1,34 +1,27 @@
 import { EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
-import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 /**
- * This function fetches a list of events from the API
+ * Fetches the events for the home page
  *
- * @param page represents the page number
- * @param pageSize represents the number of events per page
- * @returns a list of events
+ * @param page number of the page
+ * @param pageSize number of events per page
+ * @returns an array of events
  */
-export const getEvents = async (
+export const fetchHomePageEvents = async (
   page: number,
   pageSize: number,
 ): Promise<EventHomePageDto[]> => {
   try {
-    const response = await axios.get<EventHomePageDto[]>(
-      `${BASE_URL}/event/homepage`,
-      {
-        params: {
-          page,
-          pageSize,
-        },
-      },
+    const response = await fetch(
+      `/api/events/homepage?page=${page}&pageSize=${pageSize}`,
     );
-    return response.data;
+    if (!response.ok) {
+      return [];
+    }
+    return await response.json();
   } catch (error) {
     return [];
   }
 };
+
+

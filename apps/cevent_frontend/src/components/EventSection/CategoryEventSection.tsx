@@ -2,10 +2,11 @@ import { EventCategory, CategoryObj } from '@/utils/interfaces/Categories';
 import { Box, Typography } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
 import { EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
-import { getEvents } from '@/services/EventService';
+import { fetchHomePageEvents } from '@/services/EventService';
 import EventsBox from './EventsBox';
 import SkeletonEventsBox from './SkeletonEventsBox';
 import EmptyEventSection from './EmptyEventSection';
+
 interface EventSectionProps {
   category: EventCategory;
 }
@@ -14,7 +15,7 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
   const [events, setEvents] = useState<EventHomePageDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    getEvents(1, 6)
+    fetchHomePageEvents(1, 6)
       .then((data) => {
         setEvents(data);
       })
