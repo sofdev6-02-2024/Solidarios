@@ -16,7 +16,7 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser, // Incluye variables globales del navegador
-        React: 'readonly',  // Marca React como global readonly
+        React: 'readonly', // Marca React como global readonly
       },
     },
     plugins: {
@@ -29,7 +29,7 @@ export default [
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
       '@typescript-eslint/no-unused-vars': 'warn',
-      'react/react-in-jsx-scope': 'off', 
+      'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
     },
     settings: {
