@@ -29,7 +29,7 @@ namespace CEventService.API.Services
         public async Task<EventOutputDto> CreateEventAsync(EventInputDto newEventDto)
         {
             var eventEntity = _mapper.Map<Event>(newEventDto);
-            var createdEvent = await _eventRepository.CreateEventAsync(eventEntity);
+            var createdEvent = await _eventRepository.CreateAsync(eventEntity);
             return _mapper.Map<EventOutputDto>(createdEvent);
         }  
 
@@ -37,6 +37,21 @@ namespace CEventService.API.Services
         {
             return await _eventRepository.GetEventsForHomePageAsync(page, pageSize);
             
+        }
+        
+        public async Task<EventOutputDto?> UpdateEventAsync(int id, EventInputDto updatedEventDto)
+        {
+            var existingEvent = await _eventRepository.GetByIdAsync(id);
+
+            if (existingEvent == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(updatedEventDto, existingEvent);
+            var updatedEvent = await _eventRepository.UpdateAsync(existingEvent);
+    
+            return _mapper.Map<EventOutputDto>(updatedEvent);
         }
     }
 }

@@ -7,5 +7,6 @@ namespace CEventService.API.Services
         Task<IEnumerable<T>> GetAllAsync(int page, int pageSize);
         Task<T?> GetByIdAsync(int id);
         Task<EventOutputDto> CreateEventAsync(EventInputDto newEvent);
+        Task<EventOutputDto?> UpdateEventAsync(int id, EventInputDto updatedEventDto);
     }
 }

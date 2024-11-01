@@ -65,9 +65,28 @@ namespace CEventService.API.Controllers
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEvent(int id, EventInputDto eventInputDto)
+        public async Task<IActionResult> UpdateEvent(int id, [FromBody] EventInputDto eventInputDto)
         {
-            return Ok();
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var updatedEvent = await _eventService.UpdateEventAsync(id, eventInputDto);
+        
+                if (updatedEvent == null)
+                {
+                    return NotFound($"Event with ID {id} not found.");
+                }
+
+                return Ok(updatedEvent);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while updating the event: {ex.Message}");
+            }
         }
         
         [HttpDelete("{id}")]
