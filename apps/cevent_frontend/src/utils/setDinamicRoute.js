@@ -10,5 +10,5 @@ export function SetDynamicRoute() {
     router.refresh();
   }, [router]);
 
-  return <></>
+  return <></>;
 }

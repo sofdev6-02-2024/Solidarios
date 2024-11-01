@@ -123,7 +123,7 @@ export async function GET(
     } else {
       url = `${process.env.BACKEND_URL}/api/Event?page=${page}&pageSize=${pageSize}`;
     }
-    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {

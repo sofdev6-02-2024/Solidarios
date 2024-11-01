@@ -19,7 +19,6 @@ namespace CEventService.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<Event>>> GetAllEvents([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var events = await _eventService.GetAllAsync(page, pageSize);
