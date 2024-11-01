@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Si tienes CSS adicional -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!-- Material Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mui/5.0.0-alpha.24/material-ui.min.css"> <!-- Material-UI CSS -->
+</head>
+<body>
+    <div class="MuiContainer-root container">
+        <div class="MuiGrid-root MuiGrid-container MuiGrid-spacing-xs-1">
+            <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6">
+                <div class="sign-in-box">
+                    <h1 class="MuiTypography-root MuiTypography-h1">Sign In</h1>
+                    <span class="MuiSvgIcon-root icon"><svg><!-- AccountCircle icon SVG --></svg></span>
+                    <button class="MuiButton-root MuiButton-outlined google-button">
+                        <span class="MuiButton-startIcon"><svg><!-- Google icon SVG --></svg></span>
+                        Continue with Google
+                    </button>
+                    <button class="MuiButton-root MuiButton-contained facebook-button">
+                        <span class="MuiButton-startIcon"><svg><!-- Facebook icon SVG --></svg></span>
+                        Continue with Facebook
+                    </button>
+                </div>
+            </div>
+
+            <div class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-md-6">
+                <div class="welcome-box">
+                    <img src="/LogoCevent.svg" alt="logo" class="logo" />
+                    <h4 class="MuiTypography-root MuiTypography-h4">Welcome back</h4>
+                    <p class="MuiTypography-root MuiTypography-body1 welcome-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    </p>
+                    <button class="MuiButton-root MuiButton-contained sign-up-button">
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
