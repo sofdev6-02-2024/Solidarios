@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box,Typography  } from '@mui/material';
 import ImageUpload from './_components/ImageUpload';
 import GeneralInfo from './_components/GeneralInfo';
 import DateLocation from './_components/DateLocation';
@@ -26,8 +26,15 @@ const CreateEvent = () => {
   };
 
   return (
-    <Box className={styles.container} display="flex">  
+    <Box className={styles.container} display="flex">
       <Box flex={4} pr={2}>
+        <Box mb={2}>
+          <Typography variant="h4" fontWeight="bold">
+            <span style={{ color: 'black' }}>Create</span>
+            <span style={{ color: '#4a88e9' }}> Event</span>
+          </Typography>
+        </Box>
+
         <ImageUpload selectedImage={selectedImage} onImageChange={handleImageChange} />
         <GeneralInfo />
         <DateLocation />
@@ -35,7 +42,7 @@ const CreateEvent = () => {
         <Activities />
         <AditionalSettings />
       </Box>
-      
+
       <Box flex={1} pl={2}>
         <Steps />
       </Box>
