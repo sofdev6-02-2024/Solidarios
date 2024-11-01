@@ -6,8 +6,8 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 /**
  * Fetches the events for the home page
- * @param request 
- * @returns 
+ * @param request
+ * @returns
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

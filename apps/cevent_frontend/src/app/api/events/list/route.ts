@@ -6,7 +6,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 /**
  * Fetches the all events for the database
- * 
+ *
  * @returns list of all events
  */
 export async function GET(request: Request) {

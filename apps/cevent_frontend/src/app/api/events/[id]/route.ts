@@ -5,7 +5,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 /**
  * Fetches a single event by id
- * 
+ *
  * @param request  The request object
  * @param param1 The parameters object
  * @returns The response object

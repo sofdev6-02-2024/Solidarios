@@ -24,4 +24,3 @@ export interface EventDetailDto extends EventHomePageDto {
   organizerUserId: number;
   createdAt: Date;
 }
-
