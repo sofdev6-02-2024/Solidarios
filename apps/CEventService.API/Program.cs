@@ -16,6 +16,7 @@ DotEnv.Load(options: new DotEnvOptions(
         ));
 
 var connectionString = EnvReader.GetStringValue("CONNECTION_STRING");
+Console.WriteLine(connectionString);
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -72,8 +73,6 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });
 }
-
-app.UseHttpsRedirection();
 
 app.UseCors("AllowAllOrigins");
 
