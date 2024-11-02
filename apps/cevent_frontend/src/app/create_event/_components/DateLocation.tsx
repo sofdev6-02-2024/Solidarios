@@ -14,17 +14,19 @@ const DateLocation = () => {
   const [markerPosition, setMarkerPosition] = useState(mapCenter);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'AIzaSyBv3DTk777FI0mZYbeweYXGZfZulY809T0',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
   });
+
+  console.log(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
 
   const handleMarkerDragEnd = useCallback(async (event) => {
     const newPosition = { lat: event.latLng.lat(), lng: event.latLng.lng() };
     setMarkerPosition(newPosition);
 
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${newPosition.lat},${newPosition.lng}&key=AIzaSyBv3DTk777FI0mZYbeweYXGZfZulY809T0`
-    );
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${newPosition.lat},${newPosition.lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+    );    
     const data = await response.json();
 
     if (data.status === "OK" && data.results && data.results.length > 0) {
