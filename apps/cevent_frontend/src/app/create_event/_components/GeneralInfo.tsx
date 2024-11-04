@@ -1,57 +1,59 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TextField, FormHelperText, Typography, Box } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
+import '../_styles/GeneralInfo.css';
 
-const GeneralInfo = () => {
+const GeneralInfo = ({ onComplete }) => {
+  const [title, setTitle] = React.useState('');
+  const [shortDescription, setShortDescription] = React.useState('');
+  const [description, setDescription] = React.useState('');
+  const [category, setCategory] = React.useState('');
+
+  useEffect(() => {
+    // Verifica si todos los campos están completos
+    if (title && shortDescription && description && category) {
+      onComplete(true); // Llama a la función para indicar que se completó
+    } else {
+      onComplete(false); // Llama a la función para indicar que no se completó
+    }
+  }, [title, shortDescription, description, category, onComplete]);
+
   return (
-    <Box mb={4} p={3} border="1px solid #4a88e9" borderRadius="8px">
+    <Box className="info-box">
       <Typography variant="h6" fontWeight="bold">General event information</Typography>
-      
+
+      <FormHelperText className="form-helper-text">
+        Be clear and descriptive with a title that explains what your event is about.
+      </FormHelperText>
+
       <TextField
         label="Title"
         fullWidth
         margin="normal"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         InputProps={{
-          sx: {
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-          },
-          style: { color: 'black' }
-        }}
-        className="info-box"
+          className: 'text-field-outline'
+        }}        
       />
-      <FormHelperText>
-        Be clear and descriptive with a title that explains what your event is about.
+      
+      <FormHelperText className="form-helper-text">
+        Set a short description for your event to give a brief summary of the event.
       </FormHelperText>
 
       <TextField
         label="Short Description"
         fullWidth
         margin="normal"
+        value={shortDescription}
+        onChange={(e) => setShortDescription(e.target.value)}
         InputProps={{
-          sx: {
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-          },
-          style: { color: 'black' }
+          className: 'text-field-outline'
         }}
       />
-      <FormHelperText>
-        Set a short description for your event to give a brief summary of the event.
+      
+      <FormHelperText className="form-helper-text">
+        Grab people's attention with a brief description of your event. Attendees will see it at the top of your event page.
       </FormHelperText>
 
       <TextField
@@ -60,50 +62,30 @@ const GeneralInfo = () => {
         margin="normal"
         multiline
         rows={4}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         InputProps={{
-          sx: {
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-          },
-          style: { color: 'black' }
+          className: 'text-field-outline'
         }}
       />
-      <FormHelperText>
-        Grab people's attention with a brief description of your event. Attendees will see it at the top of your event page.
-      </FormHelperText>
-
+      
       <TextField
         label="Category"
         fullWidth
         margin="normal"
         select
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
         InputProps={{
-          sx: {
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#4a88e9',
-            },
-          },
-          style: { color: 'black' }
+          className: 'text-field-outline'
         }}
       >
         <MenuItem value="Conference">Conference</MenuItem>
         <MenuItem value="Workshop">Workshop</MenuItem>
         <MenuItem value="Networking">Networking</MenuItem>
       </TextField>
-      <FormHelperText>
+      
+      <FormHelperText className="form-helper-text">
         Correctly categorize the type of event you are organizing.
       </FormHelperText>
     </Box>

@@ -1,11 +1,34 @@
-"use client";
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import { storage } from './firebase';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import '../_styles/ImageUpload.css';
 
-const ImageUpload = ({ selectedImage, onImageChange }) => {
+const ImageUpload = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  const onImageChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedImage(URL.createObjectURL(file));
+      await uploadImageToFirebase(file);
+    }
+  };
+
+  const uploadImageToFirebase = async (file) => {
+    try {
+      const storageRef = ref(storage, `images/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const url = await getDownloadURL(storageRef);
+      setImageUrl(url);
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+    }
+  };
+
   return (
-    <Box mt={2} mb={4} textAlign="center" className="image-upload">
+    <Box className="image-upload">
       <Typography variant="body1">Upload Image</Typography>
       <input
         type="file"
@@ -19,13 +42,17 @@ const ImageUpload = ({ selectedImage, onImageChange }) => {
           Choose File
         </Button>
       </label>
+
       {selectedImage && (
+        <Box>
+          <img src={selectedImage} alt="Selected" className="selected-image" />
+        </Box>
+      )}
+
+      {imageUrl && (
         <Box mt={2}>
-          <img
-            src={selectedImage}
-            alt="Selected"
-            className="selected-image"
-          />
+          <Typography variant="body2">Image URL:</Typography>
+          <a href={imageUrl} target="_blank" rel="noopener noreferrer">{imageUrl}</a>
         </Box>
       )}
     </Box>

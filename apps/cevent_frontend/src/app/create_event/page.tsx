@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box,Typography  } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import ImageUpload from './_components/ImageUpload';
 import GeneralInfo from './_components/GeneralInfo';
 import DateLocation from './_components/DateLocation';
@@ -13,6 +13,9 @@ import styles from './_styles/CreateEvent.module.css';
 
 const CreateEvent = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
+  const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
+  const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -23,6 +26,18 @@ const CreateEvent = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleGeneralInfoComplete = (isComplete) => {
+    setIsGeneralInfoComplete(isComplete);
+  };
+
+  const handleDateLocationComplete = (isComplete) => {
+    setIsDateLocationComplete(isComplete);
+  };
+
+  const handlePriceCapacityComplete = (isComplete) => {
+    setIsPriceCapacityComplete(isComplete);
   };
 
   return (
@@ -36,15 +51,19 @@ const CreateEvent = () => {
         </Box>
 
         <ImageUpload selectedImage={selectedImage} onImageChange={handleImageChange} />
-        <GeneralInfo />
-        <DateLocation />
-        <PriceCapacity />
+        <GeneralInfo onComplete={handleGeneralInfoComplete} />
+        <DateLocation onComplete={handleDateLocationComplete} />
+        <PriceCapacity onComplete={handlePriceCapacityComplete} />
         <Activities />
         <AditionalSettings />
       </Box>
 
       <Box flex={1} pl={2}>
-        <Steps />
+        <Steps
+          isGeneralInfoComplete={isGeneralInfoComplete}
+          isDateLocationComplete={isDateLocationComplete}
+          isPriceCapacityComplete={isPriceCapacityComplete}
+        />
       </Box>
     </Box>
   );

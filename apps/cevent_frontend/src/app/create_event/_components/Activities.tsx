@@ -1,93 +1,171 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, MenuItem } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import '../_styles/Activities.css';
 
 const Activities = () => {
   const [activities, setActivities] = useState([]);
   const [activityTitle, setActivityTitle] = useState('');
   const [activityDescription, setActivityDescription] = useState('');
+  const [eventId, setEventId] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [status, setStatus] = useState('');
+  const [capacity, setCapacity] = useState('');
+  const [createdAt, setCreatedAt] = useState(new Date().toISOString());
   const [showActivityInputs, setShowActivityInputs] = useState(false);
 
   const addActivity = () => {
-    if (activityTitle) {
+    if (activityTitle && eventId && startTime && endTime && status) {
       setActivities((prevActivities) => [
         ...prevActivities,
-        { title: activityTitle, description: activityDescription },
+        {
+          eventId,
+          name: activityTitle,
+          description: activityDescription,
+          startTime,
+          endTime,
+          status,
+          capacity: parseInt(capacity) || 0,
+          createdAt,
+        },
       ]);
       setActivityTitle('');
       setActivityDescription('');
+      setEventId('');
+      setStartTime('');
+      setEndTime('');
+      setStatus('');
+      setCapacity('');
       setShowActivityInputs(false);
     }
   };
 
   return (
-    <Box mb={4} p={3} border="1px solid #4a88e9" borderRadius="8px" className="info-box">
-      <Typography variant="h6" fontWeight="bold">Activities</Typography>
+    <Box className="info-box">
+      <Typography variant="h6" className="activity-title">Activities</Typography>
       <Box display="flex" alignItems="center" mt={2}>
         <Typography>Keep your event schedule organized by adding activities and notifying users when they are about to start.</Typography>
         <Button
           startIcon={<Add />}
           onClick={() => setShowActivityInputs(!showActivityInputs)}
-          sx={{ ml: 2 }}
+          className="add-activity-button"
           variant="outlined"
         >
           {showActivityInputs ? 'No Add Activity' : 'Add Activity'}
         </Button>
       </Box>
       {showActivityInputs && (
-        <Box mt={2}>
+        <Box className="activity-input">
+          <TextField
+            label="Event ID"
+            fullWidth
+            value={eventId}
+            onChange={(e) => setEventId(e.target.value)}
+            margin="normal"
+            InputProps={{
+              className: 'input-text'
+            }}
+          />
           <TextField
             label="Activity Title"
             fullWidth
             value={activityTitle}
             onChange={(e) => setActivityTitle(e.target.value)}
+            margin="normal"
             InputProps={{
-              sx: {
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#4a88e9', 
+              className: 'input-text'
+            }}
+          />
+          <TextField
+            label="Description"
+            fullWidth
+            value={activityDescription}
+            onChange={(e) => setActivityDescription(e.target.value)}
+            margin="normal"
+            InputProps={{
+              className: 'input-text'
+            }}
+          />
+          <TextField
+            label="Start Time"
+            type="datetime-local"
+            fullWidth
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            margin="normal"
+            sx={{
+              color: 'white',
+              '& .MuiInputBase-input': {
+                color: 'white',
+                '&:focus': {
+                  color: 'black',
                 },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#4a88e9', 
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#4a88e9', 
-                },
+              },
+              '& .MuiSvgIcon-root': {
+                color: '#4a88e9',
               },
             }}
           />
-          <Button
-            onClick={() => setActivityDescription(activityDescription ? '' : 'Show')}
-            variant="outlined"
-            sx={{ mr: 2, mt: 2 }} 
-          >
-            {activityDescription ? 'Remove Description' : 'Add Description'}
-          </Button>
-          {activityDescription && (
-            <TextField
-              label="Description"
-              fullWidth
-              margin="normal"
-              value={activityDescription}
-              onChange={(e) => setActivityDescription(e.target.value)}
-              InputProps={{
+          <TextField
+            label="End Time"
+            type="datetime-local"
+            fullWidth
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+            margin="normal"
+            sx={{
+              color: 'white',
+              '& .MuiInputBase-input': {
+                color: 'white',
+                '&:focus': {
+                  color: 'black',
+                },
+              },
+              '& .MuiSvgIcon-root': {
+                color: '#4a88e9',
+              },
+            }}
+          />
+          <TextField
+            label="Status"
+            select
+            fullWidth
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            margin="normal"
+            InputProps={{
+              className: 'input-text'
+            }}
+            MenuProps={{
+              PaperProps: {
                 sx: {
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#4a88e9',
-                  },
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#4a88e9',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#4a88e9',
+                  '& .MuiMenuItem-root': {
+                    color: 'black',
                   },
                 },
-              }}
-            />
-          )}
+              },
+            }}
+          >
+            <MenuItem value="Scheduled" className='optionStatus'>Scheduled</MenuItem>
+            <MenuItem value="In Progress" className='optionStatus'>In Progress</MenuItem>
+            <MenuItem value="Completed" className='optionStatus'>Completed</MenuItem>
+          </TextField>
+          <TextField
+            label="Capacity"
+            type="number"
+            fullWidth
+            value={capacity}
+            onChange={(e) => setCapacity(e.target.value)}
+            margin="normal"
+            InputProps={{
+              className: 'input-text'
+            }}
+          />
           <Button
             onClick={addActivity}
             variant="contained"
-            sx={{ mt: 2 }}
+            className="add-activity-action"
           >
             Add Activity
           </Button>
@@ -95,11 +173,17 @@ const Activities = () => {
       )}
       {activities.length > 0 && (
         <Box mt={2}>
-          <Typography variant="subtitle1" fontWeight="bold">Added Activities:</Typography>
+          <Typography variant="subtitle1" className="added-activities-title">Added Activities:</Typography>
           {activities.map((activity, index) => (
             <Box key={index} mt={1}>
-              <Typography variant="body1">{activity.title}</Typography>
-              {activity.description && <Typography variant="body2">{activity.description}</Typography>}
+              <Typography variant="body1">Event ID: {activity.eventId}</Typography>
+              <Typography variant="body1">Title: {activity.name}</Typography>
+              <Typography variant="body2">Description: {activity.description}</Typography>
+              <Typography variant="body2">Start Time: {activity.startTime}</Typography>
+              <Typography variant="body2">End Time: {activity.endTime}</Typography>
+              <Typography variant="body2">Status: {activity.status}</Typography>
+              <Typography variant="body2">Capacity: {activity.capacity}</Typography>
+              <Typography variant="body2">Created At: {activity.createdAt}</Typography>
             </Box>
           ))}
         </Box>
