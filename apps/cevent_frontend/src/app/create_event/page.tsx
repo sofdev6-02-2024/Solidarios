@@ -2,13 +2,15 @@
 
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import ImageUpload from './_components/ImageUpload';
-import GeneralInfo from './_components/GeneralInfo';
-import DateLocation from './_components/DateLocation';
-import PriceCapacity from './_components/PriceCapacity';
-import Activities from './_components/Activities';
-import Steps from './_components/Steps';
-import AditionalSettings from './_components/AditionalSettings';
+import {
+  ImageUpload,
+  GeneralInfo,
+  DateLocation,
+  PriceCapacity,
+  Activities,
+  Steps,
+  AditionalSettings
+} from './_components/imports';
 import styles from './_styles/CreateEvent.module.css';
 
 const CreateEvent = () => {

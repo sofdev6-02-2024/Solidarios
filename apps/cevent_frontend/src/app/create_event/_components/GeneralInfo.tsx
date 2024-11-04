@@ -9,12 +9,11 @@ const GeneralInfo = ({ onComplete }) => {
   const [description, setDescription] = React.useState('');
   const [category, setCategory] = React.useState('');
 
-  useEffect(() => {
-    // Verifica si todos los campos están completos
+  useEffect(() => {    
     if (title && shortDescription && description && category) {
-      onComplete(true); // Llama a la función para indicar que se completó
+      onComplete(true);
     } else {
-      onComplete(false); // Llama a la función para indicar que no se completó
+      onComplete(false);
     }
   }, [title, shortDescription, description, category, onComplete]);
 
