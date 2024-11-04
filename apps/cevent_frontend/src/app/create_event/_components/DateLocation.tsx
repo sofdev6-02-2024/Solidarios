@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Box, Typography, TextField, InputAdornment, Modal } from '@mui/material';
 import { CalendarToday, AccessTime, LocationOn } from '@mui/icons-material';
 import Calendar from 'react-calendar';
@@ -20,6 +20,11 @@ const DateLocation = ({ onComplete }) => {
     libraries: ['places'],
   });
 
+  useEffect(() => {    
+    const isComplete = date && time && location;
+    onComplete(isComplete);
+  }, [date, time, location, onComplete]);
+
   const handleMarkerDragEnd = useCallback(async (event) => {
     const newPosition = { lat: event.latLng.lat(), lng: event.latLng.lng() };
     setMarkerPosition(newPosition);
@@ -35,13 +40,7 @@ const DateLocation = ({ onComplete }) => {
     } else {
       console.error("Error fetching location data:", data.status);
     }
-    checkCompletion();
   }, []);
-
-  const checkCompletion = () => {    
-    const isComplete = date && time && location;
-    onComplete(isComplete);
-  };
 
   return (
     <Box className="info-box">

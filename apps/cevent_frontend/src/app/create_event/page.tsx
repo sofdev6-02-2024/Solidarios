@@ -27,7 +27,7 @@ const CreateEvent = () => {
       reader.readAsDataURL(file);
     }
   };
-
+  
   const handleGeneralInfoComplete = (isComplete) => {
     setIsGeneralInfoComplete(isComplete);
   };
