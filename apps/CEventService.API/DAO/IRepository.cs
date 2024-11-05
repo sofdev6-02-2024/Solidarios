@@ -5,6 +5,6 @@ namespace CEventService.API.DAO
         Task<IEnumerable<T>> GetAllAsync(int page, int pageSize);
         Task<T?> GetByIdAsync(int id);
         Task<T> CreateAsync(T newElement);
-        Task<T> UpdateAsync(T updatedElement);
+        Task UpdateAsync(T updatedElement);
     }
 }

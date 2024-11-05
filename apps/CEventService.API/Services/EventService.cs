@@ -39,7 +39,7 @@ namespace CEventService.API.Services
             
         }
         
-        public async Task<EventOutputDto?> UpdateEventAsync(int id, EventInputDto updatedEventDto)
+        public async Task<bool?> UpdateEventAsync(int id, EventInputDto updatedEventDto, string userId)
         {
             var existingEvent = await _eventRepository.GetByIdAsync(id);
 
@@ -48,10 +48,16 @@ namespace CEventService.API.Services
                 return null;
             }
 
+            if (existingEvent.OrganizerUserId != userId)
+            {
+                return false;
+            }
+            
             _mapper.Map(updatedEventDto, existingEvent);
-            var updatedEvent = await _eventRepository.UpdateAsync(existingEvent);
     
-            return _mapper.Map<EventOutputDto>(updatedEvent);
+            await _eventRepository.UpdateAsync(existingEvent);
+    
+            return true;
         }
     }
 }

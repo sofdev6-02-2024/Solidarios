@@ -65,7 +65,7 @@ namespace CEventService.API.Controllers
         }
         
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEvent(int id, [FromBody] EventInputDto eventInputDto)
+        public async Task<IActionResult> UpdateEvent(int id, [FromBody] EventInputDto eventInputDto, [FromHeader] string userId)
         {
             try
             {
@@ -74,14 +74,18 @@ namespace CEventService.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var updatedEvent = await _eventService.UpdateEventAsync(id, eventInputDto);
+                var updateResult = await _eventService.UpdateEventAsync(id, eventInputDto, userId);
         
-                if (updatedEvent == null)
+                if (updateResult == null)
                 {
                     return NotFound($"Event with ID {id} not found.");
                 }
+                else if (updateResult.Equals(false))
+                {
+                    return Forbid("You are not authorized to update this event.");
+                }
 
-                return Ok(updatedEvent);
+                return Ok("Event updated successfully.");
             }
             catch (Exception ex)
             {

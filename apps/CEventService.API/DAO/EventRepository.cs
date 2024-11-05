@@ -41,11 +41,10 @@ namespace CEventService.API.DAO
             return newEvent;
         }
 
-        public async Task<Event> UpdateAsync(Event updatedEvent)
+        public async Task UpdateAsync(Event updatedEvent)
         {
             _context.Events.Update(updatedEvent);
             await _context.SaveChangesAsync();
-            return updatedEvent;
         }
 
         public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize)
