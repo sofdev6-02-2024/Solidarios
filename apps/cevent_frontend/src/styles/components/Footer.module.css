@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  background-color: #44318D;
+  background-color: #0A2140;
   color: #fff;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -13,23 +13,22 @@
   box-sizing: border-box;
 }
 
-.footer div {
+.footerSection {
   flex: 1;
   padding: 0 20px;
 }
 
-.footer h1 {
+.footerTitle {
   font-size: 24px;
   margin-bottom: 10px;
   margin-left: 100px;
   color: #FFF;
 }
 
-.footer h2 {
+.footerText {
   font-size: 18px;
   margin-bottom: 15px;
   margin-left: 100px;
-  color: #FFF;
 }
 
 @media (max-width: 768px) {
@@ -39,22 +38,23 @@
     text-align: center;
     padding: 10px;
   }
-  
-  .footer div {
+
+  .footerSection {
     padding: 10px 0;
   }
-  
-  .footer h1, .footer h2 {
+
+  .footerTitle,
+  .footerText {
     margin-left: 0;
   }
 }
 
 @media (max-width: 480px) {
-  .footer h1 {
+  .footerTitle {
     font-size: 20px;
   }
-  
-  .footer h2 {
+
+  .footerText {
     font-size: 16px;
   }
 }

@@ -1,70 +1,82 @@
 import React from 'react';
-import styles from '@/styles/components/Footer.module.css';
+import { Box, Typography, Link } from '@mui/material';
+import styles from '@/styles/components/Footer.module.css'; 
 
 const Footer: React.FC = () => {
   return (
-    <div className={styles.footer}>
-      <div>
-        <h1>Cvent</h1>
-        <h2>
+    <Box component="footer" className={styles.footer}>
+      <Box className={styles.footerSection}>
+        <Typography variant="h5" className={styles.footerTitle}>
+          Cvent
+        </Typography>
+        <Typography variant="body2" className={styles.footerText}>
           Discover and organize events with ease through our events app,
           designed to connect people with unique experiences in your city and
           beyond. Our platform allows users to explore a wide variety of events,
           from concerts and exhibitions to conferences and outdoor activities.
-        </h2>
-      </div>
-      <div>
-        <h1>Contacto</h1>
-        <h2>
-          <a
+        </Typography>
+      </Box>
+
+      <Box className={styles.footerSection}>
+        <Typography variant="h5" className={styles.footerTitle}>
+          Contacto
+        </Typography>
+        <Typography variant="body2" className={styles.footerText}>
+          <Link
             href="https://facebook.com"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#FFF', textDecoration: 'none' }}
+            color="inherit"
+            underline="none"
           >
             Facebook
-          </a>
-        </h2>
-        <h2>
-          <a
+          </Link>
+        </Typography>
+        <Typography variant="body2" className={styles.footerText}>
+          <Link
             href="https://instagram.com"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#FFF', textDecoration: 'none' }}
+            color="inherit"
+            underline="none"
           >
             Instagram
-          </a>
-        </h2>
-        <h2>
-          <a
+          </Link>
+        </Typography>
+        <Typography variant="body2" className={styles.footerText}>
+          <Link
             href="mailto:your-email@example.com"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#FFF', textDecoration: 'none' }}
+            color="inherit"
+            underline="none"
           >
             Email
-          </a>
-        </h2>
-      </div>
-      <div>
-        <h1>Information</h1>
-        <h2>
-          <a href="/terms" style={{ color: '#FFF', textDecoration: 'none' }}>
+          </Link>
+        </Typography>
+      </Box>
+
+      <Box className={styles.footerSection}>
+        <Typography variant="h5" className={styles.footerTitle}>
+          Information
+        </Typography>
+        <Typography variant="body2" className={styles.footerText}>
+          <Link href="/terms" color="inherit" underline="none">
             Terms of use
-          </a>
-        </h2>
-        <h2>
-          <a href="/privacy" style={{ color: '#FFF', textDecoration: 'none' }}>
+          </Link>
+        </Typography>
+        <Typography variant="body2" className={styles.footerText}>
+          <Link href="/privacy" color="inherit" underline="none">
             Privacy Policy
-          </a>
-        </h2>
-        <h2>
-          <a href="/about" style={{ color: '#FFF', textDecoration: 'none' }}>
+          </Link>
+        </Typography>
+        <Typography variant="body2" className={styles.footerText}>
+          <Link href="/about" color="inherit" underline="none">
             About us
-          </a>
-        </h2>
-      </div>
-    </div>
+          </Link>
+        </Typography>
+      </Box>
+    </Box>
   );
 };
 
