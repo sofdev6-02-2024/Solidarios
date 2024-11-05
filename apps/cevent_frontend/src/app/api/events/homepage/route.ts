@@ -1,4 +1,3 @@
-// app/api/events/homepage/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -15,7 +14,7 @@ export async function GET(request: Request) {
   const pageSize = searchParams.get('pageSize') || '10';
 
   try {
-    const response = await axios.get(`${BASE_URL}/api/event/homepage`, {
+    const response = await axios.get(`${BASE_URL}/events/api/event/homepage`, {
       params: {
         page: Number(page),
         pageSize: Number(pageSize),

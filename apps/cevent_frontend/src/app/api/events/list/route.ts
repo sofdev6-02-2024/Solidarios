@@ -1,4 +1,3 @@
-// app/api/events/list/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -13,8 +12,9 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = searchParams.get('page') || '1';
   const pageSize = searchParams.get('pageSize') || '10';
+  const fullUrl = `${BASE_URL}/events/api/event`;
   try {
-    const response = await axios.get(`${BASE_URL}/api/event`, {
+    const response = await axios.get(fullUrl, {
       params: {
         page: Number(page),
         pageSize: Number(pageSize),
@@ -24,7 +24,7 @@ export async function GET(request: Request) {
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch events' },
-      { status: 500 },
+      { status: 200 },
     );
   }
 }
