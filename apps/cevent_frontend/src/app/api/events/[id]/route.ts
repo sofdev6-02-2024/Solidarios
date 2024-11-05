@@ -15,7 +15,9 @@ export async function GET(
   { params }: { params: { id: string } },
 ) {
   try {
-    const response = await axios.get(`${BASE_URL}/events/api/event?id=${params.id}`);
+    const response = await axios.get(
+      `${BASE_URL}/events/api/event?id=${params.id}`,
+    );
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     return NextResponse.json(
