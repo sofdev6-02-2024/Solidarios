@@ -4,6 +4,7 @@ import ThemeRegistry from './ThemeProvider';
 import Header from '@/components/Header';
 import ReduxProvider from '@/redux/redux-provider';
 import Footer from '@/components/Footer';
+import SessionProviderWrapper from '@/utils/sessionProviderWrapper';
 
 export const metadata: Metadata = {
   title: 'CEvent',
@@ -16,16 +17,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="font-inter">
-        <ReduxProvider>
-          <ThemeRegistry>
-            <Header />
-            {children}
-            <Footer />
-          </ThemeRegistry>
-        </ReduxProvider>
-      </body>
-    </html>
+    <SessionProviderWrapper>
+      <html lang="en">
+        <body className="font-inter">
+          <ReduxProvider>
+            <ThemeRegistry>
+              <Header />
+              {children}
+            </ThemeRegistry>
+          </ReduxProvider>
+        </body>
+      </html>
+    </SessionProviderWrapper>
   );
 }
