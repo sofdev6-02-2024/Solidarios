@@ -18,12 +18,18 @@ import {
 } from '@/utils/methods/stringMethods';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import styles from '@/styles/components/CardEventStyles';
+import { useEffect } from 'react';
 
 interface CardEventProps {
   eventData: EventHomePageDto;
 }
 
 const CardEvent = ({ eventData }: CardEventProps) => {
+  useEffect (() => {
+    console.log('CardEvent rendered');
+    console.log(eventData);
+  }, [eventData]);
+
   return (
     <Card sx={styles.cardStyles}>
       <CardActionArea>
@@ -40,7 +46,7 @@ const CardEvent = ({ eventData }: CardEventProps) => {
         />
         <Chip
           icon={<AttachMoneyIcon sx={{ fontSize: 16 }} />}
-          label={eventData.attendeeCount}
+          label={eventData.ticketPrice}
           color="primary"
           sx={styles.chipPriceStyles}
         />
