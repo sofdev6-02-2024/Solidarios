@@ -25,7 +25,7 @@ interface CardEventProps {
 }
 
 const CardEvent = ({ eventData }: CardEventProps) => {
-  useEffect (() => {
+  useEffect(() => {
     console.log('CardEvent rendered');
     console.log(eventData);
   }, [eventData]);

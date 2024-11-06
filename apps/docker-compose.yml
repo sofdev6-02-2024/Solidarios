@@ -63,6 +63,7 @@ services:
     networks:
       - shared-network
     volumes:
+      - ./CEventService.API:/app 
       - ./CEventService.API/.env:/app/.env
 
   # SQL Server
