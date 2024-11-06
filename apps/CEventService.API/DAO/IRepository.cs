@@ -4,6 +4,7 @@ namespace CEventService.API.DAO
     {
         Task<IEnumerable<T>> GetAllAsync(int page, int pageSize);
         Task<T?> GetByIdAsync(int id);
-        Task<T> CreateEventAsync(T newEvent);
+        Task<T> CreateAsync(T newElement);
+        Task UpdateAsync(T updatedElement);
     }
 }
