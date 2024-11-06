@@ -24,3 +24,36 @@ export interface EventDetailDto extends EventHomePageDto {
   organizerUserId: number;
   createdAt: Date;
 }
+
+interface Event {
+  name: string;
+  description: string;
+  category: string;
+  eventDate: string;
+  location: Location;
+  venue: string;
+  address: string;
+  ticketPrice: number;
+  coverPhotoUrl: string;
+  attendanceTrackingEnabled: boolean;
+  capacity: number;
+}
+
+interface EventResponse extends Event {
+  eventId: number;
+}
+
+interface PaginatedResponse {
+  items: EventResponse[];
+  totalCount: number;
+  pageNumber: number;
+  totalPages: number;
+}
+
+export interface SuccessResponse {
+  data: EventResponse | PaginatedResponse;
+}
+
+export interface ErrorResponse {
+  error: string;
+}
