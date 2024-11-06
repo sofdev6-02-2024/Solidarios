@@ -12,6 +12,9 @@ const theme = createTheme({
       light: '#7c43bd',
       contrastText: '#fff',
     },
+    lightBlack: {
+      main: 'rgba(0, 0, 0, 0.6)',
+    },
     error: {
       main: '#f44336',
     },
