@@ -47,10 +47,22 @@ namespace CEventService.API.Controllers
 
 
         [HttpPost]
-        [Authorize]
-        public async Task<ActionResult<EventInputDto>> CreateEvent(EventInputDto eventInputDto)
-        {
-            return Ok(eventInputDto);
+        public async Task<ActionResult<EventOutputDto>> CreateEvent([FromBody] EventInputDto newEventDto)
+        {    
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var createdEvent = await _eventService.CreateEventAsync(newEventDto);
+                return CreatedAtAction(nameof(GetEventById), new { id = createdEvent.EventId }, createdEvent);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while creating the event." + ex);
+            }
         }
         
         [HttpPut("{id}")]

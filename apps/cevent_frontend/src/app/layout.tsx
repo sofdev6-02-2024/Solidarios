@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import ThemeRegistry from './ThemeProvider';
 import Header from '@/components/Header';
 import ReduxProvider from '@/redux/redux-provider';
+import Footer from '@/components/Footer';
 import SessionProviderWrapper from '@/utils/sessionProviderWrapper';
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export default function RootLayout({
           <ReduxProvider>
             <ThemeRegistry>
               <Header />
+              <Footer />
               {children}
             </ThemeRegistry>
           </ReduxProvider>
