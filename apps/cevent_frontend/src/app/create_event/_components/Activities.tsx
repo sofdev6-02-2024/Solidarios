@@ -3,8 +3,8 @@ import { Box, Typography, TextField, Button, MenuItem } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import '../_styles/Activities.css';
 
-const Activities = () => {
-  const [activities, setActivities] = useState([]);
+const Activities = ({ onAddActivity }) => { 
+  const [activities, setActivities] = useState([]);  
   const [activityTitle, setActivityTitle] = useState('');
   const [activityDescription, setActivityDescription] = useState('');
   const [eventId, setEventId] = useState('');
@@ -17,19 +17,17 @@ const Activities = () => {
 
   const addActivity = () => {
     if (activityTitle && eventId && startTime && endTime && status) {
-      setActivities((prevActivities) => [
-        ...prevActivities,
-        {
-          eventId,
-          name: activityTitle,
-          description: activityDescription,
-          startTime,
-          endTime,
-          status,
-          capacity: parseInt(capacity) || 0,
-          createdAt,
-        },
-      ]);
+      const newActivity = {
+        eventId,
+        name: activityTitle,
+        description: activityDescription,
+        startTime,
+        endTime,
+        status,
+        capacity: parseInt(capacity) || 0,
+        createdAt,
+      };
+      setActivities((prevActivities) => [...prevActivities, newActivity]);
       setActivityTitle('');
       setActivityDescription('');
       setEventId('');
@@ -38,6 +36,9 @@ const Activities = () => {
       setStatus('');
       setCapacity('');
       setShowActivityInputs(false);
+      
+      
+      onAddActivity(newActivity);
     }
   };
 
@@ -55,6 +56,7 @@ const Activities = () => {
           {showActivityInputs ? 'No Add Activity' : 'Add Activity'}
         </Button>
       </Box>
+
       {showActivityInputs && (
         <Box className="activity-input">
           <TextField
@@ -64,7 +66,7 @@ const Activities = () => {
             onChange={(e) => setEventId(e.target.value)}
             margin="normal"
             InputProps={{
-              className: 'input-text'
+              className: 'input-text',
             }}
           />
           <TextField
@@ -74,7 +76,7 @@ const Activities = () => {
             onChange={(e) => setActivityTitle(e.target.value)}
             margin="normal"
             InputProps={{
-              className: 'input-text'
+              className: 'input-text',
             }}
           />
           <TextField
@@ -84,7 +86,7 @@ const Activities = () => {
             onChange={(e) => setActivityDescription(e.target.value)}
             margin="normal"
             InputProps={{
-              className: 'input-text'
+              className: 'input-text',
             }}
           />
           <TextField
@@ -135,7 +137,7 @@ const Activities = () => {
             onChange={(e) => setStatus(e.target.value)}
             margin="normal"
             InputProps={{
-              className: 'input-text'
+              className: 'input-text',
             }}
             MenuProps={{
               PaperProps: {
@@ -147,9 +149,9 @@ const Activities = () => {
               },
             }}
           >
-            <MenuItem value="Scheduled" className='optionStatus'>Scheduled</MenuItem>
-            <MenuItem value="In Progress" className='optionStatus'>In Progress</MenuItem>
-            <MenuItem value="Completed" className='optionStatus'>Completed</MenuItem>
+            <MenuItem value="Scheduled">Scheduled</MenuItem>
+            <MenuItem value="In Progress">In Progress</MenuItem>
+            <MenuItem value="Completed">Completed</MenuItem>
           </TextField>
           <TextField
             label="Capacity"
@@ -159,7 +161,7 @@ const Activities = () => {
             onChange={(e) => setCapacity(e.target.value)}
             margin="normal"
             InputProps={{
-              className: 'input-text'
+              className: 'input-text',
             }}
           />
           <Button
@@ -171,6 +173,7 @@ const Activities = () => {
           </Button>
         </Box>
       )}
+
       {activities.length > 0 && (
         <Box mt={2}>
           <Typography variant="subtitle1" className="added-activities-title">Added Activities:</Typography>

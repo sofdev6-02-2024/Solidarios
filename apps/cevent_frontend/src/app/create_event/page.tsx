@@ -1,20 +1,14 @@
-"use client";
-
+'use client';
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import {
-  ImageUpload,
-  GeneralInfo,
-  DateLocation,
-  PriceCapacity,
-  Activities,
-  Steps,
-  AditionalSettings
-} from './_components/imports';
+import { ImageUpload, GeneralInfo, DateLocation, PriceCapacity, Activities, AditionalSettings, Steps } from './_components/imports';
 import styles from './_styles/CreateEvent.module.css';
 
 const CreateEvent = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [generalInfo, setGeneralInfo] = useState({});
+  const [dateLocation, setDateLocation] = useState({});
+  const [priceCapacity, setPriceCapacity] = useState({});
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
@@ -29,17 +23,24 @@ const CreateEvent = () => {
       reader.readAsDataURL(file);
     }
   };
-  
-  const handleGeneralInfoComplete = (isComplete) => {
+
+  const handleGeneralInfoComplete = (data, isComplete) => {
+    setGeneralInfo(data);
     setIsGeneralInfoComplete(isComplete);
   };
 
-  const handleDateLocationComplete = (isComplete) => {
+  const handleDateLocationComplete = (data, isComplete) => {
+    setDateLocation(data);
     setIsDateLocationComplete(isComplete);
   };
 
-  const handlePriceCapacityComplete = (isComplete) => {
+  const handlePriceCapacityComplete = (data, isComplete) => {
+    setPriceCapacity(data);
     setIsPriceCapacityComplete(isComplete);
+  };
+
+  const handleAddActivity = (newActivity) => {
+    console.log('Nueva actividad agregada:', newActivity);
   };
 
   return (
@@ -56,7 +57,7 @@ const CreateEvent = () => {
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
-        <Activities />
+        <Activities onAddActivity={handleAddActivity} />
         <AditionalSettings />
       </Box>
 
@@ -65,6 +66,10 @@ const CreateEvent = () => {
           isGeneralInfoComplete={isGeneralInfoComplete}
           isDateLocationComplete={isDateLocationComplete}
           isPriceCapacityComplete={isPriceCapacityComplete}
+          generalInfo={generalInfo}
+          dateLocation={dateLocation}
+          priceCapacity={priceCapacity}
+          selectedImage={selectedImage}
         />
       </Box>
     </Box>

@@ -12,7 +12,7 @@ const DateLocation = ({ onComplete }) => {
   const [openDateModal, setOpenDateModal] = useState(false);
   const [openTimeModal, setOpenTimeModal] = useState(false);
   const [mapCenter, setMapCenter] = useState({ lat: -17.366198, lng: -66.175489 });
-  const [markerPosition, setMarkerPosition] = useState(mapCenter);
+  const [markerPosition, setMarkerPosition] = useState(mapCenter);  
 
 
   const { isLoaded } = useJsApiLoader({
