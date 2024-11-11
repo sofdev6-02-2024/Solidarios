@@ -53,6 +53,7 @@ dotnet run
 
 This will start the API Gateway on the configured port (ensure it matches the `docker-compose.yml` configuration for consistency).
 
+
 #### Start CEvent Service API
 
 Navigate to the `CEventService.API` directory and run the following commands:
@@ -63,6 +64,49 @@ dotnet run
 ```
 
 This will start the core API service for event management, allowing the API Gateway to route requests to it.
+
+### Set up keycloak.
+
+```
+port: 8080
+user and password default: admin
+```
+
+Create new realm;
+```
+	- Realm name: solidarios-realm
+      click on Create
+```
+	
+Go to Clients
+```
+- Create client
+- Client ID: next-client
+- Name: none or next-client
+	  click on next
+    
+- Client authentication: on
+	  click on next
+
+- Root URL: http://localhost:3000/
+- Home URL: http://localhost:3000/
+- Valid redict URls: http://localhost:3000/*
+- Valid post logout redict URls: http://localhost:3000/*
+- Web origins: http://localhost:3000/*
+	  click on save
+```
+
+Clients 
+```
+	- Go to Credentials
+	- Copy Client Secret and put on the fronend .env for FRONTEND_CLIENT_SECRET="paste here"
+```
+
+Go to Real settings
+
+	- go to Login
+		- User registration: On
+	
 
 ## Additional Notes
 
