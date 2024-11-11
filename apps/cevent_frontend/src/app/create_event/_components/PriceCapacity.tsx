@@ -3,17 +3,25 @@ import { Box, TextField, Typography, InputAdornment } from '@mui/material';
 import { AttachMoney } from '@mui/icons-material';
 import '../_styles/PriceCapacity.css';
 
-const PriceCapacity = ({ onComplete }) => { 
-  const [capacity, setCapacity] = useState('');
-  const [ticketPrice, setTicketPrice] = useState('');
+const PriceCapacity = ({ onComplete }) => {
+  const [fields, setFields] = useState({
+    capacity: '',
+    ticketPrice: ''
+  });
 
-  useEffect(() => {   
-    if (capacity && ticketPrice) {
-      onComplete(true); 
-    } else {
-      onComplete(false); 
-    }
-  }, [capacity, ticketPrice, onComplete]);
+  useEffect(() => {
+    const { capacity, ticketPrice } = fields;
+    const isComplete = capacity && ticketPrice;
+    onComplete(fields, isComplete);
+  }, [fields, onComplete]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFields((prevFields) => ({
+      ...prevFields,
+      [name]: value
+    }));
+  };
 
   return (
     <Box className="info-box"> 
@@ -23,8 +31,9 @@ const PriceCapacity = ({ onComplete }) => {
           label="Capacity"
           fullWidth
           margin="normal"
-          value={capacity}
-          onChange={(e) => setCapacity(e.target.value)}
+          name="capacity"
+          value={fields.capacity}
+          onChange={handleChange}
           InputProps={{
             className: 'input-field', 
           }}
@@ -33,8 +42,9 @@ const PriceCapacity = ({ onComplete }) => {
           label="Ticket price"
           fullWidth
           margin="normal"
-          value={ticketPrice}
-          onChange={(e) => setTicketPrice(e.target.value)}
+          name="ticketPrice"
+          value={fields.ticketPrice}
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

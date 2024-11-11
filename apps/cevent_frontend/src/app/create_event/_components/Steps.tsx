@@ -3,24 +3,34 @@ import { Box, Typography, FormControlLabel, Checkbox, IconButton, TextField, But
 import { AddCircleOutline } from '@mui/icons-material';
 import '../_styles/Steps.css';
 
-const Steps = ({ 
-  generalInfo, 
-  dateLocation, 
-  priceCapacity, 
-  selectedImage 
-}) => {  
+const Steps = ({
+  generalInfo,
+  dateLocation,
+  priceCapacity,
+  selectedImage
+}) => {
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
 
   useEffect(() => {
-    setIsGeneralInfoComplete(generalInfo && generalInfo.name && generalInfo.description && generalInfo.category);
-    setIsDateLocationComplete(dateLocation && dateLocation.date && dateLocation.location);
-    setIsPriceCapacityComplete(priceCapacity && priceCapacity.price && priceCapacity.capacity);
+    console.log('General Info:', generalInfo);
+    console.log('Date Location:', dateLocation);
+    console.log('Price Capacity:', priceCapacity);
+
+    // Validación para asegurar que los valores existen y son válidos
+    const isGeneralInfoComplete = generalInfo?.title && generalInfo?.shortDescription && generalInfo?.description && generalInfo?.category;
+    const isDateLocationComplete = dateLocation?.date && dateLocation?.time && dateLocation?.location;
+    const isPriceCapacityComplete = priceCapacity?.capacity && priceCapacity?.ticketPrice;
+
+    setIsGeneralInfoComplete(isGeneralInfoComplete);
+    setIsDateLocationComplete(isDateLocationComplete);
+    setIsPriceCapacityComplete(isPriceCapacityComplete);
   }, [generalInfo, dateLocation, priceCapacity]);
 
+
   const handleSubmit = async () => {
-    if (isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete) {      
+    if (isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete) {
       console.log('General Info:', generalInfo);
       console.log('Date and Location:', dateLocation);
       console.log('Price and Capacity:', priceCapacity);
@@ -104,7 +114,7 @@ const Steps = ({
             fullWidth
             className="create-event-button"
             onClick={handleSubmit}
-            
+
           >
             Create Event
           </Button>
