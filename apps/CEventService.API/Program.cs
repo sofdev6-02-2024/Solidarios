@@ -2,9 +2,7 @@ using Microsoft.OpenApi.Models;
 using CEventService.API.Data;
 using Microsoft.EntityFrameworkCore;
 using CEventService.API.DAO;
-using CEventService.API.Models;
 using CEventService.API.Services;
-using CEventService.API.DTOs.Event;
 using dotenv.net;
 using dotenv.net.Utilities;
 
@@ -16,7 +14,10 @@ DotEnv.Load(options: new DotEnvOptions(
         ));
 
 var connectionString = EnvReader.GetStringValue("CONNECTION_STRING");
-Console.WriteLine(connectionString);
+var serviceDiscoveryUrl = EnvReader.GetStringValue("SERVICE_DISCOVERY_URL");
+var serviceName = EnvReader.GetStringValue("SERVICE_NAME");
+var serviceAddress = EnvReader.GetStringValue("SERVICE_ADRESS");
+var servicePort = EnvReader.GetIntValue("SERVICE_PORT");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -61,6 +62,12 @@ using(var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 
     await DataSeeder.SeedData(dbContext);
+}
+
+using (var httpClient = new HttpClient())
+{
+    var serviceDiscoveryClient = new ServiceDiscoveryClient(httpClient,serviceDiscoveryUrl, serviceName, serviceAddress, servicePort);
+    await serviceDiscoveryClient.RegisterServiceAsync();
 }
 
 
