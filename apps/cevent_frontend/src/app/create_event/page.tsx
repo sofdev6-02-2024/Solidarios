@@ -71,6 +71,7 @@ const CreateEvent = () => {
           priceCapacity={priceCapacity}
           selectedImage={selectedImage}
         />
+
       </Box>
     </Box>
   );

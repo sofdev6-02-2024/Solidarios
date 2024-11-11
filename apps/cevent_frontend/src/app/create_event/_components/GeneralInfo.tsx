@@ -1,25 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, FormHelperText, Typography, Box } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import '../_styles/GeneralInfo.css';
 
 const GeneralInfo = ({ onComplete }) => {
-  const [title, setTitle] = React.useState('');
-  const [shortDescription, setShortDescription] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [category, setCategory] = React.useState('');
+  const [fields, setFields] = useState({
+    title: '',
+    shortDescription: '',
+    description: '',
+    category: ''
+  });
 
-  useEffect(() => {    
-    if (title && shortDescription && description && category) {
-      onComplete(true);
-    } else {
-      onComplete(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  
+  const handleFieldChange = (field) => (e) => {
+    setFields((prevFields) => ({
+      ...prevFields,
+      [field]: e.target.value
+    }));
+  };
+
+  const checkCompletion = () => {
+    const { title, shortDescription, description, category } = fields;
+    return title && shortDescription && description && category;
+  };
+
+  useEffect(() => {
+    const isComplete = checkCompletion();
+
+    if (isComplete !== isCompleted) {
+      setIsCompleted(isComplete);
+      onComplete(fields, isComplete);
     }
-  }, [title, shortDescription, description, category, onComplete]);
+  }, [fields, onComplete, isCompleted]);
 
   return (
     <Box className="info-box">
-      <Typography variant="h6" fontWeight="bold">General event information</Typography>
+      <Typography variant="h6" fontWeight="bold">
+        General event information
+      </Typography>
 
       <FormHelperText className="form-helper-text">
         Be clear and descriptive with a title that explains what your event is about.
@@ -29,13 +48,13 @@ const GeneralInfo = ({ onComplete }) => {
         label="Title"
         fullWidth
         margin="normal"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        value={fields.title}
+        onChange={handleFieldChange('title')}
         InputProps={{
           className: 'text-field-outline'
-        }}        
+        }}
       />
-      
+
       <FormHelperText className="form-helper-text">
         Set a short description for your event to give a brief summary of the event.
       </FormHelperText>
@@ -44,13 +63,13 @@ const GeneralInfo = ({ onComplete }) => {
         label="Short Description"
         fullWidth
         margin="normal"
-        value={shortDescription}
-        onChange={(e) => setShortDescription(e.target.value)}
+        value={fields.shortDescription}
+        onChange={handleFieldChange('shortDescription')}
         InputProps={{
           className: 'text-field-outline'
         }}
       />
-      
+
       <FormHelperText className="form-helper-text">
         Grab people's attention with a brief description of your event. Attendees will see it at the top of your event page.
       </FormHelperText>
@@ -61,29 +80,29 @@ const GeneralInfo = ({ onComplete }) => {
         margin="normal"
         multiline
         rows={4}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        value={fields.description}
+        onChange={handleFieldChange('description')}
         InputProps={{
           className: 'text-field-outline'
         }}
       />
-      
+
       <TextField
         label="Category"
         fullWidth
         margin="normal"
         select
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
+        value={fields.category}
+        onChange={handleFieldChange('category')}
         InputProps={{
           className: 'text-field-outline'
         }}
       >
-        <MenuItem value="Conference">Conference</MenuItem>
-        <MenuItem value="Workshop">Workshop</MenuItem>
-        <MenuItem value="Networking">Networking</MenuItem>
+        <MenuItem value="Conference" sx={{ color: 'black' }}>Conference</MenuItem>
+        <MenuItem value="Workshop" sx={{ color: 'black' }}>Workshop</MenuItem>
+        <MenuItem value="Networking" sx={{ color: 'black' }}>Networking</MenuItem>
       </TextField>
-      
+
       <FormHelperText className="form-helper-text">
         Correctly categorize the type of event you are organizing.
       </FormHelperText>

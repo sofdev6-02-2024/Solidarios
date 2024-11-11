@@ -22,9 +22,10 @@ export default function RootLayout({
         <body className="font-inter">
           <ReduxProvider>
             <ThemeRegistry>
-              <Header />
+              <Header />              
               <Footer />
               {children}
+              
             </ThemeRegistry>
           </ReduxProvider>
         </body>

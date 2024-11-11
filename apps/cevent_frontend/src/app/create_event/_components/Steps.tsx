@@ -1,20 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, FormControlLabel, Checkbox, IconButton, TextField, Button } from '@mui/material';
 import { AddCircleOutline } from '@mui/icons-material';
 import '../_styles/Steps.css';
 
 const Steps = ({ 
-  isGeneralInfoComplete, 
-  isDateLocationComplete, 
-  isPriceCapacityComplete, 
   generalInfo, 
   dateLocation, 
   priceCapacity, 
   selectedImage 
-}) => {
+}) => {  
+  const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
+  const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
+  const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
+
+  useEffect(() => {
+    setIsGeneralInfoComplete(generalInfo && generalInfo.name && generalInfo.description && generalInfo.category);
+    setIsDateLocationComplete(dateLocation && dateLocation.date && dateLocation.location);
+    setIsPriceCapacityComplete(priceCapacity && priceCapacity.price && priceCapacity.capacity);
+  }, [generalInfo, dateLocation, priceCapacity]);
 
   const handleSubmit = async () => {
-    if (isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete) {
+    if (isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete) {      
+      console.log('General Info:', generalInfo);
+      console.log('Date and Location:', dateLocation);
+      console.log('Price and Capacity:', priceCapacity);
+      console.log('Selected Image:', selectedImage);
+
       const eventData = {
         ...generalInfo,
         ...dateLocation,
@@ -46,18 +57,26 @@ const Steps = ({
   };
 
   console.log('isGeneralInfoComplete:', isGeneralInfoComplete);
-console.log('isDateLocationComplete:', isDateLocationComplete);
-console.log('isPriceCapacityComplete:', isPriceCapacityComplete);
-
+  console.log('isDateLocationComplete:', isDateLocationComplete);
+  console.log('isPriceCapacityComplete:', isPriceCapacityComplete);
 
   return (
     <Box mb={4} p={3}>
       <Box mb={4} p={3} className="step-container">
         <Typography variant="h6" className="checkbox-label">Steps</Typography>
 
-        <FormControlLabel control={<Checkbox checked={isGeneralInfoComplete} />} label="General information" />
-        <FormControlLabel control={<Checkbox checked={isDateLocationComplete} />} label="Date and location" />
-        <FormControlLabel control={<Checkbox checked={isPriceCapacityComplete} />} label="Price and capacity" />
+        <FormControlLabel
+          control={<Checkbox checked={isGeneralInfoComplete} />}
+          label="General information"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={isDateLocationComplete} />}
+          label="Date and location"
+        />
+        <FormControlLabel
+          control={<Checkbox checked={isPriceCapacityComplete} />}
+          label="Price and capacity"
+        />
       </Box>
 
       <Box className="reminder-container">
@@ -85,7 +104,7 @@ console.log('isPriceCapacityComplete:', isPriceCapacityComplete);
             fullWidth
             className="create-event-button"
             onClick={handleSubmit}
-            disabled={!isGeneralInfoComplete || !isDateLocationComplete || !isPriceCapacityComplete}
+            
           >
             Create Event
           </Button>

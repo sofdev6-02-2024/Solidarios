@@ -1,43 +1,37 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, MenuItem } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Box, Typography, TextField, Button } from '@mui/material';
+import Add from '@mui/icons-material/Add';
+import Remove from '@mui/icons-material/Remove';
 import '../_styles/Activities.css';
 
-const Activities = ({ onAddActivity }) => { 
-  const [activities, setActivities] = useState([]);  
+
+const Activities = ({ onAddActivity }) => {
+  const [activities, setActivities] = useState([]);
   const [activityTitle, setActivityTitle] = useState('');
   const [activityDescription, setActivityDescription] = useState('');
-  const [eventId, setEventId] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [status, setStatus] = useState('');
   const [capacity, setCapacity] = useState('');
-  const [createdAt, setCreatedAt] = useState(new Date().toISOString());
   const [showActivityInputs, setShowActivityInputs] = useState(false);
 
   const addActivity = () => {
-    if (activityTitle && eventId && startTime && endTime && status) {
+    if (activityTitle && startTime && endTime) {
       const newActivity = {
-        eventId,
         name: activityTitle,
         description: activityDescription,
         startTime,
         endTime,
-        status,
         capacity: parseInt(capacity) || 0,
-        createdAt,
+        createdAt: new Date().toISOString(),
       };
       setActivities((prevActivities) => [...prevActivities, newActivity]);
       setActivityTitle('');
       setActivityDescription('');
-      setEventId('');
       setStartTime('');
       setEndTime('');
-      setStatus('');
       setCapacity('');
       setShowActivityInputs(false);
-      
-      
+
       onAddActivity(newActivity);
     }
   };
@@ -45,129 +39,87 @@ const Activities = ({ onAddActivity }) => {
   return (
     <Box className="info-box">
       <Typography variant="h6" className="activity-title">Activities</Typography>
-      <Box display="flex" alignItems="center" mt={2}>
-        <Typography>Keep your event schedule organized by adding activities and notifying users when they are about to start.</Typography>
-        <Button
-          startIcon={<Add />}
-          onClick={() => setShowActivityInputs(!showActivityInputs)}
-          className="add-activity-button"
-          variant="outlined"
-        >
-          {showActivityInputs ? 'No Add Activity' : 'Add Activity'}
-        </Button>
-      </Box>
+      <Typography sx={{ marginBottom: 2 }}>
+        Keep your event schedule organized by adding activities and notifying users when they are about to start.
+      </Typography>
+
+      <Button
+        startIcon={showActivityInputs ? <Remove /> : <Add />}
+        onClick={() => setShowActivityInputs(!showActivityInputs)}
+        className="add-activity-button"
+        variant="outlined"
+      >
+        {showActivityInputs ? 'Cancel Add Activity' : 'Add Activity'}
+      </Button>
 
       {showActivityInputs && (
         <Box className="activity-input">
           <TextField
-            label="Event ID"
-            fullWidth
-            value={eventId}
-            onChange={(e) => setEventId(e.target.value)}
-            margin="normal"
-            InputProps={{
-              className: 'input-text',
-            }}
-          />
-          <TextField
-            label="Activity Title"
+            label="Title"
             fullWidth
             value={activityTitle}
             onChange={(e) => setActivityTitle(e.target.value)}
             margin="normal"
+            sx={{ color: 'black' }}
             InputProps={{
-              className: 'input-text',
+              style: { color: 'black' },
             }}
           />
           <TextField
-            label="Description"
+            label="Add Description"
             fullWidth
             value={activityDescription}
             onChange={(e) => setActivityDescription(e.target.value)}
             margin="normal"
+            sx={{ color: 'black' }}
             InputProps={{
-              className: 'input-text',
+              style: { color: 'black' },
             }}
           />
-          <TextField
-            label="Start Time"
-            type="datetime-local"
-            fullWidth
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            margin="normal"
-            sx={{
-              color: 'white',
-              '& .MuiInputBase-input': {
-                color: 'white',
-                '&:focus': {
-                  color: 'black',
-                },
-              },
-              '& .MuiSvgIcon-root': {
-                color: '#4a88e9',
-              },
-            }}
-          />
-          <TextField
-            label="End Time"
-            type="datetime-local"
-            fullWidth
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            margin="normal"
-            sx={{
-              color: 'white',
-              '& .MuiInputBase-input': {
-                color: 'white',
-                '&:focus': {
-                  color: 'black',
-                },
-              },
-              '& .MuiSvgIcon-root': {
-                color: '#4a88e9',
-              },
-            }}
-          />
-          <TextField
-            label="Status"
-            select
-            fullWidth
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            margin="normal"
-            InputProps={{
-              className: 'input-text',
-            }}
-            MenuProps={{
-              PaperProps: {
-                sx: {
-                  '& .MuiMenuItem-root': {
-                    color: 'black',
-                  },
-                },
-              },
-            }}
-          >
-            <MenuItem value="Scheduled">Scheduled</MenuItem>
-            <MenuItem value="In Progress">In Progress</MenuItem>
-            <MenuItem value="Completed">Completed</MenuItem>
-          </TextField>
-          <TextField
-            label="Capacity"
-            type="number"
-            fullWidth
-            value={capacity}
-            onChange={(e) => setCapacity(e.target.value)}
-            margin="normal"
-            InputProps={{
-              className: 'input-text',
-            }}
-          />
+          <Box display="flex" gap={2}>
+            <TextField
+              label="Capacity"
+              type="number"
+              value={capacity}
+              onChange={(e) => setCapacity(e.target.value)}
+              margin="normal"
+              InputProps={{
+                style: { color: 'black' },
+              }}
+              sx={{ flex: 1, color: 'black' }}
+            />
+            <TextField
+              label="Start Time"
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              margin="normal"
+              InputProps={{
+                startAdornment: <span role="img" aria-label="clock">⏰</span>,
+                style: { color: 'black' },
+              }}
+              sx={{ flex: 1 }}
+            />
+            <TextField
+              label="End Time"
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              margin="normal"
+              InputProps={{
+                startAdornment: <span role="img" aria-label="clock">⏰</span>,
+                style: { color: 'black' }, 
+              }}
+              sx={{ flex: 1 }}
+            />
+          </Box>
+
           <Button
             onClick={addActivity}
             variant="contained"
             className="add-activity-action"
+            fullWidth
+            sx={{ marginTop: 2 }}
           >
             Add Activity
           </Button>
@@ -179,12 +131,10 @@ const Activities = ({ onAddActivity }) => {
           <Typography variant="subtitle1" className="added-activities-title">Added Activities:</Typography>
           {activities.map((activity, index) => (
             <Box key={index} mt={1}>
-              <Typography variant="body1">Event ID: {activity.eventId}</Typography>
               <Typography variant="body1">Title: {activity.name}</Typography>
               <Typography variant="body2">Description: {activity.description}</Typography>
               <Typography variant="body2">Start Time: {activity.startTime}</Typography>
               <Typography variant="body2">End Time: {activity.endTime}</Typography>
-              <Typography variant="body2">Status: {activity.status}</Typography>
               <Typography variant="body2">Capacity: {activity.capacity}</Typography>
               <Typography variant="body2">Created At: {activity.createdAt}</Typography>
             </Box>
