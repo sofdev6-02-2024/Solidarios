@@ -19,7 +19,7 @@ import { Box } from '@mui/system';
 import { useRouter, usePathname } from 'next/navigation';
 import { routes } from '@/utils/navigation/Routes';
 import { useTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import styles from '@/styles/components/Header.module.css';
 
@@ -32,12 +32,18 @@ export default function Header() {
 
   const { data: session } = useSession();
 
-  const handleNavigation = (route: string) => {
+  useEffect(() => {    
+    if (session) {
+      router.push('/profile');
+    }
+  }, [session, router]);
+
+  const handleNavigation = (route) => {
     router.push(route);
     setDrawerOpen(false);
   };
 
-  const isActive = (route: string) => pathname === route;
+  const isActive = (route) => pathname === route;
 
   return (
     <AppBar
@@ -153,6 +159,9 @@ export default function Header() {
                 <IconButton size="large" color="inherit" onClick={() => handleNavigation(routes.profile)}>
                   <AccountCircle style={{ fontSize: 40 }} />
                 </IconButton>
+                <IconButton size="large" color="inherit">
+                  <MdNotifications />
+                </IconButton>
               </>
             ) : (
               <Button
@@ -170,10 +179,6 @@ export default function Header() {
                 Login
               </Button>
             )}
-
-            <IconButton size="large" color="inherit">
-              <MdNotifications />
-            </IconButton>
           </>
         )}
       </Toolbar>
