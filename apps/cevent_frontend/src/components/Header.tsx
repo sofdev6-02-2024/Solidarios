@@ -32,18 +32,18 @@ export default function Header() {
 
   const { data: session } = useSession();
 
-  useEffect(() => {    
+  useEffect(() => {
     if (session) {
       router.push('/profile');
     }
   }, [session, router]);
 
-  const handleNavigation = (route) => {
+  const handleNavigation = (route: string) => {
     router.push(route);
     setDrawerOpen(false);
   };
 
-  const isActive = (route) => pathname === route;
+  const isActive = (route: string) => pathname === route;
 
   return (
     <AppBar
@@ -156,7 +156,11 @@ export default function Header() {
           <>
             {session ? (
               <>
-                <IconButton size="large" color="inherit" onClick={() => handleNavigation(routes.profile)}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => handleNavigation(routes.profile)}
+                >
                   <AccountCircle style={{ fontSize: 40 }} />
                 </IconButton>
                 <IconButton size="large" color="inherit">
@@ -173,7 +177,7 @@ export default function Header() {
                   height: '30px',
                   borderRadius: '45%',
                   padding: 0,
-                  fontSize: '0.55rem'
+                  fontSize: '0.55rem',
                 }}
               >
                 Login
