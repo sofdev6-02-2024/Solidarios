@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
 export default function MyTicketsPage() {
-  return(
+  return (
     <div>
       <h1>My Tickets</h1>
     </div>
-  );  
+  );
 }
