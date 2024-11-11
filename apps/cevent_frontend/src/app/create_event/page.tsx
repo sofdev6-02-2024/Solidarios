@@ -1,7 +1,11 @@
+'use client';
+
+import React from 'react';
+
 export default function CreateEvent() {
   return (
-    <div>
-      <h1>Create Event</h1>
-    </div>
+    <main>
+      <div>Create Event</div>
+    </main>
   );
 }
