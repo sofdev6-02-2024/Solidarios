@@ -18,7 +18,7 @@ const Steps = ({
     const isGeneralInfoComplete = generalInfo?.title && generalInfo?.shortDescription && generalInfo?.description && generalInfo?.category;
     setIsGeneralInfoComplete(isGeneralInfoComplete);
 
-    const isDateLocationComplete = dateLocation?.date && dateLocation?.time && dateLocation?.location;
+    const isDateLocationComplete = dateLocation?.date &&  dateLocation?.time && dateLocation?.location && dateLocation?.latitude && dateLocation?.longitude;
     setIsDateLocationComplete(isDateLocationComplete);
 
     const isPriceCapacityComplete = priceCapacity?.capacity && priceCapacity?.ticketPrice;
@@ -104,6 +104,7 @@ const Steps = ({
             fullWidth
             className="create-event-button"
             onClick={handleSubmit}
+            disabled={!(isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete)}
 
           >
             Create Event

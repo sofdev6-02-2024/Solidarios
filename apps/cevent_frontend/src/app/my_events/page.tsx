@@ -1,5 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
+import Button from '@mui/material/Button';
 
 export default function MyEventsPage() {
   const router = useRouter();
@@ -11,9 +12,9 @@ export default function MyEventsPage() {
   return (
     <div>
       <h1>My Events</h1>
-      <button onClick={handleCreateEvent}> 
+      <Button variant="contained" onClick={handleCreateEvent}>
         Create Event
-      </button>
+      </Button>
     </div>
   );
 }

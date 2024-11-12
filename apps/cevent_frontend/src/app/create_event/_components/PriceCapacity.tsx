@@ -25,21 +25,23 @@ const PriceCapacity = ({ onComplete }) => {
 
   return (
     <Box className="info-box"> 
-      <Typography variant="h6" fontWeight="bold">Price and capacity</Typography>
+      <Typography variant="h6" fontWeight="bold">Price and Capacity</Typography>
       <Box display="flex" gap={2} mt={2}>
         <TextField
           label="Capacity"
+          type="number"
           fullWidth
           margin="normal"
           name="capacity"
           value={fields.capacity}
           onChange={handleChange}
           InputProps={{
-            className: 'input-field', 
+            className: 'input-field',
           }}
         />
         <TextField
-          label="Ticket price"
+          label="Ticket Price"
+          type="number"
           fullWidth
           margin="normal"
           name="ticketPrice"
@@ -51,7 +53,7 @@ const PriceCapacity = ({ onComplete }) => {
                 <AttachMoney />
               </InputAdornment>
             ),
-            className: 'input-field', 
+            className: 'input-field',
           }}
         />
       </Box>

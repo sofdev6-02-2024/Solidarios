@@ -12,7 +12,7 @@ const GeneralInfo = ({ onComplete }) => {
   });
 
   const [isCompleted, setIsCompleted] = useState(false);
-  
+
   const handleFieldChange = (field) => (e) => {
     setFields((prevFields) => ({
       ...prevFields,
@@ -87,6 +87,10 @@ const GeneralInfo = ({ onComplete }) => {
         }}
       />
 
+      <FormHelperText className="form-helper-text">
+        Correctly categorize the type of event you are organizing.
+      </FormHelperText>
+
       <TextField
         label="Category"
         fullWidth
@@ -101,11 +105,12 @@ const GeneralInfo = ({ onComplete }) => {
         <MenuItem value="Conference" sx={{ color: 'black' }}>Conference</MenuItem>
         <MenuItem value="Workshop" sx={{ color: 'black' }}>Workshop</MenuItem>
         <MenuItem value="Networking" sx={{ color: 'black' }}>Networking</MenuItem>
+        <MenuItem value="Music" sx={{ color: 'black' }}>Music</MenuItem>
+        <MenuItem value="Sports" sx={{ color: 'black' }}>Sports</MenuItem>
+        <MenuItem value="Technology" sx={{ color: 'black' }}>Technology</MenuItem>
+        <MenuItem value="Art" sx={{ color: 'black' }}>Art</MenuItem>
+        <MenuItem value="Social" sx={{ color: 'black' }}>Social</MenuItem>
       </TextField>
-
-      <FormHelperText className="form-helper-text">
-        Correctly categorize the type of event you are organizing.
-      </FormHelperText>
     </Box>
   );
 };

@@ -6,7 +6,6 @@ const ImageUpload = () => {
   const [selectedImage, setSelectedImage] = useState(null);  
 
   const onImageChange = () => {
-    // Usamos la URL estática de la imagen por ahora
     const url = 'https://images.wallpaperscraft.com/image/single/halloween_holiday_headless_horseman_62756_1280x720.jpg';
     setSelectedImage(url);    
   };
