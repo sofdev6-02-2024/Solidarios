@@ -20,6 +20,7 @@ namespace CEventService.API.DAO
         public async Task<IEnumerable<Event>> GetAllAsync(int page, int pageSize)
         {
             return await _context.Events
+                .Where(e => !e.IsDeleted)
                 .Skip(page)
                 .Take(pageSize)
                 .ToListAsync();
