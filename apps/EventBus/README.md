@@ -1,7 +1,3 @@
-Here's an updated `README.md` with the latest changes, including instructions for setting up MongoDB with Docker and using environment variables in a `.env` file for configuration.
-
----
-
 # Event Bus API
 
 The Event Bus API is a central service that facilitates event-driven communication between multiple microservices. It allows services to subscribe to specific event types and receive notifications whenever an event of that type is published. This architecture enables decoupled microservices, improving scalability and flexibility.

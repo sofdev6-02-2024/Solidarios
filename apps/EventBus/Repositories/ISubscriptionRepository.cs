@@ -7,5 +7,5 @@ public interface ISubscriptionRepository
 {
     Task<List<Subscription>> GetAllSubscriptionsAsync();
     Task AddSubscriptionAsync(Subscription subscription);
-    Task<bool> SubscriptionExistsAsync(string eventType, string callbackUrl);  // New method
+    Task<bool> SubscriptionExistsAsync(string eventType, string callbackUrl);
 }
