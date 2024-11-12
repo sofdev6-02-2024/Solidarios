@@ -81,9 +81,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
                 Capacity
               </Typography>
             </Box>
-            <Typography variant="bodyLarge">
-              {eventData.capacity}
-            </Typography>
+            <Typography variant="bodyLarge">{eventData.capacity}</Typography>
           </Box>
 
           <Box sx={styles.dataRow}>

@@ -42,11 +42,10 @@ const EventPage = () => {
             />
           </Box>
           <Layout>
-            <Box sx={{position: "relative", height: "220px" }}>
-            <CardEventInfo eventData={eventData} />
+            <Box sx={{ position: 'relative', height: '220px' }}>
+              <CardEventInfo eventData={eventData} />
             </Box>
             <DetailsEvent event={eventData} />
-         
           </Layout>
         </Box>
       ) : (

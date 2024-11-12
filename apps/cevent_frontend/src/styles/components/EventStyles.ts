@@ -9,7 +9,7 @@ const styles: { [key: string]: SxProps<Theme> } = {
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
     width: '100%',
     top: -90,
-    position: "absolute"
+    position: 'absolute',
   },
   titleStyles: {
     fontSize: '24px',

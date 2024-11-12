@@ -11,8 +11,8 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
  * @returns The response object
  */
 export async function GET(
-  request: Request, 
-  { params }: { params: { id: string } } // Aquí extraemos el parámetro `id`
+  request: Request,
+  { params }: { params: { id: string } }, // Aquí extraemos el parámetro `id`
 ) {
   const { id } = params; // Extraemos el `id` de los parámetros
   console.log('id peticion:', id);

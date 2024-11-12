@@ -30,7 +30,7 @@ const CardEvent = ({ eventData }: CardEventProps) => {
   return (
     <Card sx={styles.cardStyles}>
       <CardActionArea onClick={() => router.push(`/${eventData.eventId}`)}>
-        <CardMedia 
+        <CardMedia
           component="img"
           height="140"
           image={eventData.coverPhotoUrl}
