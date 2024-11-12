@@ -55,5 +55,26 @@ namespace CEventService.API.DAO
                 .ToListAsync();
             return _mapper.Map<IEnumerable<EventHomePageDto>>(events);
         }
+
+        public async Task<bool> SoftDeleteAsync(int id, string requesterId)
+        {
+            var existingEvent = await _context.Events.FindAsync(id);
+
+            if (existingEvent == null || existingEvent.IsDeleted)
+            {
+                return false;
+            }
+
+            if (existingEvent.OrganizerUserId != requesterId)
+            {
+                return false;
+            }
+
+            existingEvent.IsDeleted = true;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }
