@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TicketService.API.Database;
 using TicketService.API.Repositories;
 using TicketService.API.Services;
+using TicketService.API.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<QrCodeGeneratorUtility>();
 builder.Services.AddScoped<ITicketService, TicketService.API.Services.TicketService>();
 builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 

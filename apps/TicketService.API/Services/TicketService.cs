@@ -1,17 +1,19 @@
 ﻿using TicketService.API.DTOs;
 using TicketService.API.Models;
 using TicketService.API.Repositories;
-using QRCoder;
+using TicketService.API.Utilities;
 
 namespace TicketService.API.Services
 {
     public class TicketService : ITicketService
     {
         private readonly ITicketRepository _ticketRepository;
+        private readonly QrCodeGeneratorUtility _generatorUtility;
 
-        public TicketService(ITicketRepository ticketRepository)
+        public TicketService(ITicketRepository ticketRepository, QrCodeGeneratorUtility qrCodeUtility)
         {
             _ticketRepository = ticketRepository;
+            _generatorUtility = qrCodeUtility;
         }
 
         public async Task<TicketResponseDto> GenerateTicketAsync(TicketRequestDto ticketRequest)
@@ -20,10 +22,10 @@ namespace TicketService.API.Services
             {
                 EventId = ticketRequest.EventId,
                 UserId = ticketRequest.UserId,
-                QRContent = GenerateQrContent()
+                QRContent = _generatorUtility.GenerateQrContent()
             };
 
-            ticket.QRContent = GenerateQrCode(ticket.QRContent);
+            ticket.QRContent = _generatorUtility.GenerateQrCode(ticket.QRContent);
 
             var createdTicket = await _ticketRepository.CreateTicketAsync(ticket);
 
@@ -57,22 +59,6 @@ namespace TicketService.API.Services
             }
     
             return null;
-        }
-
-        private string GenerateQrCode(string content)
-        {
-            using (var qrGenerator = new QRCodeGenerator())
-            using (var qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.Q))
-            using (var qrCode = new PngByteQRCode(qrCodeData))
-            {
-                byte[] qrCodeImage = qrCode.GetGraphic(20);
-                return Convert.ToBase64String(qrCodeImage);
-            }
-        }
-
-        private string GenerateQrContent()
-        {
-            return Guid.NewGuid().ToString();
         }
     }
 }
