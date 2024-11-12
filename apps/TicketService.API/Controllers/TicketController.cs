@@ -33,20 +33,15 @@ namespace TicketService.API.Controllers
             return Ok(ticketResponse);
         }
 
-        [HttpPost("validate/{ticketId}")]
-        public async Task<IActionResult> ValidateTicket(string ticketId)
+        [HttpPost("validate")]
+        public async Task<IActionResult> ValidateTicket([FromBody] string qrContent)
         {
-            if (!Guid.TryParse(ticketId, out var ticketGuid))
+            if (string.IsNullOrEmpty(qrContent))
             {
-                return BadRequest(new { message = "TicketId format is incorrect." });
-            }
-            
-            if (string.IsNullOrEmpty(ticketId))
-            {
-                return BadRequest("Ticket ID is required");
+                return BadRequest("QR content is required");
             }
 
-            var isValid = await _ticketService.ValidateTicketAsync(ticketId);
+            var isValid = await _ticketService.ValidateTicketAsync(qrContent);
 
             if (!isValid)
             {

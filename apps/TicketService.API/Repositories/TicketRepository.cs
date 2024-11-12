@@ -24,6 +24,12 @@ namespace TicketService.API.Repositories
         {
             return await _context.Tickets.FindAsync(ticketId);
         }
+        
+        public async Task<Ticket?> GetTicketByQrContentAsync(string qrContent)
+        {
+            return await _context.Tickets
+                .FirstOrDefaultAsync(t => t.QRContent == qrContent);
+        }
 
         public async Task UpdateTicketStatusAsync(Guid ticketId, bool isUsed)
         {

@@ -7,5 +7,6 @@ public interface ITicketService
 {
     Task<TicketResponseDto> GenerateTicketAsync(TicketRequestDto ticketRequest);
     Task<bool> ValidateTicketAsync(string ticketId);
-    Task<Ticket?> GetTicketByIdAsync(string ticketId);
+    Task<TicketResponseDto?> GetTicketByIdAsync(string ticketId);
+    Task<TicketResponseDto?> GetTicketByQrCodeAsync(string qrContent);
 }

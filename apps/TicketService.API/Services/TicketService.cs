@@ -32,15 +32,15 @@ namespace TicketService.API.Services
             return new TicketResponseDto
             {
                 TicketId = createdTicket.TicketId.ToString(),
-                QRContent = createdTicket.QRContent
+                QRContent = createdTicket.QRContent,
             };
         }
-
-        public async Task<bool> ValidateTicketAsync(string ticketId)
+        
+        public async Task<bool> ValidateTicketAsync(string qrContent)
         {
-            var ticket = await _ticketRepository.GetTicketByIdAsync(Guid.Parse(ticketId));
+            var ticket = await _ticketRepository.GetTicketByQrContentAsync(qrContent);
 
-            if (ticket == null || ticket.IsUsed) 
+            if (ticket == null || ticket.IsUsed)
                 return false;
 
             ticket.IsUsed = true;
@@ -51,14 +51,47 @@ namespace TicketService.API.Services
             return true;
         }
         
-        public async Task<Ticket?> GetTicketByIdAsync(string ticketId)
+        public async Task<TicketResponseDto?> GetTicketByIdAsync(string ticketId)
         {
-            if (Guid.TryParse(ticketId, out var ticketGuid))
+            if (!Guid.TryParse(ticketId, out var ticketGuid))
             {
-                return await _ticketRepository.GetTicketByIdAsync(ticketGuid);
+                throw new ArgumentException("Invalid ticket ID format", nameof(ticketId));
             }
-    
-            return null;
+
+            var ticket = await _ticketRepository.GetTicketByIdAsync(ticketGuid);
+
+            if (ticket == null)
+            {
+                return null;
+            }
+
+            return new TicketResponseDto
+            {
+                TicketId = ticket.TicketId.ToString(),
+                QRContent = ticket.QRContent
+            };
+        }
+
+        
+        public async Task<TicketResponseDto?> GetTicketByQrCodeAsync(string qrContent)
+        {
+            if (string.IsNullOrEmpty(qrContent))
+            {
+                throw new ArgumentException("QR content cannot be null or empty", nameof(qrContent));
+            }
+
+            var ticket = await _ticketRepository.GetTicketByQrContentAsync(qrContent);
+
+            if (ticket == null)
+            {
+                return null;
+            }
+
+            return new TicketResponseDto
+            {
+                TicketId = ticket.TicketId.ToString(),
+                QRContent = ticket.QRContent
+            };
         }
     }
 }
