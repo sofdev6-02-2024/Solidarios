@@ -16,8 +16,6 @@ public class EventsCallbackController : ControllerBase
         Console.WriteLine($"Received event of type: {eventType}");
         Console.WriteLine($"Event Data: {eventData.CustomerName}");
 
-        // Process the event data as needed
-
         return Ok("Event received and processed");
     }
 }
