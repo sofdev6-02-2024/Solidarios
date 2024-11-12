@@ -34,7 +34,7 @@ export default function Header() {
 
   useEffect(() => {
     if (session) {
-      router.push('/profile');
+      router.push('/');
     }
   }, [session, router]);
 
