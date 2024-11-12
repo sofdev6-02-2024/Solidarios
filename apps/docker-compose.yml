@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Consul Service
@@ -14,11 +14,11 @@ services:
   # API Gateway
   apigateway:
     build:
-      context: ./ApiGateway      
-      dockerfile: Dockerfile     
+      context: ./ApiGateway
+      dockerfile: Dockerfile
     container_name: apigateway
     ports:
-      - "5149:5149"              
+      - "5149:5149"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - SERVICE_DISCOVERY_URL=http://servicediscovery:5198/api/service-registry/services
@@ -37,7 +37,7 @@ services:
       dockerfile: Dockerfile
     container_name: servicediscovery
     ports:
-      - "5198:5198"               
+      - "5198:5198"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - Consul__Address=http://consul:8500
@@ -45,7 +45,7 @@ services:
       - consul
       - sqlserver
     networks:
-      - shared-network  
+      - shared-network
 
   # CEvent Service API
   ceventservice:
@@ -54,7 +54,7 @@ services:
       dockerfile: Dockerfile
     container_name: ceventservice
     ports:
-      - "5000:5000"               
+      - "5000:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - CONNECTION_STRING="Server=sqlserver_container,1433;Database=DesarrolloDB;User Id=SA;Password=P@pers123;Encrypt=True;TrustServerCertificate=True;"
@@ -63,7 +63,7 @@ services:
     networks:
       - shared-network
     volumes:
-      - ./CEventService.API:/app 
+      - ./CEventService.API:/app
       - ./CEventService.API/.env:/app/.env
 
   # SQL Server
@@ -73,26 +73,30 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=P@pers123
-      - MSSQL_PID=Developer 
+      - MSSQL_PID=Developer
       - MSSQL_DB=DesarrolloDB
     ports:
       - "1433:1433"
     healthcheck:
-      test: ["CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD"]
+      test:
+        [
+          "CMD-SHELL",
+          "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD",
+        ]
       interval: 10s
       retries: 10
     networks:
       - shared-network
 
   keycloak:
-      image: quay.io/keycloak/keycloak:latest
-      environment:
-        - KEYCLOAK_ADMIN=admin
-        - KEYCLOAK_ADMIN_PASSWORD=admin
-      ports:
-        - "8080:8080"
-      command:
-        - start-dev      
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    command:
+      - start-dev
 
 networks:
   shared-network:

@@ -101,7 +101,7 @@ using(var scope = app.Services.CreateScope())
     var dbContext = services.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();
 
-    await DataSeeder.SeedData(dbContext);
+  
 }
 
 using (var httpClient = new HttpClient())
