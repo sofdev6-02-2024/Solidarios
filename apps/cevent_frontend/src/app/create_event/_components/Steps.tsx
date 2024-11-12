@@ -15,17 +15,32 @@ const Steps = ({
 
   useEffect(() => {
     console.log('General Info:', generalInfo);
-    console.log('Date Location:', dateLocation);
-    console.log('Price Capacity:', priceCapacity);
+    console.log('Title exists:', !!generalInfo?.title);
+    console.log('Short Description exists:', !!generalInfo?.shortDescription);
+    console.log('Description exists:', !!generalInfo?.description);
+    console.log('Category exists:', !!generalInfo?.category);
 
-    // Validación para asegurar que los valores existen y son válidos
     const isGeneralInfoComplete = generalInfo?.title && generalInfo?.shortDescription && generalInfo?.description && generalInfo?.category;
-    const isDateLocationComplete = dateLocation?.date && dateLocation?.time && dateLocation?.location;
-    const isPriceCapacityComplete = priceCapacity?.capacity && priceCapacity?.ticketPrice;
-
     setIsGeneralInfoComplete(isGeneralInfoComplete);
+    console.log('isGeneralInfoComplete:', isGeneralInfoComplete);
+
+    console.log('Date Location:', dateLocation);
+    console.log('Date exists:', !!dateLocation?.date);
+    console.log('Time exists:', !!dateLocation?.time);
+    console.log('Location exists:', !!dateLocation?.location);
+
+    const isDateLocationComplete = dateLocation?.date && dateLocation?.time && dateLocation?.location;
     setIsDateLocationComplete(isDateLocationComplete);
+    console.log('isDateLocationComplete:', isDateLocationComplete);
+
+    console.log('Price Capacity:', priceCapacity);
+    console.log('Capacity exists:', !!priceCapacity?.capacity);
+    console.log('Ticket Price exists:', !!priceCapacity?.ticketPrice);
+
+    const isPriceCapacityComplete = priceCapacity?.capacity && priceCapacity?.ticketPrice;
     setIsPriceCapacityComplete(isPriceCapacityComplete);
+    console.log('isPriceCapacityComplete:', isPriceCapacityComplete);
+
   }, [generalInfo, dateLocation, priceCapacity]);
 
 

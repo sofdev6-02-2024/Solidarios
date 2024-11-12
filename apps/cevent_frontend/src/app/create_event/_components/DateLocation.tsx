@@ -20,16 +20,16 @@ const DateLocation = ({ onComplete }) => {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
   });
-  
+
   useEffect(() => {
     const isDateValid = fields.date && !isNaN(fields.date.getTime());
     const isTimeValid = fields.time && /^[0-9]{2}:[0-9]{2}$/.test(fields.time);
     const isLocationValid = fields.location && fields.location.trim() !== '';
 
     const isComplete = isDateValid && isTimeValid && isLocationValid;
-    onComplete(isComplete);
+    onComplete(fields, isComplete);
   }, [fields.date, fields.time, fields.location, onComplete]);
-  
+
   const handleMarkerDragEnd = useCallback(async (event) => {
     const newPosition = { lat: event.latLng.lat(), lng: event.latLng.lng() };
     setFields(prev => ({
