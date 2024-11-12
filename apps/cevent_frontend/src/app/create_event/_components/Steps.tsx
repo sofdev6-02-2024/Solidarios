@@ -13,43 +13,22 @@ const Steps = ({
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
 
-  useEffect(() => {
-    console.log('General Info:', generalInfo);
-    console.log('Title exists:', !!generalInfo?.title);
-    console.log('Short Description exists:', !!generalInfo?.shortDescription);
-    console.log('Description exists:', !!generalInfo?.description);
-    console.log('Category exists:', !!generalInfo?.category);
+  useEffect(() => {   
 
     const isGeneralInfoComplete = generalInfo?.title && generalInfo?.shortDescription && generalInfo?.description && generalInfo?.category;
     setIsGeneralInfoComplete(isGeneralInfoComplete);
-    console.log('isGeneralInfoComplete:', isGeneralInfoComplete);
-
-    console.log('Date Location:', dateLocation);
-    console.log('Date exists:', !!dateLocation?.date);
-    console.log('Time exists:', !!dateLocation?.time);
-    console.log('Location exists:', !!dateLocation?.location);
 
     const isDateLocationComplete = dateLocation?.date && dateLocation?.time && dateLocation?.location;
     setIsDateLocationComplete(isDateLocationComplete);
-    console.log('isDateLocationComplete:', isDateLocationComplete);
-
-    console.log('Price Capacity:', priceCapacity);
-    console.log('Capacity exists:', !!priceCapacity?.capacity);
-    console.log('Ticket Price exists:', !!priceCapacity?.ticketPrice);
 
     const isPriceCapacityComplete = priceCapacity?.capacity && priceCapacity?.ticketPrice;
     setIsPriceCapacityComplete(isPriceCapacityComplete);
-    console.log('isPriceCapacityComplete:', isPriceCapacityComplete);
 
   }, [generalInfo, dateLocation, priceCapacity]);
 
 
   const handleSubmit = async () => {
     if (isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete) {
-      console.log('General Info:', generalInfo);
-      console.log('Date and Location:', dateLocation);
-      console.log('Price and Capacity:', priceCapacity);
-      console.log('Selected Image:', selectedImage);
 
       const eventData = {
         ...generalInfo,
@@ -80,10 +59,6 @@ const Steps = ({
       console.log('Please complete all fields before submitting');
     }
   };
-
-  console.log('isGeneralInfoComplete:', isGeneralInfoComplete);
-  console.log('isDateLocationComplete:', isDateLocationComplete);
-  console.log('isPriceCapacityComplete:', isPriceCapacityComplete);
 
   return (
     <Box mb={4} p={3}>
