@@ -32,44 +32,42 @@ const styles: { [key: string]: SxProps<Theme> } = {
     },
   },
 
-  textTitle : {
+  textTitle: {
     color: 'white',
   },
 
   dateChip: {
-    backgroundColor: "#f2f2f2",
-    color: "lightBlack.main"
+    backgroundColor: '#f2f2f2',
+    color: 'lightBlack.main',
   },
 
-  chipContainer :{
-    display: "flex",
-    flexDirection: "row",
-    gap: "10px"
+  chipContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '10px',
   },
 
   dataContainer: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     padding: 2,
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
     gap: 2,
-    width: "100%",
-    height: "100%",
-    position: "absolute"
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
   },
 
   textDescription: {
-    color: "#fff",
-    textAlign: "center"
+    color: '#fff',
+    textAlign: 'center',
   },
 
-  buttonMoreInfo : {
-    backgroundColor: "accent.main"
-  }
-
-
+  buttonMoreInfo: {
+    backgroundColor: 'accent.main',
+  },
 };
 
 export default styles;

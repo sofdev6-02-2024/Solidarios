@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { EventFilter, EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
+import {
+  EventFilter,
+  EventHomePageDto,
+} from '@/utils/interfaces/EventInterfaces';
 
 /**
  * Fetches the events for the home page
@@ -26,11 +29,14 @@ export const fetchHomePageEvents = async (
     };
 
     // Realiza la solicitud a la API de Next.js usando Axios
-    const response = await axios.get<EventHomePageDto[]>('/api/events/homepage', { params });
-    
+    const response = await axios.get<EventHomePageDto[]>(
+      '/api/events/homepage',
+      { params },
+    );
+
     return response.data;
   } catch (error) {
-    console.error("Error fetching events:", error);
+    console.error('Error fetching events:', error);
     return [];
   }
 };

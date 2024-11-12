@@ -13,14 +13,18 @@ export async function GET(request: Request) {
     Category: searchParams.get('Category') || undefined,
     StartDate: searchParams.get('StartDate') || undefined,
     EndDate: searchParams.get('EndDate') || undefined,
-    MinPrice: searchParams.get('MinPrice') ? Number(searchParams.get('MinPrice')) : undefined,
-    MaxPrice: searchParams.get('MaxPrice') ? Number(searchParams.get('MaxPrice')) : undefined,
+    MinPrice: searchParams.get('MinPrice')
+      ? Number(searchParams.get('MinPrice'))
+      : undefined,
+    MaxPrice: searchParams.get('MaxPrice')
+      ? Number(searchParams.get('MaxPrice'))
+      : undefined,
     Status: searchParams.get('Status') || undefined,
     SortBy: searchParams.get('SortBy') || undefined,
-    IsDescending: searchParams.get('IsDescending') === 'true', 
+    IsDescending: searchParams.get('IsDescending') === 'true',
   };
   const queryParams = Object.fromEntries(
-    Object.entries(filters).filter(([, value]) => value !== undefined)
+    Object.entries(filters).filter(([, value]) => value !== undefined),
   );
   try {
     const response = await axios.get(`${BASE_URL}/events/api/Event/homepage`, {

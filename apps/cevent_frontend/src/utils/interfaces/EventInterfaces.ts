@@ -34,6 +34,6 @@ export interface EventFilter {
   Status?: string;
   SortBy?: string;
   IsDescending?: boolean;
-  page?: number;         
-  pageSize?: number;      
+  page?: number;
+  pageSize?: number;
 }

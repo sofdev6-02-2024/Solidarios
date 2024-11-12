@@ -16,7 +16,7 @@ const theme = createTheme({
       main: 'rgba(0, 0, 0, 0.6)',
     },
     accent: {
-      main: '#F6B835'
+      main: '#F6B835',
     },
     error: {
       main: '#f44336',

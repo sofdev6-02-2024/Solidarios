@@ -11,7 +11,12 @@ export default function Home() {
       <CategoryEventSection category={EventCategory.All} />
       {Object.keys(CategoryObj).map((category) => {
         if (category === EventCategory.All) return null;
-        return <CategoryEventSection key={category} category={category as EventCategory} />;
+        return (
+          <CategoryEventSection
+            key={category}
+            category={category as EventCategory}
+          />
+        );
       })}
     </Layout>
   );

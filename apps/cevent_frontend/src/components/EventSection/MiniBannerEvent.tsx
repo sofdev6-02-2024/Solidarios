@@ -17,30 +17,27 @@ const MiniBannerEvent = ({ event }: { event: EventHomePageDto }) => {
         />
       </Box>
       <Box sx={styles.dataEventContainer}>
-        <Box
-          sx={styles.dataContainer}
-        >
+        <Box sx={styles.dataContainer}>
           <Typography variant="h3" sx={styles.textTitle}>
             {event.name.toUpperCase()}
           </Typography>
           <Box sx={styles.chipContainer}>
-            <Chip  color="primary" label={event.category} />
+            <Chip color="primary" label={event.category} />
             <Chip
               icon={<EventIcon color="primary" sx={{ fontSize: 16 }} />}
               label={formatDate(event.eventDate)}
               sx={styles.dateChip}
             />
           </Box>
-          <Typography variant='body' sx={styles.textDescription} >
+          <Typography variant="body" sx={styles.textDescription}>
             {event.description}
           </Typography>
-          <Button variant='contained' sx={styles.buttonMoreInfo}>
+          <Button variant="contained" sx={styles.buttonMoreInfo}>
             More info
           </Button>
         </Box>
       </Box>
     </ButtonBase>
-    
   );
 };
 

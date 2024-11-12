@@ -23,10 +23,8 @@ export default function RootLayout({
           <ReduxProvider>
             <ThemeRegistry>
               <Header />
-            
+
               {children}
-           
-            
             </ThemeRegistry>
           </ReduxProvider>
         </body>

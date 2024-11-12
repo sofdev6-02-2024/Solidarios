@@ -1,7 +1,10 @@
 import { EventCategory, CategoryObj } from '@/utils/interfaces/Categories';
 import { Box, Typography } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
-import { EventFilter, EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
+import {
+  EventFilter,
+  EventHomePageDto,
+} from '@/utils/interfaces/EventInterfaces';
 import { fetchHomePageEvents } from '@/services/EventService';
 import EventsBox from './EventsBox';
 import SkeletonEventsBox from './SkeletonEventsBox';
@@ -32,7 +35,6 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
   }, []);
   return (
     <Box sx={{ mt: 4 }}>
-     
       <Box
         sx={{
           display: 'flex',
@@ -52,7 +54,9 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
           {CategoryObj[category].Phrase}{' '}
         </Typography>
       </Box>
-      {category !== EventCategory.All && <SliderEvents events={events.slice(0,3)}/>}
+      {category !== EventCategory.All && (
+        <SliderEvents events={events.slice(0, 3)} />
+      )}
       {events.length < 1 ? (
         loading ? (
           <SkeletonEventsBox />
@@ -60,7 +64,9 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
           <EmptyEventSection />
         )
       ) : (
-        <EventsBox events={category ===EventCategory.All ? events : events.slice(3,9)} />
+        <EventsBox
+          events={category === EventCategory.All ? events : events.slice(3, 9)}
+        />
       )}
     </Box>
   );
