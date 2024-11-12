@@ -14,7 +14,6 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import MailIcon from '@mui/icons-material/Mail';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import { formatDate } from '@/utils/methods/stringMethods';
 interface CardEventInfoProps {
@@ -81,9 +80,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
                 Capacity
               </Typography>
             </Box>
-            <Typography variant="bodyLarge">
-              {eventData.capacity}
-            </Typography>
+            <Typography variant="bodyLarge">{eventData.capacity}</Typography>
           </Box>
 
           <Box sx={styles.dataRow}>

@@ -10,6 +10,7 @@ import Image from 'next/image';
 import styles from '@/styles/components/EventPageStyles';
 import DetailsEvent from './_components/DetailsEvent';
 import RelatedEvent from './_components/RelatedEvent';
+import SkeletonEventsBox from '@/components/EventSection/SkeletonEventsBox';
 const EventPage = () => {
   const [eventData, setEventData] = useState<EventDetailDto | null>(null);
   const [loading, setLoading] = useState(true);
@@ -30,7 +31,11 @@ const EventPage = () => {
   return (
     <>
       {loading ? (
-        <Typography>Loaedng{id}</Typography>
+        <Layout>
+          <Box sx={{ height: '900px' }}>
+            <SkeletonEventsBox />
+          </Box>
+        </Layout>
       ) : eventData !== null ? (
         <Box sx={styles.mainContainer}>
           <Box sx={styles.containerImage}>
@@ -42,11 +47,11 @@ const EventPage = () => {
             />
           </Box>
           <Layout>
-            <Box sx={{position: "relative", height: "220px" }}>
-            <CardEventInfo eventData={eventData} />
+            <Box sx={{ position: 'relative', height: '220px' }}>
+              <CardEventInfo eventData={eventData} />
             </Box>
             <DetailsEvent event={eventData} />
-         
+            <RelatedEvent category={eventData.category} />
           </Layout>
         </Box>
       ) : (

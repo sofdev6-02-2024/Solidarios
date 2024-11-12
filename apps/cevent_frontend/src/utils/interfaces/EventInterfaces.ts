@@ -1,4 +1,4 @@
-import { EventCategory } from "./Categories";
+import { EventCategory } from './Categories';
 
 export interface Location {
   longitude: number;

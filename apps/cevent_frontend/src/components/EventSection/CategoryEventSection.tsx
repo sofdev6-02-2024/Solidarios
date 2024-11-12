@@ -9,7 +9,6 @@ import { fetchHomePageEvents } from '@/services/EventService';
 import EventsBox from './EventsBox';
 import SkeletonEventsBox from './SkeletonEventsBox';
 import EmptyEventSection from './EmptyEventSection';
-import { pages } from 'next/dist/build/templates/app-page';
 import SliderEvents from './SliderEvents';
 
 interface EventSectionProps {

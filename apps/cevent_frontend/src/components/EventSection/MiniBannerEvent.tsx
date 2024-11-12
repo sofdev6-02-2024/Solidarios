@@ -2,7 +2,7 @@ import { Box, Button, ButtonBase, Chip, Typography } from '@mui/material';
 import styles from '@/styles/components/MiniBannerStyles';
 import { EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
 import Image from 'next/image';
-import { formatDate } from '@/utils/methods/stringMethods';
+import { formatDate, truncateText } from '@/utils/methods/stringMethods';
 import EventIcon from '@mui/icons-material/Event';
 
 const MiniBannerEvent = ({ event }: { event: EventHomePageDto }) => {
@@ -30,7 +30,7 @@ const MiniBannerEvent = ({ event }: { event: EventHomePageDto }) => {
             />
           </Box>
           <Typography variant="body" sx={styles.textDescription}>
-            {event.description}
+            {truncateText(event.description, 200)}
           </Typography>
           <Button variant="contained" sx={styles.buttonMoreInfo}>
             More info

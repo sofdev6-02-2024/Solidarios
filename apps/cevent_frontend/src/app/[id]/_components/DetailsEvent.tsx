@@ -8,12 +8,8 @@ const DetailsEvent = ({ event }: DetailsEventProps) => {
   return (
     <Box>
       <Box>
-        <Typography variant='h3' >
-            Event Details
-        </Typography>
-        <Typography variant='body'>
-{event.description}
-        </Typography>
+        <Typography variant="h3">Event Details</Typography>
+        <Typography variant="body">{event.description}</Typography>
       </Box>
       <Box></Box>
     </Box>

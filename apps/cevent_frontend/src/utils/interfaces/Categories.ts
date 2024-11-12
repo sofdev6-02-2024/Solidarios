@@ -3,7 +3,6 @@ export enum EventCategory {
   Sports = 'Sports',
   Technology = 'Technology',
   Art = 'Art',
-  Social = 'Social',
   All = 'All',
 }
 
@@ -22,7 +21,7 @@ export const CategoryObj: Record<EventCategory, CategoryOptions> = {
     KeyWordFirst: false,
   },
   [EventCategory.Sports]: {
-    KeyWord: 'SSPORT',
+    KeyWord: 'SPORT',
     Phrase: 'IN YOUR LIFE',
     Color: '#FF4500',
     KeyWordFirst: true,
@@ -39,12 +38,6 @@ export const CategoryObj: Record<EventCategory, CategoryOptions> = {
     Phrase: 'THAT INSPIRES',
     Color: '#FF69B4',
     KeyWordFirst: true,
-  },
-  [EventCategory.Social]: {
-    KeyWord: 'SOCIAL WORLD',
-    Phrase: 'IN A',
-    Color: '#FF8C00',
-    KeyWordFirst: false,
   },
 
   [EventCategory.All]: {
