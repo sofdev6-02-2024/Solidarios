@@ -4,23 +4,36 @@ import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 import '../_styles/Activities.css';
 
-const Activities = ({ onAddActivity }) => {
-  const [activities, setActivities] = useState([]);
-  const [activityTitle, setActivityTitle] = useState('');
-  const [activityDescription, setActivityDescription] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [capacity, setCapacity] = useState('');
-  const [showActivityInputs, setShowActivityInputs] = useState(false);
+interface Activity {
+  name: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  capacity: number;
+  createdAt: string;
+}
+
+interface ActivitiesProps {
+  onAddActivity: (activity: Activity) => void;
+}
+
+const Activities: React.FC<ActivitiesProps> = ({ onAddActivity }) => {
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [activityTitle, setActivityTitle] = useState<string>('');
+  const [activityDescription, setActivityDescription] = useState<string>('');
+  const [startTime, setStartTime] = useState<string>('');
+  const [endTime, setEndTime] = useState<string>('');
+  const [capacity, setCapacity] = useState<number | string>('');
+  const [showActivityInputs, setShowActivityInputs] = useState<boolean>(false);
 
   const addActivity = () => {
     if (activityTitle && startTime && endTime) {
-      const newActivity = {
+      const newActivity: Activity = {
         name: activityTitle,
         description: activityDescription,
         startTime,
         endTime,
-        capacity: parseInt(capacity) || 0,
+        capacity: parseInt(capacity as string) || 0,
         createdAt: new Date().toISOString(),
       };
       setActivities((prevActivities) => [...prevActivities, newActivity]);

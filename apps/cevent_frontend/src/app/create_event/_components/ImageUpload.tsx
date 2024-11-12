@@ -1,28 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import '../_styles/ImageUpload.css';
 
-const ImageUpload = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
+interface ImageUploadProps {
+  selectedImage: string | null;
+  onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  const onImageChange = () => {
-    const url =
-      'https://images.wallpaperscraft.com/image/single/halloween_holiday_headless_horseman_62756_1280x720.jpg';
-    setSelectedImage(url);
-  };
-
+const ImageUpload: React.FC<ImageUploadProps> = ({ selectedImage, onImageChange }) => {
   return (
-    <Box className="image-upload">
-      <Typography variant="body1">Upload Image</Typography>
+    <Box className="image-upload" sx={{ textAlign: 'center', padding: '16px' }}>
+      <Typography variant="h6">Upload Image</Typography>
 
-      <Button variant="contained" onClick={onImageChange}>
-        Use Static Image
+      <Button
+        variant="contained"
+        color="primary"
+        component="label"
+        sx={{ marginBottom: '16px' }}
+      >
+        Select Image
+        <input
+          type="file"
+          hidden
+          onChange={onImageChange} 
+        />
       </Button>
 
-      {selectedImage && (
+      {selectedImage ? (
         <Box>
-          <img src={selectedImage} alt="Selected" className="selected-image" />
+          <img
+            src={selectedImage}
+            alt="Selected"
+            className="selected-image"
+            style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
+          />
         </Box>
+      ) : (
+        <Typography variant="body2" sx={{ color: 'gray', marginTop: '16px' }}>
+          No image selected yet.
+        </Typography>
       )}
     </Box>
   );

@@ -11,30 +11,62 @@ import {
 import { AddCircleOutline } from '@mui/icons-material';
 import '../_styles/Steps.css';
 
-const Steps = ({ generalInfo, dateLocation, priceCapacity, selectedImage }) => {
+interface GeneralInfoProps {
+  title: string;
+  shortDescription: string;
+  description: string;
+  category: string;
+}
+
+interface DateLocationProps {
+  date?: string;
+  time?: string;
+  location?: string;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
+interface PriceCapacityProps {
+  capacity: number;
+  ticketPrice: number;
+}
+
+const Steps = ({
+  generalInfo,
+  dateLocation,
+  priceCapacity,
+  selectedImage,
+}: {
+  generalInfo: GeneralInfoProps;
+  dateLocation: DateLocationProps;
+  priceCapacity: PriceCapacityProps;
+  selectedImage: string | null;
+}) => {
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
 
   useEffect(() => {
-    const isGeneralInfoComplete =
-      generalInfo?.title &&
-      generalInfo?.shortDescription &&
-      generalInfo?.description &&
-      generalInfo?.category;
-    setIsGeneralInfoComplete(isGeneralInfoComplete);
-
-    const isDateLocationComplete =
-      dateLocation?.date &&
-      dateLocation?.time &&
-      dateLocation?.location &&
-      dateLocation?.latitude &&
-      dateLocation?.longitude;
-    setIsDateLocationComplete(isDateLocationComplete);
-
-    const isPriceCapacityComplete =
-      priceCapacity?.capacity && priceCapacity?.ticketPrice;
-    setIsPriceCapacityComplete(isPriceCapacityComplete);
+    setIsGeneralInfoComplete(
+      !!(
+        generalInfo?.title &&
+        generalInfo?.shortDescription &&
+        generalInfo?.description &&
+        generalInfo?.category
+      ),
+    );
+    setIsDateLocationComplete(
+      !!(
+        dateLocation?.date &&
+        dateLocation?.time &&
+        dateLocation?.location &&
+        dateLocation?.latitude &&
+        dateLocation?.longitude
+      ),
+    );
+    setIsPriceCapacityComplete(
+      !!(priceCapacity?.capacity && priceCapacity?.ticketPrice),
+    );
   }, [generalInfo, dateLocation, priceCapacity]);
 
   const handleSubmit = async () => {
@@ -63,7 +95,7 @@ const Steps = ({ generalInfo, dateLocation, priceCapacity, selectedImage }) => {
         );
 
         if (!response.ok) {
-          throw new Error('Failed to create event');
+          throw new Error(`Failed to create event: ${response.statusText}`);
         }
 
         const result = await response.json();

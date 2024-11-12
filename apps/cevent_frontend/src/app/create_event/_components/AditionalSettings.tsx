@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Box, Typography, FormControlLabel, Switch } from '@mui/material';
 import '../_styles/AditionalSettings.css';
 
-const AditionalSettings = () => {
+const AdditionalSettings = () => {
   const [attendanceControl, setAttendanceControl] = useState(false);
 
-  const handleToggle = (event) => {
-    setAttendanceControl(event.target.checked);
+  const handleToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target; // Desestructuramos `checked` desde `event.target`
+    setAttendanceControl(checked);
   };
 
   return (
@@ -18,6 +19,7 @@ const AditionalSettings = () => {
       <Typography variant="body1" className="additional-settings-description">
         Enable attendance control for the event
       </Typography>
+
       <Typography variant="body2" className="additional-settings-info">
         If you enable attendance control you will be able to register who
         entered and were present at your event.
@@ -32,7 +34,7 @@ const AditionalSettings = () => {
             inputProps={{ 'aria-label': 'Attendance Control Toggle' }}
           />
         }
-        label=""
+        label="Enable Attendance Control"
         labelPlacement="start"
         style={{ marginLeft: 'auto' }}
       />
@@ -40,4 +42,4 @@ const AditionalSettings = () => {
   );
 };
 
-export default AditionalSettings;
+export default AdditionalSettings;

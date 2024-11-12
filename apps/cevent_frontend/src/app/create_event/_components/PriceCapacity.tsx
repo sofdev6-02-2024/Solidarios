@@ -3,23 +3,32 @@ import { Box, TextField, Typography, InputAdornment } from '@mui/material';
 import { AttachMoney } from '@mui/icons-material';
 import '../_styles/PriceCapacity.css';
 
-const PriceCapacity = ({ onComplete }) => {
-  const [fields, setFields] = useState({
-    capacity: '',
-    ticketPrice: '',
+interface Fields {
+  capacity: number;
+  ticketPrice: number;
+}
+
+interface PriceCapacityProps {
+  onComplete: (fields: Fields, isComplete: boolean) => void;
+}
+
+const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
+  const [fields, setFields] = useState<Fields>({
+    capacity: 0,
+    ticketPrice: 0,
   });
 
   useEffect(() => {
     const { capacity, ticketPrice } = fields;
-    const isComplete = capacity && ticketPrice;
+    const isComplete = !!(capacity && ticketPrice);
     onComplete(fields, isComplete);
   }, [fields, onComplete]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFields((prevFields) => ({
       ...prevFields,
-      [name]: value,
+      [name]: parseFloat(value), // Convertimos el valor a número
     }));
   };
 
@@ -40,6 +49,10 @@ const PriceCapacity = ({ onComplete }) => {
           InputProps={{
             className: 'input-field',
           }}
+          inputProps={{
+            'aria-label': 'Capacity',
+            'aria-required': 'true',
+          }}
         />
         <TextField
           label="Ticket Price"
@@ -56,6 +69,10 @@ const PriceCapacity = ({ onComplete }) => {
               </InputAdornment>
             ),
             className: 'input-field',
+          }}
+          inputProps={{
+            'aria-label': 'Ticket Price',
+            'aria-required': 'true',
           }}
         />
       </Box>

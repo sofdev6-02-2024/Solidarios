@@ -12,43 +12,59 @@ import {
 } from './_components/imports';
 import styles from './_styles/CreateEvent.module.css';
 
-const CreateEvent = () => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [generalInfo, setGeneralInfo] = useState({});
-  const [dateLocation, setDateLocation] = useState({});
-  const [priceCapacity, setPriceCapacity] = useState({});
-  const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
-  const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
-  const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
+interface GeneralInfoData {
+  title: string;
+  shortDescription: string;
+  description: string;
+  category: string;
+}
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
+interface DateLocationData {
+  latitude: number | null;
+  longitude: number | null;
+}
+
+interface PriceCapacityData {
+  capacity: number;
+  ticketPrice: number;
+}
+
+const CreateEvent = () => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [generalInfo, setGeneralInfo] = useState<GeneralInfoData>({
+    title: '',
+    shortDescription: '',
+    description: '',
+    category: '',
+  });
+  const [dateLocation, setDateLocation] = useState<DateLocationData>({
+    latitude: null,
+    longitude: null,
+  });
+  const [priceCapacity, setPriceCapacity] = useState<PriceCapacityData>({
+    capacity: 0,
+    ticketPrice: 0,
+  });
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result);
-      };
+      reader.onloadend = () => setSelectedImage(reader.result as string);
       reader.readAsDataURL(file);
     }
-  };
+  };  
 
-  const handleGeneralInfoComplete = (data, isComplete) => {
+  const handleGeneralInfoComplete = (data: GeneralInfoData) => {
     setGeneralInfo(data);
-    setIsGeneralInfoComplete(isComplete);
   };
 
-  const handleDateLocationComplete = (data, isComplete) => {
+  const handleDateLocationComplete = (data: DateLocationData) => {
     setDateLocation(data);
-    setIsDateLocationComplete(isComplete);
   };
 
-  const handlePriceCapacityComplete = (data, isComplete) => {
+  const handlePriceCapacityComplete = (data: PriceCapacityData) => {
     setPriceCapacity(data);
-    setIsPriceCapacityComplete(isComplete);
-  };
-
-  const handleAddActivity = (newActivity) => {
-    console.log('Nueva actividad agregada:', newActivity);
   };
 
   return (
@@ -68,15 +84,16 @@ const CreateEvent = () => {
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
-        <Activities onAddActivity={handleAddActivity} />
+        <Activities
+          onAddActivity={(newActivity) =>
+            console.log('Nueva actividad agregada:', newActivity)
+          }
+        />
         <AditionalSettings />
       </Box>
 
       <Box flex={1} pl={2}>
         <Steps
-          isGeneralInfoComplete={isGeneralInfoComplete}
-          isDateLocationComplete={isDateLocationComplete}
-          isPriceCapacityComplete={isPriceCapacityComplete}
           generalInfo={generalInfo}
           dateLocation={dateLocation}
           priceCapacity={priceCapacity}
