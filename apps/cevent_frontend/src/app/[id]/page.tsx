@@ -12,36 +12,36 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import MailIcon from '@mui/icons-material/Mail';
 import { format } from 'date-fns';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 
-const EventView = () => {
+const EventPage = () => {
   const [eventData, setEventData] = useState<EventDetailDto | null>(null);
-  const router = useRouter();
-  const { id } = router.query; 
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
 
   useEffect(() => {
     if (id) {
       const fetchEventData = async () => {
         try {
           const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_API_URL}/events/api/event?id=${id}`
+            `/api/events/${id}`
           );
           setEventData(response.data);
         } catch (error) {
-          console.error('Failed to fetch event data:', error);
+
         }
       };
 
       fetchEventData();
     }
-  }, [id]); 
-
-  if (!eventData) return <Typography>Loading...</Typography>;
+  }, [id]);
 
   const formattedDate = (date: Date) => format(new Date(date), 'MMMM dd, yyyy');
   const formattedTime = (date: Date) => format(new Date(date), 'h:mm a');
 
   return (
+    <>
+    {eventData == null ? <Typography>Loading...</Typography> :
     <Card sx={styles.cardStyles}>
       <Grid container spacing={2}>
         <Grid item xs={8}>
@@ -95,8 +95,9 @@ const EventView = () => {
           </Button>
         </Grid>
       </Grid>
-    </Card>
+    </Card>}
+    </>
   );
 };
 
-export default EventView;
+export default EventPage;

@@ -11,12 +11,14 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
  * @returns The response object
  */
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } },
-) {
+  request: Request) 
+{
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  console.log('haciendo peticion a back:', id);
   try {
     const response = await axios.get(
-      `${BASE_URL}/events/api/event?id=${params.id}`,
+      `${BASE_URL}/events/api/event/${id}`,
     );
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
