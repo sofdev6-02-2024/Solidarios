@@ -25,6 +25,7 @@ export default function RootLayout({
               <Header />
 
               {children}
+              <Footer />
             </ThemeRegistry>
           </ReduxProvider>
         </body>
