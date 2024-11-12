@@ -1,4 +1,7 @@
-import { EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
+import {
+  EventDetailDto,
+  EventHomePageDto,
+} from '@/utils/interfaces/EventInterfaces';
 
 /**
  * Fetches the events for the home page
@@ -21,5 +24,19 @@ export const fetchHomePageEvents = async (
     return await response.json();
   } catch (error) {
     return [];
+  }
+};
+
+export const getEventById = async (
+  id: string,
+): Promise<EventDetailDto | null> => {
+  try {
+    const response = await fetch(`/api/events/${id}`);
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch (error) {
+    return null;
   }
 };

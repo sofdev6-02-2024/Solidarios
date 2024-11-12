@@ -7,7 +7,9 @@ const styles: { [key: string]: SxProps<Theme> } = {
     borderRadius: '12px',
     padding: '16px',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    width: '800px',
+    width: '100%',
+    top: -90,
+    position: "absolute"
   },
   titleStyles: {
     fontSize: '24px',
@@ -25,6 +27,17 @@ const styles: { [key: string]: SxProps<Theme> } = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
+  },
+
+  dataRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+
+  infoColumn: {
+    display: 'flex',
+    flexDirection: 'column',
     marginBottom: '8px',
   },
   iconStyles: {
@@ -50,19 +63,23 @@ const styles: { [key: string]: SxProps<Theme> } = {
   iconGroup: {
     display: 'flex',
     gap: '8px',
+    marginTop: '10px',
   },
   iconShareStyles: {
     color: '#616161',
   },
   subscribeSection: {
     display: 'flex',
+    gap: 1,
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderLeft: '1px solid #e0e0e0',
     paddingLeft: '16px',
   },
   subscribeTitleStyles: {
-    fontSize: '18px',
+    textAlign: 'center',
+    width: '100%',
     fontWeight: 'bold',
     color: '#000',
     marginBottom: '16px',
@@ -77,6 +94,10 @@ const styles: { [key: string]: SxProps<Theme> } = {
     color: '#fff',
     width: '100%',
     fontWeight: 'bold',
+  },
+
+  textClickable: {
+    display: 'inline-block',
   },
 };
 

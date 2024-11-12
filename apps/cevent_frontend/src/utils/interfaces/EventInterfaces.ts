@@ -1,3 +1,5 @@
+import { EventCategory } from "./Categories";
+
 export interface Location {
   longitude: number;
   latitude: number;
@@ -6,7 +8,7 @@ export interface Location {
 export interface EventHomePageDto {
   eventId: number;
   name: string;
-  category: string;
+  category: EventCategory;
   eventDate: Date;
   address: string;
   ticketPrice: number;
