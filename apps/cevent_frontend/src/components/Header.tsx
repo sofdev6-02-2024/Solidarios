@@ -19,7 +19,8 @@ import { Box } from '@mui/system';
 import { useRouter, usePathname } from 'next/navigation';
 import { routes } from '@/utils/navigation/Routes';
 import { useTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import styles from '@/styles/components/Header.module.css';
 
 export default function Header() {
@@ -28,6 +29,14 @@ export default function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session) {
+      router.push('/');
+    }
+  }, [session, router]);
 
   const handleNavigation = (route: string) => {
     router.push(route);
@@ -38,7 +47,7 @@ export default function Header() {
 
   return (
     <AppBar
-      position="static"
+      position="sticky"
       style={{
         backgroundColor: theme.palette.background.default,
         color: theme.palette.text.secondary,
@@ -145,16 +154,35 @@ export default function Header() {
           </>
         ) : (
           <>
-            <IconButton size="large" color="inherit">
-              <MdNotifications />
-            </IconButton>
-
-            <IconButton
-              size="large"
-              onClick={() => handleNavigation(routes.profile)}
-            >
-              <AccountCircle style={{ fontSize: 40 }} />
-            </IconButton>
+            {session ? (
+              <>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => handleNavigation(routes.profile)}
+                >
+                  <AccountCircle style={{ fontSize: 40 }} />
+                </IconButton>
+                <IconButton size="large" color="inherit">
+                  <MdNotifications />
+                </IconButton>
+              </>
+            ) : (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => signIn('keycloak')}
+                sx={{
+                  width: '50px',
+                  height: '30px',
+                  borderRadius: '45%',
+                  padding: 0,
+                  fontSize: '0.55rem',
+                }}
+              >
+                Login
+              </Button>
+            )}
           </>
         )}
       </Toolbar>

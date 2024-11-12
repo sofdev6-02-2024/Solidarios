@@ -2,6 +2,7 @@
 using CEventService.API.Services;
 using CEventService.API.DTOs.Event;
 using CEventService.API.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CEventService.API.Controllers
 {
