@@ -53,7 +53,7 @@ const CreateEvent = () => {
       reader.onloadend = () => setSelectedImage(reader.result as string);
       reader.readAsDataURL(file);
     }
-  };  
+  };
 
   const handleGeneralInfoComplete = (data: GeneralInfoData) => {
     setGeneralInfo(data);

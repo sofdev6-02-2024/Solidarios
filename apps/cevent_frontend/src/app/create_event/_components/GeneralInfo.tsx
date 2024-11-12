@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, FormHelperText, Typography, Box, MenuItem } from '@mui/material';
+import {
+  TextField,
+  FormHelperText,
+  Typography,
+  Box,
+  MenuItem,
+} from '@mui/material';
 import '../_styles/GeneralInfo.css';
 
-
 interface OnCompleteCallback {
-  (fields: { 
-    title: string; 
-    shortDescription: string; 
-    description: string; 
-    category: string 
-  }, 
-  isComplete: boolean): void;
+  (
+    fields: {
+      title: string;
+      shortDescription: string;
+      description: string;
+      category: string;
+    },
+    isComplete: boolean,
+  ): void;
 }
 
 interface Fields {
@@ -28,12 +35,13 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
     category: '',
   });
 
-  const handleFieldChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFields((prevFields) => ({
-      ...prevFields,
-      [field]: e.target.value,
-    }));
-  };
+  const handleFieldChange =
+    (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFields((prevFields) => ({
+        ...prevFields,
+        [field]: e.target.value,
+      }));
+    };
 
   const checkCompletion = () => {
     const { title, shortDescription, description, category } = fields;
@@ -51,8 +59,12 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         General event information
       </Typography>
 
-      <FormHelperText sx={{ color: 'gray', fontSize: '0.875rem' }} className="form-helper-text">
-        Be clear and descriptive with a title that explains what your event is about.
+      <FormHelperText
+        sx={{ color: 'gray', fontSize: '0.875rem' }}
+        className="form-helper-text"
+      >
+        Be clear and descriptive with a title that explains what your event is
+        about.
       </FormHelperText>
 
       <TextField
@@ -67,8 +79,12 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         }}
       />
 
-      <FormHelperText sx={{ color: 'gray', fontSize: '0.875rem' }} className="form-helper-text">
-        Set a short description for your event to give a brief summary of the event.
+      <FormHelperText
+        sx={{ color: 'gray', fontSize: '0.875rem' }}
+        className="form-helper-text"
+      >
+        Set a short description for your event to give a brief summary of the
+        event.
       </FormHelperText>
 
       <TextField
@@ -83,8 +99,12 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         }}
       />
 
-      <FormHelperText sx={{ color: 'gray', fontSize: '0.875rem' }} className="form-helper-text">
-        Grab people's attention with a brief description of your event. Attendees will see it at the top of your event page.
+      <FormHelperText
+        sx={{ color: 'gray', fontSize: '0.875rem' }}
+        className="form-helper-text"
+      >
+        Grab people's attention with a brief description of your event.
+        Attendees will see it at the top of your event page.
       </FormHelperText>
 
       <TextField
@@ -101,7 +121,10 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         }}
       />
 
-      <FormHelperText sx={{ color: 'gray', fontSize: '0.875rem' }} className="form-helper-text">
+      <FormHelperText
+        sx={{ color: 'gray', fontSize: '0.875rem' }}
+        className="form-helper-text"
+      >
         Correctly categorize the type of event you are organizing.
       </FormHelperText>
 
@@ -117,14 +140,30 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
           className: 'text-field-outline',
         }}
       >
-        <MenuItem value="Conference" sx={{ color: 'black' }}>Conference</MenuItem>
-        <MenuItem value="Workshop" sx={{ color: 'black' }}>Workshop</MenuItem>
-        <MenuItem value="Networking" sx={{ color: 'black' }}>Networking</MenuItem>
-        <MenuItem value="Music" sx={{ color: 'black' }}>Music</MenuItem>
-        <MenuItem value="Sports" sx={{ color: 'black' }}>Sports</MenuItem>
-        <MenuItem value="Technology" sx={{ color: 'black' }}>Technology</MenuItem>
-        <MenuItem value="Art" sx={{ color: 'black' }}>Art</MenuItem>
-        <MenuItem value="Social" sx={{ color: 'black' }}>Social</MenuItem>
+        <MenuItem value="Conference" sx={{ color: 'black' }}>
+          Conference
+        </MenuItem>
+        <MenuItem value="Workshop" sx={{ color: 'black' }}>
+          Workshop
+        </MenuItem>
+        <MenuItem value="Networking" sx={{ color: 'black' }}>
+          Networking
+        </MenuItem>
+        <MenuItem value="Music" sx={{ color: 'black' }}>
+          Music
+        </MenuItem>
+        <MenuItem value="Sports" sx={{ color: 'black' }}>
+          Sports
+        </MenuItem>
+        <MenuItem value="Technology" sx={{ color: 'black' }}>
+          Technology
+        </MenuItem>
+        <MenuItem value="Art" sx={{ color: 'black' }}>
+          Art
+        </MenuItem>
+        <MenuItem value="Social" sx={{ color: 'black' }}>
+          Social
+        </MenuItem>
       </TextField>
     </Box>
   );

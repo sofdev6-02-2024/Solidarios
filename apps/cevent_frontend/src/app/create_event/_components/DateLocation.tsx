@@ -19,7 +19,11 @@ type DateLocationData = {
   longitude: number | null;
 };
 
-const DateLocation = ({ onComplete }: { onComplete: (data: DateLocationData, isComplete: boolean) => void }) => {
+const DateLocation = ({
+  onComplete,
+}: {
+  onComplete: (data: DateLocationData, isComplete: boolean) => void;
+}) => {
   const [fields, setFields] = useState<DateLocationData>({
     date: new Date(),
     time: '',
@@ -41,51 +45,64 @@ const DateLocation = ({ onComplete }: { onComplete: (data: DateLocationData, isC
   });
 
   useEffect(() => {
-    const isDateValid = fields.date instanceof Date && !isNaN(fields.date.getTime());
-    const isTimeValid = typeof fields.time === 'string' && /^[0-9]{2}:[0-9]{2}$/.test(fields.time);
-    const isLocationValid = typeof fields.location === 'string' && fields.location.trim() !== '';
+    const isDateValid =
+      fields.date instanceof Date && !isNaN(fields.date.getTime());
+    const isTimeValid =
+      typeof fields.time === 'string' &&
+      /^[0-9]{2}:[0-9]{2}$/.test(fields.time);
+    const isLocationValid =
+      typeof fields.location === 'string' && fields.location.trim() !== '';
 
     const isComplete = isDateValid && isTimeValid && isLocationValid;
     onComplete(fields, isComplete);
   }, [fields, onComplete]);
 
-  const handleMarkerDragEnd = useCallback(async (event: google.maps.MapMouseEvent) => {
-    const lat = event.latLng?.lat();
-    const lng = event.latLng?.lng();
+  const handleMarkerDragEnd = useCallback(
+    async (event: google.maps.MapMouseEvent) => {
+      const lat = event.latLng?.lat();
+      const lng = event.latLng?.lng();
 
-    if (lat !== undefined && lng !== undefined) {
-      const newPosition = { lat, lng };
-      setMapState((prev) => ({
-        ...prev,
-        markerPosition: newPosition,
-      }));
+      if (lat !== undefined && lng !== undefined) {
+        const newPosition = { lat, lng };
+        setMapState((prev) => ({
+          ...prev,
+          markerPosition: newPosition,
+        }));
 
-      try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
-        );
-        const data = await response.json();
+        try {
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
+          );
+          const data = await response.json();
 
-        if (data.status === 'OK' && data.results && data.results.length > 0) {
-          const streetName = data.results[0].formatted_address;
-          setFields((prev) => ({
-            ...prev,
-            location: streetName,
-            latitude: lat,
-            longitude: lng,
-          }));
-        } else {
-          console.error('Error fetching location data:', data.status);
+          if (data.status === 'OK' && data.results && data.results.length > 0) {
+            const streetName = data.results[0].formatted_address;
+            setFields((prev) => ({
+              ...prev,
+              location: streetName,
+              latitude: lat,
+              longitude: lng,
+            }));
+          } else {
+            console.error('Error fetching location data:', data.status);
+          }
+        } catch (error) {
+          console.error(
+            'An error occurred while fetching location data:',
+            error,
+          );
         }
-      } catch (error) {
-        console.error("An error occurred while fetching location data:", error);
+      } else {
+        console.error('LatLng is null');
       }
-    } else {
-      console.error("LatLng is null");
-    }
-  }, []);
+    },
+    [],
+  );
 
-  const handleChange = (field: string, value: string | Date | number | null) => {
+  const handleChange = (
+    field: string,
+    value: string | Date | number | null,
+  ) => {
     setFields((prev) => ({
       ...prev,
       [field]: value,
@@ -109,7 +126,7 @@ const DateLocation = ({ onComplete }: { onComplete: (data: DateLocationData, isC
         markerPosition: { lat, lng },
       }));
     } else {
-      console.error("LatLng is null");
+      console.error('LatLng is null');
     }
   };
 
@@ -159,7 +176,6 @@ const DateLocation = ({ onComplete }: { onComplete: (data: DateLocationData, isC
             />
           </Box>
         </Modal>
-
 
         <TextField
           label="Hour"

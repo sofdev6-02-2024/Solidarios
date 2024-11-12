@@ -7,7 +7,10 @@ interface ImageUploadProps {
   onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ selectedImage, onImageChange }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  selectedImage,
+  onImageChange,
+}) => {
   return (
     <Box className="image-upload" sx={{ textAlign: 'center', padding: '16px' }}>
       <Typography variant="h6">Upload Image</Typography>
@@ -19,11 +22,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ selectedImage, onImageChange 
         sx={{ marginBottom: '16px' }}
       >
         Select Image
-        <input
-          type="file"
-          hidden
-          onChange={onImageChange} 
-        />
+        <input type="file" hidden onChange={onImageChange} />
       </Button>
 
       {selectedImage ? (
