@@ -7,23 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<SubscriptionService>();
 builder.Services.AddControllers();
 
-// builder.Services.AddCors(options =>
-// {
-//     options.AddPolicy("AllowSpecificOrigin", builder =>
-//     {
-//         builder.WithOrigins("http://localhost:5233")
-//             .AllowAnyMethod()
-//             .AllowAnyHeader()
-//             .AllowCredentials();
-//     });
-// });
-
 
 var app = builder.Build();
 
 var subscriptionService = app.Services.GetRequiredService<SubscriptionService>();
 await subscriptionService.SubscribeToEventBusAsync();
 
-// app.UseCors("AllowSpecificOrigin");
 app.MapControllers();
 app.Run();
