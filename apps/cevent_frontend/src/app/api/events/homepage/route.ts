@@ -7,7 +7,6 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
-  // Extraer los parámetros de filtro
   const filters: EventFilter = {
     page: Number(searchParams.get('page')) || 1,
     pageSize: Number(searchParams.get('pageSize')) || 10,
@@ -20,22 +19,15 @@ export async function GET(request: Request) {
     SortBy: searchParams.get('SortBy') || undefined,
     IsDescending: searchParams.get('IsDescending') === 'true', 
   };
-
-  // Filtra los parámetros que no están definidos
   const queryParams = Object.fromEntries(
     Object.entries(filters).filter(([, value]) => value !== undefined)
   );
-
-  console.log('Query Params:', queryParams);
-
-
   try {
     const response = await axios.get(`${BASE_URL}/events/api/Event/homepage`, {
       params: queryParams,
     });
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
-    console.error('Error fetching events:', error);
     return NextResponse.json(
       { error: 'Failed to fetch events' },
       { status: 500 },
