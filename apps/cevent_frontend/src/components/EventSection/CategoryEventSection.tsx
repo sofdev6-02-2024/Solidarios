@@ -1,11 +1,13 @@
 import { EventCategory, CategoryObj } from '@/utils/interfaces/Categories';
 import { Box, Typography } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
-import { EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
+import { EventFilter, EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
 import { fetchHomePageEvents } from '@/services/EventService';
 import EventsBox from './EventsBox';
 import SkeletonEventsBox from './SkeletonEventsBox';
 import EmptyEventSection from './EmptyEventSection';
+import { pages } from 'next/dist/build/templates/app-page';
+import SliderEvents from './SliderEvents';
 
 interface EventSectionProps {
   category: EventCategory;
@@ -15,7 +17,12 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
   const [events, setEvents] = useState<EventHomePageDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    fetchHomePageEvents(1, 6)
+    const filters: EventFilter = {
+      page: 1,
+      pageSize: category === EventCategory.All ? 6 : 9,
+      Category: category !== EventCategory.All ? category : undefined,
+    };
+    fetchHomePageEvents(filters)
       .then((data) => {
         setEvents(data);
       })
@@ -25,6 +32,7 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
   }, []);
   return (
     <Box sx={{ mt: 4 }}>
+     
       <Box
         sx={{
           display: 'flex',
@@ -44,6 +52,7 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
           {CategoryObj[category].Phrase}{' '}
         </Typography>
       </Box>
+      {category !== EventCategory.All && <SliderEvents events={events.slice(0,3)}/>}
       {events.length < 1 ? (
         loading ? (
           <SkeletonEventsBox />
@@ -51,7 +60,7 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
           <EmptyEventSection />
         )
       ) : (
-        <EventsBox events={events} />
+        <EventsBox events={category ===EventCategory.All ? events : events.slice(3,9)} />
       )}
     </Box>
   );

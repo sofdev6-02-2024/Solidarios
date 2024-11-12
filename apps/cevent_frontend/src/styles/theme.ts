@@ -15,6 +15,9 @@ const theme = createTheme({
     lightBlack: {
       main: 'rgba(0, 0, 0, 0.6)',
     },
+    accent: {
+      main: '#F6B835'
+    },
     error: {
       main: '#f44336',
     },

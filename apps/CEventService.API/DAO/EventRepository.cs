@@ -47,13 +47,46 @@ namespace CEventService.API.DAO
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize)
+        public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize, EventFilterDto filters)
         {
-            var events =  await _context.Events
-                .Skip(page)
-                .Take(pageSize)
+            var query = _context.Events.AsQueryable();
+
+            // Filtros
+            if (!string.IsNullOrEmpty(filters.Category))
+                query = query.Where(e => e.Category == filters.Category);
+
+            if (filters.StartDate.HasValue)
+                query = query.Where(e => e.EventDate >= filters.StartDate.Value);
+
+            if (filters.EndDate.HasValue)
+                query = query.Where(e => e.EventDate <= filters.EndDate.Value);
+
+            if (filters.MinPrice.HasValue)
+                query = query.Where(e => e.TicketPrice >= filters.MinPrice.Value);
+
+            if (filters.MaxPrice.HasValue)
+                query = query.Where(e => e.TicketPrice <= filters.MaxPrice.Value);
+
+            if (!string.IsNullOrEmpty(filters.Status))
+                query = query.Where(e => e.Status == filters.Status);
+
+            // Ordenamiento
+            if (!string.IsNullOrEmpty(filters.SortBy))
+            {
+                query = filters.IsDescending
+                    ? query.OrderByDescending(e => EF.Property<object>(e, filters.SortBy))
+                    : query.OrderBy(e => EF.Property<object>(e, filters.SortBy));
+            }
+
+            // Paginación
+            query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
+            var events = await query
+                .Select(e => _mapper.Map<EventHomePageDto>(e))
                 .ToListAsync();
-            return _mapper.Map<IEnumerable<EventHomePageDto>>(events);
+
+            return events;
         }
+
     }
 }

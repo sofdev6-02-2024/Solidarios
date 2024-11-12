@@ -2,6 +2,8 @@ export enum EventCategory {
   Music = 'Music',
   Sports = 'Sports',
   Technology = 'Technology',
+  Art = 'Art',
+  Social = 'Social',
   All = 'All',
 }
 
@@ -15,21 +17,33 @@ interface CategoryOptions {
 export const CategoryObj: Record<EventCategory, CategoryOptions> = {
   [EventCategory.Music]: {
     KeyWord: 'MUSIC',
-    Phrase: 'Music',
+    Phrase: 'FLOW WITH THE ',
     Color: '#FFD700',
     KeyWordFirst: false,
   },
   [EventCategory.Sports]: {
-    KeyWord: 'sports',
-    Phrase: 'Sports',
+    KeyWord: 'SSPORT',
+    Phrase: 'IN YOUR LIFE',
     Color: '#FF4500',
-    KeyWordFirst: false,
+    KeyWordFirst: true,
   },
 
   [EventCategory.Technology]: {
-    KeyWord: 'technology',
-    Phrase: 'Technology',
+    KeyWord: 'TECHNOLOGY',
+    Phrase: 'DRIVES',
     Color: '#00BFFF',
+    KeyWordFirst: false,
+  },
+  [EventCategory.Art]: {
+    KeyWord: 'ART',
+    Phrase: 'THAT INSPIRES',
+    Color: '#FF69B4',
+    KeyWordFirst: true,
+  },
+  [EventCategory.Social]: {
+    KeyWord: 'SOCIAL WORLD',
+    Phrase: 'IN A',
+    Color: '#FF8C00',
     KeyWordFirst: false,
   },
 

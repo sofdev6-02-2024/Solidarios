@@ -35,9 +35,11 @@ declare module '@mui/material/Typography' {
 declare module '@mui/material/styles' {
   interface Palette {
     lightBlack: Palette['primary'];
+    accent: Palette['primary'];
   }
 
   interface PaletteOptions {
     lightBlack?: PaletteOptions['primary'];
+    accent?: PaletteOptions['primary'];
   }
 }

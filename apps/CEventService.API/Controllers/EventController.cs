@@ -9,8 +9,8 @@ namespace CEventService.API.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        
-         private readonly IEventService _eventService;
+
+        private readonly IEventService _eventService;
 
         public EventController(IEventService eventService)
         {
@@ -25,17 +25,21 @@ namespace CEventService.API.Controllers
         }
 
         [HttpGet("homepage")]
-        public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage(
+    [FromQuery] EventFilterDto filters, 
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 10)
         {
-            var events = await _eventService.GetEventsForHomePageAsync(page, pageSize);
+            var events = await _eventService.GetEventsForHomePageAsync(page, pageSize, filters);
             return Ok(events);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Event>> GetEventById(int id)
         {
             var @event = await _eventService.GetByIdAsync(id);
-            
+
             if (@event == null)
             {
                 return NotFound();
@@ -47,7 +51,7 @@ namespace CEventService.API.Controllers
 
         [HttpPost]
         public async Task<ActionResult<EventOutputDto>> CreateEvent([FromBody] EventInputDto newEventDto)
-        {    
+        {
             try
             {
                 if (!ModelState.IsValid)
@@ -63,7 +67,7 @@ namespace CEventService.API.Controllers
                 return StatusCode(500, "An error occurred while creating the event." + ex);
             }
         }
-        
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEvent(int id, [FromBody] EventInputDto eventInputDto, [FromHeader] string userId)
         {
@@ -75,7 +79,7 @@ namespace CEventService.API.Controllers
                 }
 
                 var updateResult = await _eventService.UpdateEventAsync(id, eventInputDto, userId);
-        
+
                 if (updateResult == null)
                 {
                     return NotFound($"Event with ID {id} not found.");
@@ -92,7 +96,7 @@ namespace CEventService.API.Controllers
                 return StatusCode(500, $"An error occurred while updating the event: {ex.Message}");
             }
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent(int id)
         {

@@ -24,3 +24,16 @@ export interface EventDetailDto extends EventHomePageDto {
   organizerUserId: number;
   createdAt: Date;
 }
+
+export interface EventFilter {
+  Category?: string;
+  StartDate?: string;
+  EndDate?: string;
+  MinPrice?: number;
+  MaxPrice?: number;
+  Status?: string;
+  SortBy?: string;
+  IsDescending?: boolean;
+  page?: number;         
+  pageSize?: number;      
+}
