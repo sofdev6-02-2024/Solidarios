@@ -3,7 +3,7 @@
 import Layout from '@/components/Layout';
 import { EventCategory } from '@/utils/interfaces/Categories';
 import CategoryEventSection from '@/components/EventSection/CategoryEventSection';
-import { CategoryObj } from '@/utils/interfaces/Categories'; 
+import { CategoryObj } from '@/utils/interfaces/Categories';
 
 export default function Home() {
   return (

@@ -19,21 +19,18 @@ import {
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import styles from '@/styles/components/CardEventStyles';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface CardEventProps {
   eventData: EventHomePageDto;
 }
 
 const CardEvent = ({ eventData }: CardEventProps) => {
-  useEffect(() => {
-    console.log('CardEvent rendered');
-    console.log(eventData);
-  }, [eventData]);
-
+  const router = useRouter();
   return (
     <Card sx={styles.cardStyles}>
-      <CardActionArea>
-        <CardMedia
+      <CardActionArea onClick={() => router.push(`/${eventData.eventId}`)}>
+        <CardMedia 
           component="img"
           height="140"
           image={eventData.coverPhotoUrl}

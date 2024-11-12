@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  EventDetailDto,
   EventFilter,
   EventHomePageDto,
 } from '@/utils/interfaces/EventInterfaces';
@@ -36,5 +37,19 @@ export const fetchHomePageEvents = async (
   } catch (error) {
     console.error('Error fetching events:', error);
     return [];
+  }
+};
+
+export const getEventById = async (
+  id: string,
+): Promise<EventDetailDto | null> => {
+  try {
+    const response = await fetch(`/api/events/${id}`);
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch (error) {
+    return null;
   }
 };
