@@ -8,7 +8,7 @@ const GeneralInfo = ({ onComplete }) => {
     title: '',
     shortDescription: '',
     description: '',
-    category: ''
+    category: '',
   });
 
   const [isCompleted, setIsCompleted] = useState(false);
@@ -16,7 +16,7 @@ const GeneralInfo = ({ onComplete }) => {
   const handleFieldChange = (field) => (e) => {
     setFields((prevFields) => ({
       ...prevFields,
-      [field]: e.target.value
+      [field]: e.target.value,
     }));
   };
 
@@ -41,7 +41,8 @@ const GeneralInfo = ({ onComplete }) => {
       </Typography>
 
       <FormHelperText className="form-helper-text">
-        Be clear and descriptive with a title that explains what your event is about.
+        Be clear and descriptive with a title that explains what your event is
+        about.
       </FormHelperText>
 
       <TextField
@@ -51,12 +52,13 @@ const GeneralInfo = ({ onComplete }) => {
         value={fields.title}
         onChange={handleFieldChange('title')}
         InputProps={{
-          className: 'text-field-outline'
+          className: 'text-field-outline',
         }}
       />
 
       <FormHelperText className="form-helper-text">
-        Set a short description for your event to give a brief summary of the event.
+        Set a short description for your event to give a brief summary of the
+        event.
       </FormHelperText>
 
       <TextField
@@ -66,12 +68,13 @@ const GeneralInfo = ({ onComplete }) => {
         value={fields.shortDescription}
         onChange={handleFieldChange('shortDescription')}
         InputProps={{
-          className: 'text-field-outline'
+          className: 'text-field-outline',
         }}
       />
 
       <FormHelperText className="form-helper-text">
-        Grab people's attention with a brief description of your event. Attendees will see it at the top of your event page.
+        Grab people's attention with a brief description of your event.
+        Attendees will see it at the top of your event page.
       </FormHelperText>
 
       <TextField
@@ -83,7 +86,7 @@ const GeneralInfo = ({ onComplete }) => {
         value={fields.description}
         onChange={handleFieldChange('description')}
         InputProps={{
-          className: 'text-field-outline'
+          className: 'text-field-outline',
         }}
       />
 
@@ -99,17 +102,33 @@ const GeneralInfo = ({ onComplete }) => {
         value={fields.category}
         onChange={handleFieldChange('category')}
         InputProps={{
-          className: 'text-field-outline'
+          className: 'text-field-outline',
         }}
       >
-        <MenuItem value="Conference" sx={{ color: 'black' }}>Conference</MenuItem>
-        <MenuItem value="Workshop" sx={{ color: 'black' }}>Workshop</MenuItem>
-        <MenuItem value="Networking" sx={{ color: 'black' }}>Networking</MenuItem>
-        <MenuItem value="Music" sx={{ color: 'black' }}>Music</MenuItem>
-        <MenuItem value="Sports" sx={{ color: 'black' }}>Sports</MenuItem>
-        <MenuItem value="Technology" sx={{ color: 'black' }}>Technology</MenuItem>
-        <MenuItem value="Art" sx={{ color: 'black' }}>Art</MenuItem>
-        <MenuItem value="Social" sx={{ color: 'black' }}>Social</MenuItem>
+        <MenuItem value="Conference" sx={{ color: 'black' }}>
+          Conference
+        </MenuItem>
+        <MenuItem value="Workshop" sx={{ color: 'black' }}>
+          Workshop
+        </MenuItem>
+        <MenuItem value="Networking" sx={{ color: 'black' }}>
+          Networking
+        </MenuItem>
+        <MenuItem value="Music" sx={{ color: 'black' }}>
+          Music
+        </MenuItem>
+        <MenuItem value="Sports" sx={{ color: 'black' }}>
+          Sports
+        </MenuItem>
+        <MenuItem value="Technology" sx={{ color: 'black' }}>
+          Technology
+        </MenuItem>
+        <MenuItem value="Art" sx={{ color: 'black' }}>
+          Art
+        </MenuItem>
+        <MenuItem value="Social" sx={{ color: 'black' }}>
+          Social
+        </MenuItem>
       </TextField>
     </Box>
   );

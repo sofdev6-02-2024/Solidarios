@@ -4,7 +4,6 @@ import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 import '../_styles/Activities.css';
 
-
 const Activities = ({ onAddActivity }) => {
   const [activities, setActivities] = useState([]);
   const [activityTitle, setActivityTitle] = useState('');
@@ -38,9 +37,12 @@ const Activities = ({ onAddActivity }) => {
 
   return (
     <Box className="info-box">
-      <Typography variant="h6" className="activity-title">Activities</Typography>
+      <Typography variant="h6" className="activity-title">
+        Activities
+      </Typography>
       <Typography sx={{ marginBottom: 2 }}>
-        Keep your event schedule organized by adding activities and notifying users when they are about to start.
+        Keep your event schedule organized by adding activities and notifying
+        users when they are about to start.
       </Typography>
 
       <Button
@@ -95,7 +97,11 @@ const Activities = ({ onAddActivity }) => {
               onChange={(e) => setStartTime(e.target.value)}
               margin="normal"
               InputProps={{
-                startAdornment: <span role="img" aria-label="clock">⏰</span>,
+                startAdornment: (
+                  <span role="img" aria-label="clock">
+                    ⏰
+                  </span>
+                ),
                 style: { color: 'black' },
               }}
               sx={{ flex: 1 }}
@@ -107,8 +113,12 @@ const Activities = ({ onAddActivity }) => {
               onChange={(e) => setEndTime(e.target.value)}
               margin="normal"
               InputProps={{
-                startAdornment: <span role="img" aria-label="clock">⏰</span>,
-                style: { color: 'black' }, 
+                startAdornment: (
+                  <span role="img" aria-label="clock">
+                    ⏰
+                  </span>
+                ),
+                style: { color: 'black' },
               }}
               sx={{ flex: 1 }}
             />
@@ -128,15 +138,27 @@ const Activities = ({ onAddActivity }) => {
 
       {activities.length > 0 && (
         <Box mt={2}>
-          <Typography variant="subtitle1" className="added-activities-title">Added Activities:</Typography>
+          <Typography variant="subtitle1" className="added-activities-title">
+            Added Activities:
+          </Typography>
           {activities.map((activity, index) => (
             <Box key={index} mt={1}>
               <Typography variant="body1">Title: {activity.name}</Typography>
-              <Typography variant="body2">Description: {activity.description}</Typography>
-              <Typography variant="body2">Start Time: {activity.startTime}</Typography>
-              <Typography variant="body2">End Time: {activity.endTime}</Typography>
-              <Typography variant="body2">Capacity: {activity.capacity}</Typography>
-              <Typography variant="body2">Created At: {activity.createdAt}</Typography>
+              <Typography variant="body2">
+                Description: {activity.description}
+              </Typography>
+              <Typography variant="body2">
+                Start Time: {activity.startTime}
+              </Typography>
+              <Typography variant="body2">
+                End Time: {activity.endTime}
+              </Typography>
+              <Typography variant="body2">
+                Capacity: {activity.capacity}
+              </Typography>
+              <Typography variant="body2">
+                Created At: {activity.createdAt}
+              </Typography>
             </Box>
           ))}
         </Box>

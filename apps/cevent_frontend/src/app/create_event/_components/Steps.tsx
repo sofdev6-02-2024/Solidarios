@@ -1,35 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, FormControlLabel, Checkbox, IconButton, TextField, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  FormControlLabel,
+  Checkbox,
+  IconButton,
+  TextField,
+  Button,
+} from '@mui/material';
 import { AddCircleOutline } from '@mui/icons-material';
 import '../_styles/Steps.css';
 
-const Steps = ({
-  generalInfo,
-  dateLocation,
-  priceCapacity,
-  selectedImage
-}) => {
+const Steps = ({ generalInfo, dateLocation, priceCapacity, selectedImage }) => {
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
 
-  useEffect(() => {   
-
-    const isGeneralInfoComplete = generalInfo?.title && generalInfo?.shortDescription && generalInfo?.description && generalInfo?.category;
+  useEffect(() => {
+    const isGeneralInfoComplete =
+      generalInfo?.title &&
+      generalInfo?.shortDescription &&
+      generalInfo?.description &&
+      generalInfo?.category;
     setIsGeneralInfoComplete(isGeneralInfoComplete);
 
-    const isDateLocationComplete = dateLocation?.date &&  dateLocation?.time && dateLocation?.location && dateLocation?.latitude && dateLocation?.longitude;
+    const isDateLocationComplete =
+      dateLocation?.date &&
+      dateLocation?.time &&
+      dateLocation?.location &&
+      dateLocation?.latitude &&
+      dateLocation?.longitude;
     setIsDateLocationComplete(isDateLocationComplete);
 
-    const isPriceCapacityComplete = priceCapacity?.capacity && priceCapacity?.ticketPrice;
+    const isPriceCapacityComplete =
+      priceCapacity?.capacity && priceCapacity?.ticketPrice;
     setIsPriceCapacityComplete(isPriceCapacityComplete);
-
   }, [generalInfo, dateLocation, priceCapacity]);
 
-
   const handleSubmit = async () => {
-    if (isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete) {
-
+    if (
+      isGeneralInfoComplete &&
+      isDateLocationComplete &&
+      isPriceCapacityComplete
+    ) {
       const eventData = {
         ...generalInfo,
         ...dateLocation,
@@ -38,13 +51,16 @@ const Steps = ({
       };
 
       try {
-        const response = await fetch('http://localhost:5149/ceventservice.api/api/Event', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          'http://localhost:5149/ceventservice.api/api/Event',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventData),
           },
-          body: JSON.stringify(eventData),
-        });
+        );
 
         if (!response.ok) {
           throw new Error('Failed to create event');
@@ -63,7 +79,9 @@ const Steps = ({
   return (
     <Box mb={4} p={3}>
       <Box mb={4} p={3} className="step-container">
-        <Typography variant="h6" className="checkbox-label">Steps</Typography>
+        <Typography variant="h6" className="checkbox-label">
+          Steps
+        </Typography>
 
         <FormControlLabel
           control={<Checkbox checked={isGeneralInfoComplete} />}
@@ -81,7 +99,9 @@ const Steps = ({
 
       <Box className="reminder-container">
         <Box mt={4} p={2}>
-          <Typography variant="h6" className="checkbox-label">Add Collaborators</Typography>
+          <Typography variant="h6" className="checkbox-label">
+            Add Collaborators
+          </Typography>
           <Box display="flex" alignItems="center" mt={2}>
             <IconButton color="primary">
               <AddCircleOutline fontSize="large" />
@@ -90,7 +110,9 @@ const Steps = ({
         </Box>
 
         <Box mt={4} p={2}>
-          <Typography variant="h6" className="checkbox-label">Set Reminder</Typography>
+          <Typography variant="h6" className="checkbox-label">
+            Set Reminder
+          </Typography>
           <TextField
             label="Filter options"
             fullWidth
@@ -104,8 +126,13 @@ const Steps = ({
             fullWidth
             className="create-event-button"
             onClick={handleSubmit}
-            disabled={!(isGeneralInfoComplete && isDateLocationComplete && isPriceCapacityComplete)}
-
+            disabled={
+              !(
+                isGeneralInfoComplete &&
+                isDateLocationComplete &&
+                isPriceCapacityComplete
+              )
+            }
           >
             Create Event
           </Button>

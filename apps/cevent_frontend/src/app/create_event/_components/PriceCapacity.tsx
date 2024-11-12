@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, Typography, InputAdornment } from '@mui/material'; 
+import { Box, TextField, Typography, InputAdornment } from '@mui/material';
 import { AttachMoney } from '@mui/icons-material';
 import '../_styles/PriceCapacity.css';
 
 const PriceCapacity = ({ onComplete }) => {
   const [fields, setFields] = useState({
     capacity: '',
-    ticketPrice: ''
+    ticketPrice: '',
   });
 
   useEffect(() => {
@@ -19,13 +19,15 @@ const PriceCapacity = ({ onComplete }) => {
     const { name, value } = e.target;
     setFields((prevFields) => ({
       ...prevFields,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <Box className="info-box"> 
-      <Typography variant="h6" fontWeight="bold">Price and Capacity</Typography>
+    <Box className="info-box">
+      <Typography variant="h6" fontWeight="bold">
+        Price and Capacity
+      </Typography>
       <Box display="flex" gap={2} mt={2}>
         <TextField
           label="Capacity"

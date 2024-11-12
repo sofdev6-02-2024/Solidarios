@@ -1,5 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Box, Typography, TextField, InputAdornment, Modal } from '@mui/material';
+import {
+  Box,
+  Typography,
+  TextField,
+  InputAdornment,
+  Modal,
+} from '@mui/material';
 import { CalendarToday, AccessTime, LocationOn } from '@mui/icons-material';
 import Calendar from 'react-calendar';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
@@ -37,46 +43,48 @@ const DateLocation = ({ onComplete }) => {
 
   const handleMarkerDragEnd = useCallback(async (event) => {
     const newPosition = { lat: event.latLng.lat(), lng: event.latLng.lng() };
-    setMapState(prev => ({
+    setMapState((prev) => ({
       ...prev,
       markerPosition: newPosition,
     }));
 
     const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${newPosition.lat},${newPosition.lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${newPosition.lat},${newPosition.lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
     );
     const data = await response.json();
 
-    if (data.status === "OK" && data.results && data.results.length > 0) {
+    if (data.status === 'OK' && data.results && data.results.length > 0) {
       const streetName = data.results[0].formatted_address;
-      setFields(prev => ({
+      setFields((prev) => ({
         ...prev,
         location: streetName,
-        latitude: newPosition.lat, 
-        longitude: newPosition.lng  
+        latitude: newPosition.lat,
+        longitude: newPosition.lng,
       }));
     } else {
-      console.error("Error fetching location data:", data.status);
+      console.error('Error fetching location data:', data.status);
     }
   }, []);
 
   const handleChange = (field, value) => {
-    setFields(prev => ({
+    setFields((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const handleMapStateChange = (field, value) => {
-    setMapState(prev => ({
+    setMapState((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   return (
     <Box className="info-box">
-      <Typography variant="h6" fontWeight="bold" sx={{ color: 'black' }}>Date and Location</Typography>
+      <Typography variant="h6" fontWeight="bold" sx={{ color: 'black' }}>
+        Date and Location
+      </Typography>
 
       <Box display="flex" gap={2} mt={2}>
         <TextField
@@ -86,7 +94,11 @@ const DateLocation = ({ onComplete }) => {
           fullWidth
           InputLabelProps={{ shrink: true }}
           InputProps={{
-            startAdornment: <InputAdornment position="start"><CalendarToday /></InputAdornment>,
+            startAdornment: (
+              <InputAdornment position="start">
+                <CalendarToday />
+              </InputAdornment>
+            ),
             readOnly: true,
             className: 'text-field-input',
             classes: {
@@ -95,11 +107,19 @@ const DateLocation = ({ onComplete }) => {
             },
           }}
         />
-        <Modal open={mapState.openDateModal} onClose={() => handleMapStateChange('openDateModal', false)}>
+        <Modal
+          open={mapState.openDateModal}
+          onClose={() => handleMapStateChange('openDateModal', false)}
+        >
           <Box className="modal-box">
-            <Typography variant="h6" sx={{ color: 'black' }}>Select Date</Typography>
+            <Typography variant="h6" sx={{ color: 'black' }}>
+              Select Date
+            </Typography>
             <Calendar
-              onChange={(value) => { handleChange('date', value); handleMapStateChange('openDateModal', false); }}
+              onChange={(value) => {
+                handleChange('date', value);
+                handleMapStateChange('openDateModal', false);
+              }}
               value={fields.date}
             />
           </Box>
@@ -112,7 +132,11 @@ const DateLocation = ({ onComplete }) => {
           fullWidth
           InputLabelProps={{ shrink: true }}
           InputProps={{
-            startAdornment: <InputAdornment position="start"><AccessTime /></InputAdornment>,
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccessTime />
+              </InputAdornment>
+            ),
             readOnly: true,
             className: 'text-field-input',
             classes: {
@@ -121,16 +145,24 @@ const DateLocation = ({ onComplete }) => {
             },
           }}
         />
-        <Modal open={mapState.openTimeModal} onClose={() => handleMapStateChange('openTimeModal', false)}>
+        <Modal
+          open={mapState.openTimeModal}
+          onClose={() => handleMapStateChange('openTimeModal', false)}
+        >
           <Box className="modal-box">
-            <Typography variant="h6" sx={{ color: 'black' }}>Select Time</Typography>
+            <Typography variant="h6" sx={{ color: 'black' }}>
+              Select Time
+            </Typography>
             <TextField
               label="Time"
               type="time"
               fullWidth
               InputLabelProps={{ shrink: true }}
               value={fields.time}
-              onChange={(e) => { handleChange('time', e.target.value); handleMapStateChange('openTimeModal', false); }}
+              onChange={(e) => {
+                handleChange('time', e.target.value);
+                handleMapStateChange('openTimeModal', false);
+              }}
               inputProps={{ step: 300 }}
               className="text-field-input"
             />
@@ -144,7 +176,11 @@ const DateLocation = ({ onComplete }) => {
         fullWidth
         margin="normal"
         InputProps={{
-          startAdornment: <InputAdornment position="start"><LocationOn /></InputAdornment>,
+          startAdornment: (
+            <InputAdornment position="start">
+              <LocationOn />
+            </InputAdornment>
+          ),
           readOnly: true,
           className: 'text-field-input',
           classes: {
@@ -158,8 +194,17 @@ const DateLocation = ({ onComplete }) => {
         <GoogleMap
           center={mapState.mapCenter}
           zoom={15}
-          mapContainerStyle={{ width: '100%', height: '300px', marginTop: '16px' }}
-          onClick={(e) => handleMapStateChange('markerPosition', { lat: e.latLng.lat(), lng: e.latLng.lng() })}
+          mapContainerStyle={{
+            width: '100%',
+            height: '300px',
+            marginTop: '16px',
+          }}
+          onClick={(e) =>
+            handleMapStateChange('markerPosition', {
+              lat: e.latLng.lat(),
+              lng: e.latLng.lng(),
+            })
+          }
         >
           <Marker
             position={mapState.markerPosition}

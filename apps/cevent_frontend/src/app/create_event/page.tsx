@@ -1,7 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
-import { ImageUpload, GeneralInfo, DateLocation, PriceCapacity, Activities, AditionalSettings, Steps } from './_components/imports';
+import {
+  ImageUpload,
+  GeneralInfo,
+  DateLocation,
+  PriceCapacity,
+  Activities,
+  AditionalSettings,
+  Steps,
+} from './_components/imports';
 import styles from './_styles/CreateEvent.module.css';
 
 const CreateEvent = () => {
@@ -53,7 +61,10 @@ const CreateEvent = () => {
           </Typography>
         </Box>
 
-        <ImageUpload selectedImage={selectedImage} onImageChange={handleImageChange} />
+        <ImageUpload
+          selectedImage={selectedImage}
+          onImageChange={handleImageChange}
+        />
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
@@ -71,7 +82,6 @@ const CreateEvent = () => {
           priceCapacity={priceCapacity}
           selectedImage={selectedImage}
         />
-
       </Box>
     </Box>
   );
