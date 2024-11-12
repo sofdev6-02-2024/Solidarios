@@ -7,6 +7,6 @@ public class EventFilterDto
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
     public string? Status { get; set; }
-    public string? SortBy { get; set; } // El campo para ordenar (por ejemplo, "EventDate")
-    public bool IsDescending { get; set; } = false; // True para orden descendente
+    public string? SortBy { get; set; } 
+    public bool IsDescending { get; set; } = false; 
 }

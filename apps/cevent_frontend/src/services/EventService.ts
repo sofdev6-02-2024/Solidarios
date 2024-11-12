@@ -14,7 +14,6 @@ export const fetchHomePageEvents = async (
   filter: EventFilter,
 ): Promise<EventHomePageDto[]> => {
   try {
-    // Construye los parámetros de consulta
     const params = {
       page: filter.page,
       pageSize: filter.pageSize,
@@ -28,7 +27,6 @@ export const fetchHomePageEvents = async (
       IsDescending: filter.IsDescending,
     };
 
-    // Realiza la solicitud a la API de Next.js usando Axios
     const response = await axios.get<EventHomePageDto[]>(
       '/api/events/homepage',
       { params },
