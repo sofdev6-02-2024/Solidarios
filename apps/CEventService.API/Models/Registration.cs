@@ -1,8 +1,7 @@
 ﻿namespace CEventService.API.Models;
 
-public class Registration
+public class Registration : BaseEntity<int>
 {
-    public int RegistrationId { get; set; }
     public required string UserId { get; set; } 
     public int EventId { get; set; } 
     public required string AttendanceStatus { get; set; }

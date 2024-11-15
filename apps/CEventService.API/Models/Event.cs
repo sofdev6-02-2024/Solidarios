@@ -1,8 +1,7 @@
 ﻿namespace CEventService.API.Models;
 
-public class Event
+public class Event : BaseEntity<int>
 {
-    public int EventId { get; set; }
     public required string Name { get; set; }
     public required string Description { get; set; }
     public required string Category { get; set; }
@@ -12,11 +11,10 @@ public class Event
     public decimal TicketPrice { get; set; }
     public required string CoverPhotoUrl { get; set; }
     public bool AttendanceTrackingEnabled { get; set; }
-    public required string Status { get; set; }
+    public required EventStatus Status { get; set; }
     public int Capacity { get; set; }
     public required string OrganizerUserId { get; set; } 
     public DateTime CreatedAt { get; set; }
     public required string Address { get; set; }
     public int AttendeeCount { get; set; }
-    public bool IsDeleted { get; set; }
 }
