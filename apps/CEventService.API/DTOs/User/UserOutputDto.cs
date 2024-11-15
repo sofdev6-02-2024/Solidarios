@@ -1,6 +1,6 @@
 ﻿namespace CEventService.API.DTOs.User;
 
-public class UserOutputDto
+public class UserOutputDto : IMapFrom<Models.User>
 {
     public required string UserId { get; set; }
     public required string Name { get; set; }

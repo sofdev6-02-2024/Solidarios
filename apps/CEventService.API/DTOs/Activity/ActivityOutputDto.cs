@@ -1,6 +1,6 @@
 ﻿namespace CEventService.API.DTOs.Activity;
 
-public class ActivityOutputDto
+public class ActivityOutputDto : IMapFrom<Models.Activity>
 {
     public int ActivityId { get; set; }
     public int EventId { get; set; }

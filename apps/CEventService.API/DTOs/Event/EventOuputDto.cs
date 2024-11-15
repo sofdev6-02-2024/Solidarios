@@ -20,9 +20,4 @@ public class EventOutputDto : IMapFrom<Event>
     public int Capacity { get; set; }
     public required string OrganizerUserId { get; set; }
     public DateTime CreatedAt { get; set; }
-    
-    public void Mapping(Profile profile)
-    {
-        profile.CreateMap<Event, EventOutputDto>().ReverseMap();
-    }
 }
