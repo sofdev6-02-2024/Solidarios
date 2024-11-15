@@ -1,3 +1,4 @@
+.env
 *.sln
 # Build artifacts
 bin/
