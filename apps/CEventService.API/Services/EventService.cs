@@ -7,41 +7,41 @@ namespace CEventService.API.Services
 {
     public class EventService : IEventService
     {
-        private readonly IEventRepository _eventRepository;
+        private readonly IEventBaseRepository _eventBaseRepository;
         private readonly IMapper _mapper;
 
-        public EventService(IEventRepository eventRepository, IMapper mapper)
+        public EventService(IEventBaseRepository eventBaseRepository, IMapper mapper)
         {
-            _eventRepository = eventRepository;
+            _eventBaseRepository = eventBaseRepository;
             _mapper = mapper;
         }
 
         public async Task<IEnumerable<Event>> GetAllAsync(int page, int pageSize)
         {
-            return await _eventRepository.GetAllAsync((page - 1) * page, pageSize);
+            return await _eventBaseRepository.GetAllAsync((page - 1) * page, pageSize);
         }
 
         public async Task<Event?> GetByIdAsync(int id)
         {
-            return await _eventRepository.GetByIdAsync(id);
+            return await _eventBaseRepository.GetByIdAsync(id);
         }
 
         public async Task<EventOutputDto> CreateEventAsync(EventInputDto newEventDto)
         {
             var eventEntity = _mapper.Map<Event>(newEventDto);
-            var createdEvent = await _eventRepository.CreateAsync(eventEntity);
+            var createdEvent = await _eventBaseRepository.CreateAsync(eventEntity);
             return _mapper.Map<EventOutputDto>(createdEvent);
         }  
 
         public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize)
         {
-            return await _eventRepository.GetEventsForHomePageAsync(page, pageSize);
+            return await _eventBaseRepository.GetEventsForHomePageAsync(page, pageSize);
             
         }
         
         public async Task<bool?> UpdateEventAsync(int id, EventInputDto updatedEventDto, string userId)
         {
-            var existingEvent = await _eventRepository.GetByIdAsync(id);
+            var existingEvent = await _eventBaseRepository.GetByIdAsync(id);
 
             if (existingEvent == null)
             {
@@ -55,14 +55,14 @@ namespace CEventService.API.Services
             
             _mapper.Map(updatedEventDto, existingEvent);
     
-            await _eventRepository.UpdateAsync(existingEvent);
+            await _eventBaseRepository.UpdateAsync(existingEvent);
     
             return true;
         }
 
         public async Task<bool> SoftDeleteEventAsync(int eventId, string requesterId)
         {
-            return await _eventRepository.SoftDeleteAsync(eventId, requesterId);
+            return await _eventBaseRepository.SoftDeleteAsync(eventId, requesterId);
         }
 
     }
