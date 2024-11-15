@@ -94,10 +94,26 @@ namespace CEventService.API.Controllers
             }
         }
         
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent(int id)
+        public async Task<IActionResult> SoftDeleteEvent(int id, [FromHeader] string requesterId)
         {
-            return Ok();
+            try
+            {
+                var result = await _eventService.SoftDeleteEventAsync(id, requesterId);
+
+                if (!result)
+                {
+                    return NotFound($"Event with ID {id} not found or you are not authorized to delete this event.");
+                }
+
+                return Ok($"Event with ID {id} has been soft deleted.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred while deleting the event: {ex.Message}");
+            }
         }
+
     }
 }
