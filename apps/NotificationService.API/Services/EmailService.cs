@@ -10,8 +10,11 @@ public class EmailService : IEmailService
         _emailRepository = emailRepository;
     }
 
-    public void SendEmail(string email, string subject, string body)
+    public async Task SendEmailAsync(IEnumerable<string> recipients, string subject, string body)
     {
-        _emailRepository.SendEmail(email, subject, body);
+        foreach (var recipient in recipients)
+        {
+            await _emailRepository.SendEmailAsync(recipient, subject, body);
+        }
     }
 }
