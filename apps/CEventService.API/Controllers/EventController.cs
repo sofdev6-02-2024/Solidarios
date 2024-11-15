@@ -1,119 +1,104 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CEventService.API.Services;
+﻿using AutoMapper;
 using CEventService.API.DTOs.Event;
 using CEventService.API.Models;
-using Microsoft.AspNetCore.Authorization;
+using CEventService.API.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
-namespace CEventService.API.Controllers
+namespace CEventService.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class EventController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EventController : ControllerBase
+    private readonly IEventService _eventService;
+    private readonly IMapper _mapper;
+
+    public EventController(IEventService eventService, IMapper mapper)
     {
-        
-         private readonly IEventService _eventService;
+        _eventService = eventService;
+        _mapper = mapper;
+    }
 
-        public EventController(IEventService eventService)
-        {
-            _eventService = eventService;
-        }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<EventOutputDto>>> GetAllEvents([FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var events = await _eventService.GetAllAsync(page, pageSize);
+        if (events.IsNullOrEmpty()) return NotFound();
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Event>>> GetAllEvents([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            var events = await _eventService.GetAllAsync(page, pageSize);
-            return Ok(events);
-        }
+        var eventsDto = _mapper.Map<EventOutputDto>(events);
+        return Ok(eventsDto);
+    }
 
-        [HttpGet("homepage")]
-        public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
-        {
-            var events = await _eventService.GetEventsForHomePageAsync(page, pageSize);
-            return Ok(events);
-        }
+    [HttpGet("homepage")]
+    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage([FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var events = await _eventService.GetAllAsync(page, pageSize);
+        if (events.IsNullOrEmpty()) return NotFound();
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Event>> GetEventById(int id)
-        {
-            var @event = await _eventService.GetByIdAsync(id);
-            
-            if (@event == null)
-            {
-                return NotFound();
-            }
+        var eventsDto = _mapper.Map<EventHomePageDto>(events);
+        return Ok(eventsDto);
+    }
 
-            return Ok(@event);
-        }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Event>> GetEventById(int id)
+    {
+        var foundEvent = await _eventService.GetByIdAsync(id);
+        return ValidateNotNullResponse(_mapper.Map<EventOutputDto>(foundEvent));
+    }
 
 
-        [HttpPost]
-        public async Task<ActionResult<EventOutputDto>> CreateEvent([FromBody] EventInputDto newEventDto)
-        {    
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+    [HttpPost]
+    public async Task<ActionResult<EventOutputDto>> CreateEvent([FromBody] EventInputDto newEventDto)
+    {
+        var newEvent = _mapper.Map<Event>(newEventDto);
+        var eventCreated = await _eventService.CreateAsync(newEvent);
+        return eventCreated == null
+            ? BadRequest()
+            : CreatedAtAction(nameof(GetEventById), new { id = eventCreated.Id }, eventCreated);
+    }
 
-                var createdEvent = await _eventService.CreateEventAsync(newEventDto);
-                return CreatedAtAction(nameof(GetEventById), new { id = createdEvent.EventId }, createdEvent);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred while creating the event." + ex);
-            }
-        }
-        
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEvent(int id, [FromBody] EventInputDto eventInputDto, [FromHeader] string userId)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
 
-                var updateResult = await _eventService.UpdateEventAsync(id, eventInputDto, userId);
-        
-                if (updateResult == null)
-                {
-                    return NotFound($"Event with ID {id} not found.");
-                }
-                else if (updateResult.Equals(false))
-                {
-                    return Forbid("You are not authorized to update this event.");
-                }
+    [HttpPut("{id}")]
+    public async Task<ActionResult> UpdateEvent(int id, [FromBody] EventInputDto eventInputDto,
+        [FromHeader] string userId)
+    {
+        var validationResult = await ValidateEventAccess(id, userId);
+        if (validationResult != null)
+            return validationResult;
 
-                return Ok("Event updated successfully.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while updating the event: {ex.Message}");
-            }
-        }
-        
+        var newEvent = _mapper.Map<Event>(eventInputDto);
+        var eventUpdated = await _eventService.UpdateAsync(id, newEvent);
+        return ValidateNotNullResponse(_mapper.Map<EventOutputDto>(eventUpdated));
+    }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> SoftDeleteEvent(int id, [FromHeader] string requesterId)
-        {
-            try
-            {
-                var result = await _eventService.SoftDeleteEventAsync(id, requesterId);
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> SoftDeleteEvent(int id, [FromHeader] string userId)
+    {
+        var validationResult = await ValidateEventAccess(id, userId);
+        if (validationResult != null)
+            return validationResult;
 
-                if (!result)
-                {
-                    return NotFound($"Event with ID {id} not found or you are not authorized to delete this event.");
-                }
+        var fieldModified = await _eventService.SoftDeleteAsync(id);
+        return fieldModified > 0 ? NoContent() : NotFound();
+    }
 
-                return Ok($"Event with ID {id} has been soft deleted.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while deleting the event: {ex.Message}");
-            }
-        }
+    private async Task<ActionResult?> ValidateEventAccess(int eventId, string userId)
+    {
+        var existingEvent = await _eventService.GetByIdAsync(eventId);
+        if (existingEvent == null)
+            return NotFound();
 
+        if (!existingEvent.Id.Equals(userId))
+            return Unauthorized();
+
+        return null;
+    }
+
+    private ActionResult ValidateNotNullResponse(EventOutputDto @event)
+    {
+        return @event == null ? NotFound() : Ok(@event);
     }
 }
