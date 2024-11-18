@@ -7,7 +7,7 @@ import { getEventById } from '@/services/EventService';
 import CardEventInfo from './_components/CardEventInfo';
 import Layout from '@/components/Layout';
 import Image from 'next/image';
-import styles from '@/styles/components/EventPageStyles';
+import {styles} from '@/styles/components/EventPageStyles';
 import DetailsEvent from './_components/DetailsEvent';
 import RelatedEvent from './_components/RelatedEvent';
 import SkeletonEventsBox from '@/components/EventSection/SkeletonEventsBox';

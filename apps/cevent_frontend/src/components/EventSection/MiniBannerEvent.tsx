@@ -4,13 +4,19 @@ import { EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
 import Image from 'next/image';
 import { formatDate, truncateText } from '@/utils/methods/stringMethods';
 import EventIcon from '@mui/icons-material/Event';
+import { useRouter } from 'next/navigation';
 
 const MiniBannerEvent = ({ event }: { event: EventHomePageDto }) => {
+  const router = useRouter();
+  const handleRedirect = () => {
+    router.push(`/${event.eventId}`);
+  };
+
   return (
-    <ButtonBase sx={styles.mainContainer}>
+    <ButtonBase sx={styles.mainContainer} onClick={handleRedirect}>
       <Box sx={styles.imageContainer}>
         <Image
-          src={'https://i.postimg.cc/d0FXZRv9/Vista-perro-900x743-c-center.jpg'}
+          src={event.coverPhotoUrl}
           alt={event.name}
           layout="fill"
           objectFit="cover"

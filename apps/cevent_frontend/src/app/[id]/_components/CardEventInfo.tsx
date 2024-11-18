@@ -20,6 +20,15 @@ interface CardEventInfoProps {
   eventData: EventDetailDto;
 }
 const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
+  const handleOpenMap = () => {
+    window.open(
+      `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`,
+    );
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+  }
   return (
     <Card sx={styles.cardStyles}>
       <Grid display="flex" justifyContent="space-between" container spacing={1}>
@@ -51,7 +60,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
                 </Typography>
               </Box>
               <Box>
-                <ButtonBase sx={styles.textClickable}>
+                <ButtonBase sx={styles.textClickable} onClick={handleOpenMap}>
                   <Typography variant="body1" sx={styles.linkStyles}>
                     {eventData.address}
                   </Typography>
@@ -62,7 +71,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
               Share with friends
             </Typography>
             <Box sx={styles.iconGroup}>
-              <IconButton>
+              <IconButton onClick={handleCopyLink}>
                 <ContentCopyOutlinedIcon sx={styles.iconShareStyles} />
               </IconButton>
             </Box>
