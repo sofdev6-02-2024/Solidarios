@@ -1,9 +1,6 @@
-﻿using AutoMapper;
+﻿namespace CEventService.API.DTOs.Event;
 
-namespace CEventService.API.DTOs.Event;
-using Models;
-
-public class EventOutputDto : IMapFrom<Event>
+public class EventOutputDto : IMapFrom<Models.Event>
 {
     public int EventId { get; set; }
     public required string Name { get; set; }
@@ -18,6 +15,6 @@ public class EventOutputDto : IMapFrom<Event>
     public bool AttendanceTrackingEnabled { get; set; }
     public required string Status { get; set; }
     public int Capacity { get; set; }
-    public required string OrganizerUserId { get; set; }
+    public required Guid OrganizerUserId { get; set; }
     public DateTime CreatedAt { get; set; }
 }
