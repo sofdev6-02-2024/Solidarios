@@ -37,5 +37,10 @@ public class EventMap : BaseMap<Event, int>
                     .OnDelete(DeleteBehavior.NoAction),
                 u => u.HasOne<Event>().WithMany().HasForeignKey("EventId")
                     .OnDelete(DeleteBehavior.NoAction));
+
+        builder.HasOne(e => e.Category)
+            .WithMany(c => c.Events)
+            .HasForeignKey(e => e.CategoryId)
+            .IsRequired();
     }
 }

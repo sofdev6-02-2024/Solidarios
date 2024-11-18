@@ -3,8 +3,9 @@
 public class Event : BaseEntity<int>
 {
     public required string Name { get; set; }
+    public required string ShortDescription { get; set; }
     public required string Description { get; set; }
-    public required string Category { get; set; }
+    public int CategoryId { get; set; }
     public DateTime EventDate { get; set; }
     public Location Location { get; set; } = null!;
     public required string Venue { get; set; }
@@ -13,8 +14,15 @@ public class Event : BaseEntity<int>
     public bool AttendanceTrackingEnabled { get; set; }
     public required EventStatus Status { get; set; }
     public int Capacity { get; set; }
-    public required string OrganizerUserId { get; set; } 
+    public required Guid OrganizerUserId { get; set; }
     public DateTime CreatedAt { get; set; }
     public required string Address { get; set; }
     public int AttendeeCount { get; set; }
+
+    public ICollection<Activity> Activities { get; set; }
+    public ICollection<User>? CoOrganizers { get; set; }
+    public ICollection<Registration> Registrations { get; set; }
+    public ICollection<Wishlist> Wishlists { get; set; }
+    public User User { get; set; }
+    public required EventCategory Category { get; set; }
 }
