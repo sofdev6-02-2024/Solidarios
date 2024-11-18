@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
 import { UserInterface } from '@/utils/interfaces/UserInterfaces';
 
 export async function GET(

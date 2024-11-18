@@ -10,16 +10,29 @@ const OrganizerInfo = ({ organizerType, user }: OrganizerInfoProps) => {
   return (
     <Box sx={styleEventOrganizer.container}>
       <Box sx={styleEventOrganizer.infoUser}>
-        <Avatar sx={styleEventOrganizer.avatar} src={user.profilePhotoUrl} alt={user.fullName} />
+        <Avatar
+          sx={styleEventOrganizer.avatar}
+          src={user.profilePhotoUrl}
+          alt={user.fullName}
+        />
         <Box sx={styleEventOrganizer.containerName}>
-          <Typography sx={{...styleEventOrganizer.grayText, minWidth: 120 }} variant="body">{organizerType}</Typography>
-          <Typography fontWeight="bold"  variant="bodyLarge">{user.fullName}</Typography>
+          <Typography
+            sx={{ ...styleEventOrganizer.grayText, minWidth: 120 }}
+            variant="body"
+          >
+            {organizerType}
+          </Typography>
+          <Typography fontWeight="bold" variant="bodyLarge">
+            {user.fullName}
+          </Typography>
         </Box>
       </Box>
       <Box sx={styleEventOrganizer.containerName}>
-        <Typography sx={styleEventOrganizer.grayText} variant="caption">Email</Typography>
+        <Typography sx={styleEventOrganizer.grayText} variant="caption">
+          Email
+        </Typography>
         <Typography variant="body">{user.email}</Typography>
-        </Box>
+      </Box>
     </Box>
   );
 };

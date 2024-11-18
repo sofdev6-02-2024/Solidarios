@@ -30,7 +30,6 @@ export const styleEventOrganizer: { [key: string]: SxProps<Theme> } = {
     gap: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    
   },
 
   containerName: {
@@ -41,7 +40,6 @@ export const styleEventOrganizer: { [key: string]: SxProps<Theme> } = {
   grayText: {
     color: 'lightBlack.main',
     fontSize: '14px',
-  
   },
 };
 

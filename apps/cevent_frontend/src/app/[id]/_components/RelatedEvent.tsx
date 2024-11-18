@@ -23,7 +23,6 @@ const RelatedEvent = ({ category }: RelatedEvetnsProps) => {
       Category: category,
       IsDescending: true,
       StartDate: new Date().toISOString(),
-    
     };
     fetchHomePageEvents(filters)
       .then((data) => {

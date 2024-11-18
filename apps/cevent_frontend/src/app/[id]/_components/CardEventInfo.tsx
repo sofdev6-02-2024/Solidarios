@@ -28,7 +28,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
-  }
+  };
   return (
     <Card sx={styles.cardStyles}>
       <Grid display="flex" justifyContent="space-between" container spacing={1}>
