@@ -6,5 +6,6 @@ namespace CEventService.API.DAO
         Task<T?> GetByIdAsync(int id);
         Task<T> CreateAsync(T newElement);
         Task UpdateAsync(T updatedElement);
+        Task<bool> SoftDeleteAsync(int id, string requesterId);
     }
 }

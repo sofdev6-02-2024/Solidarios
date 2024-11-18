@@ -18,4 +18,5 @@ public class Event
     public DateTime CreatedAt { get; set; }
     public required string Address { get; set; }
     public int AttendeeCount { get; set; }
+    public bool IsDeleted { get; set; }
 }

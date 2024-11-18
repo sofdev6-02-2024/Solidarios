@@ -13,6 +13,8 @@ namespace CEventService.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Event>().HasQueryFilter(e => !e.IsDeleted);
+            
             modelBuilder.Entity<Event>()
                 .Property(e => e.Status)
                 .HasConversion<string>();

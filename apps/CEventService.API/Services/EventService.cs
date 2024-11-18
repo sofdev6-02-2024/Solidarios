@@ -60,5 +60,11 @@ namespace CEventService.API.Services
 
             return true;
         }
+
+        public async Task<bool> SoftDeleteEventAsync(int eventId, string requesterId)
+        {
+            return await _eventRepository.SoftDeleteAsync(eventId, requesterId);
+        }
+
     }
 }
