@@ -11,11 +11,13 @@ public class RegistrationMap : BaseMap<Registration, int>
         builder.HasOne(r => r.User)
             .WithMany(u => u.Registrations)
             .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
 
         builder.HasOne(r => r.Event)
             .WithMany(e => e.Registrations)
             .HasForeignKey(r => r.EventId)
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
     }
 }

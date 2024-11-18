@@ -28,22 +28,14 @@ public class EventMap : BaseMap<Event, int>
             .WithOne(a => a.Event)
             .HasForeignKey(a => a.EventId)
             .IsRequired();
-
-        builder.HasOne(e => e.User)
-            .WithMany(u => u.EventsCreated)
-            .HasForeignKey(e => e.OrganizerUserId)
-            .IsRequired();
         
         builder.HasMany(e => e.CoOrganizers)
-            .WithMany(u => u.EventsCreated)
+            .WithMany(u => u.CoOrganizedEvents)
             .UsingEntity<Dictionary<string, object>>(
                 "EventCoOrganizer",
-                e => e.HasOne<User>().WithMany().HasForeignKey("UserId"),
-                u => u.HasOne<Event>().WithMany().HasForeignKey("EventId"));
-
-        builder.HasMany(e => e.Registrations)
-            .WithOne(r => r.Event)
-            .HasForeignKey(r => r.EventId)
-            .IsRequired();
+                e => e.HasOne<User>().WithMany().HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.NoAction),
+                u => u.HasOne<Event>().WithMany().HasForeignKey("EventId")
+                    .OnDelete(DeleteBehavior.NoAction));
     }
 }

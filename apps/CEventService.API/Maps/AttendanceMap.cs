@@ -17,11 +17,7 @@ public class AttendanceMap : BaseMap<Attendance, int>
         builder.HasOne(a => a.User)
             .WithMany(u => u.Attendances)
             .HasForeignKey(a => a.UserId)
-            .IsRequired();
-
-        builder.HasOne(a => a.Activity)
-            .WithMany(a => a.Attendances)
-            .HasForeignKey(a => a.ActivityId)
+            .OnDelete(DeleteBehavior.NoAction)
             .IsRequired();
     }
 
