@@ -1,52 +1,64 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
   Button,
   CircularProgress,
   Pagination,
-} from "@mui/material";
-import { Add as AddIcon } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react"; // Importamos useSession
-import EventCard from "./_components/EventCard";
-import EmptyEventSection from "./_components/EmptyEventSection";
-import LoginPromptSection from "./_components/LoginPromptSection";
+} from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import EventCard from './_components/EventCard';
+import EmptyEventSection from './_components/EmptyEventSection';
+import LoginPromptSection from './_components/LoginPromptSection';
+
+interface Event {
+  id: number;
+  title: string;
+  date: string;
+  location: string;
+  attendees: number;
+  activities: number;
+  description?: string;
+  price?: string;
+}
 
 export default function MyEventsPage() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 3;
 
-  const { data: session, status } = useSession(); // Obtenemos la sesión
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    // Simulamos la carga inicial
     setTimeout(() => {
-      setEvents([]); // Aquí puedes cargar eventos desde tu API
+      setEvents([]);
       setIsLoading(false);
     }, 1000);
   }, []);
 
   const handleCreateEvent = () => {
-    router.push("/create_event");
+    router.push('/create_event');
   };
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+  ) => {
     setCurrentPage(value);
   };
 
   const displayedEvents = events.slice(
     (currentPage - 1) * eventsPerPage,
-    currentPage * eventsPerPage
+    currentPage * eventsPerPage,
   );
 
-  // Si está cargando o verificando la sesión, mostramos el loader
-  if (status === "loading") {
+  if (status === 'loading') {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
         <CircularProgress />
@@ -54,10 +66,9 @@ export default function MyEventsPage() {
     );
   }
 
-  // Si no está logueado, mostramos el prompt de login
   if (!session) {
     return (
-      <Box sx={{ padding: "2rem" }}>
+      <Box sx={{ padding: '2rem' }}>
         <Typography variant="h4" fontWeight="bold">
           My Events
         </Typography>
@@ -68,9 +79,8 @@ export default function MyEventsPage() {
     );
   }
 
-  // Si está logueado, renderizamos la sección de eventos
   return (
-    <Box sx={{ padding: "2rem" }}>
+    <Box sx={{ padding: '2rem' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" fontWeight="bold">
           My Events
@@ -80,7 +90,7 @@ export default function MyEventsPage() {
           color="primary"
           startIcon={<AddIcon />}
           onClick={handleCreateEvent}
-          sx={{ borderRadius: "10px" }}
+          sx={{ borderRadius: '10px' }}
         >
           Create Event
         </Button>
@@ -97,7 +107,7 @@ export default function MyEventsPage() {
       ) : (
         <Box mt={3} display="flex" flexDirection="column" alignItems="center">
           {displayedEvents.map((event) => (
-            <Box key={event.id} sx={{ width: "60%", mb: 3 }}>
+            <Box key={event.id} sx={{ width: '60%', mb: 3 }}>
               <EventCard event={event} />
             </Box>
           ))}
@@ -106,7 +116,7 @@ export default function MyEventsPage() {
             page={currentPage}
             onChange={handlePageChange}
             color="primary"
-            sx={{ display: "flex", justifyContent: "center", mt: 3 }}
+            sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
           />
         </Box>
       )}
