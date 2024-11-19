@@ -4,17 +4,16 @@ import {
   FormHelperText,
   Typography,
   Box,
-  MenuItem,
 } from '@mui/material';
 import '../_styles/GeneralInfo.css';
 
 interface OnCompleteCallback {
   (
     fields: {
-      title: string;
-      shortDescription: string;
-      description: string;
-      category: string;
+    title: string;
+    shortDescription: string;
+    description: string;
+    category: string;
     },
     isComplete: boolean,
   ): void;
@@ -26,6 +25,17 @@ interface Fields {
   description: string;
   category: string;
 }
+
+const categories = [
+  { value: 'Conference', label: 'Conference' },
+  { value: 'Workshop', label: 'Workshop' },
+  { value: 'Networking', label: 'Networking' },
+  { value: 'Music', label: 'Music' },
+  { value: 'Sports', label: 'Sports' },
+  { value: 'Technology', label: 'Technology' },
+  { value: 'Art', label: 'Art' },
+  { value: 'Social', label: 'Social' },
+];
 
 const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
   const [fields, setFields] = useState<Fields>({
@@ -139,31 +149,18 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         InputProps={{
           className: 'text-field-outline',
         }}
+        SelectProps={{
+          native: true,
+        }}
       >
-        <MenuItem value="Conference" sx={{ color: 'black' }}>
-          Conference
-        </MenuItem>
-        <MenuItem value="Workshop" sx={{ color: 'black' }}>
-          Workshop
-        </MenuItem>
-        <MenuItem value="Networking" sx={{ color: 'black' }}>
-          Networking
-        </MenuItem>
-        <MenuItem value="Music" sx={{ color: 'black' }}>
-          Music
-        </MenuItem>
-        <MenuItem value="Sports" sx={{ color: 'black' }}>
-          Sports
-        </MenuItem>
-        <MenuItem value="Technology" sx={{ color: 'black' }}>
-          Technology
-        </MenuItem>
-        <MenuItem value="Art" sx={{ color: 'black' }}>
-          Art
-        </MenuItem>
-        <MenuItem value="Social" sx={{ color: 'black' }}>
-          Social
-        </MenuItem>
+        <option value="" disabled>
+          
+        </option>
+        {categories.map((category) => (
+          <option key={category.value} value={category.value}>
+            {category.label}
+          </option>
+        ))}
       </TextField>
     </Box>
   );
