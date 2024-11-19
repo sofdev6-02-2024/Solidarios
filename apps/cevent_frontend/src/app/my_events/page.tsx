@@ -1,35 +1,39 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { Button, Typography, CircularProgress, Box, Pagination } from '@mui/material';
-import { Add as AddIcon } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
-import EventCard from './_components/EventCard';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  CircularProgress,
+  Pagination,
+} from "@mui/material";
+import { Add as AddIcon } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react"; // Importamos useSession
+import EventCard from "./_components/EventCard";
+import EmptyEventSection from "./_components/EmptyEventSection";
+import LoginPromptSection from "./_components/LoginPromptSection";
 
 export default function MyEventsPage() {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 3;
+
+  const { data: session, status } = useSession(); // Obtenemos la sesión
   const router = useRouter();
 
   useEffect(() => {
+    // Simulamos la carga inicial
     setTimeout(() => {
-      setEvents([
-        { id: 1, title: 'The future conference', date: 'August 28, 2021', location: 'Cochabamba', attendees: 500, activities: 5 },
-        { id: 2, title: 'The future conference', date: 'August 28, 2021', location: 'Cochabamba', attendees: 500, activities: 5 },
-        { id: 3, title: 'The future conference', date: 'August 28, 2021', location: 'Cochabamba', attendees: 500, activities: 5 },
-        { id: 4, title: 'The future conference', date: 'August 28, 2021', location: 'Cochabamba', attendees: 500, activities: 5 },
-        { id: 5, title: 'The future conference', date: 'August 28, 2021', location: 'Cochabamba', attendees: 500, activities: 5 },
-      ]);
-      setIsLoggedIn(true); 
+      setEvents([]); // Aquí puedes cargar eventos desde tu API
       setIsLoading(false);
     }, 1000);
   }, []);
 
   const handleCreateEvent = () => {
-    router.push('/create_event');
+    router.push("/create_event");
   };
 
   const handlePageChange = (event, value) => {
@@ -41,33 +45,59 @@ export default function MyEventsPage() {
     currentPage * eventsPerPage
   );
 
+  // Si está cargando o verificando la sesión, mostramos el loader
+  if (status === "loading") {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  // Si no está logueado, mostramos el prompt de login
+  if (!session) {
+    return (
+      <Box sx={{ padding: "2rem" }}>
+        <Typography variant="h4" fontWeight="bold">
+          My Events
+        </Typography>
+        <Box mt={4}>
+          <LoginPromptSection />
+        </Box>
+      </Box>
+    );
+  }
+
+  // Si está logueado, renderizamos la sección de eventos
   return (
-    <Box sx={{ padding: '2rem' }}>
+    <Box sx={{ padding: "2rem" }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h4" fontWeight="bold">
           My Events
         </Typography>
-        {isLoggedIn && (
-          <Button
+        <Button
           variant="contained"
           color="primary"
           startIcon={<AddIcon />}
           onClick={handleCreateEvent}
-          sx={{ borderRadius: '10px' }} 
+          sx={{ borderRadius: "10px" }}
         >
           Create Event
         </Button>
-        )}
       </Box>
 
       {isLoading ? (
         <Box display="flex" justifyContent="center" mt={4}>
           <CircularProgress />
         </Box>
-      ) : events.length > 0 ? (
+      ) : events.length === 0 ? (
+        <Box mt={4}>
+          <EmptyEventSection />
+        </Box>
+      ) : (
         <Box mt={3} display="flex" flexDirection="column" alignItems="center">
           {displayedEvents.map((event) => (
-            <Box key={event.id} sx={{ width: '60%', mb: 3 }}>
+            <Box key={event.id} sx={{ width: "60%", mb: 3 }}>
               <EventCard event={event} />
             </Box>
           ))}
@@ -76,21 +106,8 @@ export default function MyEventsPage() {
             page={currentPage}
             onChange={handlePageChange}
             color="primary"
-            sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+            sx={{ display: "flex", justifyContent: "center", mt: 3 }}
           />
-        </Box>
-      ) : (
-        <Box mt={4} textAlign="center">
-          {isLoggedIn ? (
-            <>
-              <Typography variant="h6">No events created yet.</Typography>
-              <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleCreateEvent} sx={{ mt: 2 }}>
-                Create your first event
-              </Button>
-            </>
-          ) : (
-            <Typography variant="h6">Please log in to create and view events.</Typography>
-          )}
         </Box>
       )}
     </Box>
