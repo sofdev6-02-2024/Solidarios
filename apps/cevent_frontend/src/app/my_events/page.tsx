@@ -48,9 +48,15 @@ export default function MyEventsPage() {
           My Events
         </Typography>
         {isLoggedIn && (
-          <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleCreateEvent}>
-            Create Event
-          </Button>
+          <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={handleCreateEvent}
+          sx={{ borderRadius: '10px' }} 
+        >
+          Create Event
+        </Button>
         )}
       </Box>
 
@@ -69,6 +75,7 @@ export default function MyEventsPage() {
             count={Math.ceil(events.length / eventsPerPage)}
             page={currentPage}
             onChange={handlePageChange}
+            color="primary"
             sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
           />
         </Box>
