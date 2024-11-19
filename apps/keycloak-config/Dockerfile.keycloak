@@ -1,0 +1,10 @@
+FROM quay.io/keycloak/keycloak:latest
+
+RUN mkdir -p /opt/keycloak/data/import
+
+COPY solidarios-realm.json* /opt/keycloak/data/import/
+
+ENV KC_FEATURES=preview
+ENV KC_IMPORT_FILE=/opt/keycloak/data/import/solidarios-realm.json
+
+CMD ["start-dev"]

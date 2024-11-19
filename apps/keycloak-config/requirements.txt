@@ -1,0 +1,2 @@
+python-keycloak==4.7.2
+requests
