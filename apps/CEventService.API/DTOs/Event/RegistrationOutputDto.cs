@@ -4,7 +4,7 @@ namespace CEventService.API.DTOs.Event;
 
 public class RegistrationOutputDto : IMapFrom<Registration>
 {
-    public int RegistrationId { get; set; }
+    public int Id { get; set; }
     public required Guid UserId { get; set; }
     public int EventId { get; set; }
     public required AttendanceStatus AttendanceStatus { get; set; }

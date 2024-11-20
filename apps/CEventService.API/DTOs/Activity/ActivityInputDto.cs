@@ -1,6 +1,7 @@
 ﻿namespace CEventService.API.DTOs.Activity;
+using Models;
 
-public class ActivityInputDto : IMapFrom<Models.Activity>
+public class ActivityInputDto : IMapFrom<Activity>
 {
     public int EventId { get; set; }
     public required string Name { get; set; }
