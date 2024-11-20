@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import AuthStatus from '@/components/AuthStatus';
 import { useRoles } from '@/hooks/use-roles';
 
@@ -7,11 +7,7 @@ export default function ProfilePage() {
   return (
     <div>
       <h1>Profile</h1>
-      <div>
-        {hasRole("admin") ? (
-          <div>Admin Account</div>
-        ) : (<></>)}
-      </div>
+      <div>{hasRole('admin') ? <div>Admin Account</div> : <></>}</div>
       <AuthStatus />
     </div>
   );
