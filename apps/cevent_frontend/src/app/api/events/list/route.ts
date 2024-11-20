@@ -44,7 +44,10 @@ export async function POST(request: Request) {
     return NextResponse.json(response.data, { status: 201 });
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      console.error('Error creating event:', error.response?.data || error.message);
+      console.error(
+        'Error creating event:',
+        error.response?.data || error.message,
+      );
     } else {
       console.error('Unknown error:', error);
     }
