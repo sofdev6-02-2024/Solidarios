@@ -5,6 +5,7 @@ import {
   Button,
   ButtonBase,
   IconButton,
+  Snackbar,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import styles from '@/styles/components/EventStyles';
@@ -15,9 +16,10 @@ import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
-import { formatDate } from '@/utils/methods/stringMethods';
+import { formatDate, fullFormatDate } from '@/utils/methods/stringMethods';
 interface CardEventInfoProps {
   eventData: EventDetailDto;
+  showSnackbar?: (message: string) => void;
 }
 const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
   const handleOpenMap = () => {
@@ -49,7 +51,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
                 </Typography>
               </Box>
               <Typography variant="body">
-                {formatDate(eventData.eventDate)}
+                {fullFormatDate(eventData.eventDate)}
               </Typography>
             </Box>
             <Box sx={styles.infoColumn}>

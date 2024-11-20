@@ -18,7 +18,6 @@ import {
 } from '@/utils/methods/stringMethods';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import styles from '@/styles/components/CardEventStyles';
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface CardEventProps {

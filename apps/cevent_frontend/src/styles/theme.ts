@@ -22,10 +22,10 @@ const theme = createTheme({
       main: '#f44336',
     },
     warning: {
-      main: '#ff9800',
+      main: '#000',
     },
     info: {
-      main: '#2196f3',
+      main: '#000',
     },
     success: {
       main: '#4caf50',
@@ -35,7 +35,7 @@ const theme = createTheme({
       paper: '#fff',
     },
     text: {
-      primary: '#fff',
+      primary: '#000',
       secondary: '#000',
     },
   },

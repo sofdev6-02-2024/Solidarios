@@ -27,6 +27,12 @@ export interface EventDetailDto extends EventHomePageDto {
   createdAt: Date;
 }
 
+export enum SortOptions {
+  EventDate = 'EventDate',
+  TicketPrice = 'TicketPrice',
+  AttendeeCount = 'AttendeeCount',
+}
+
 export interface EventFilter {
   Category?: string;
   StartDate?: string;
@@ -34,8 +40,10 @@ export interface EventFilter {
   MinPrice?: number;
   MaxPrice?: number;
   Status?: string;
-  SortBy?: string;
+  SortBy?: SortOptions;
   IsDescending?: boolean;
   page?: number;
   pageSize?: number;
 }
+
+
