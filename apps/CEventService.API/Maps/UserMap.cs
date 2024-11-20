@@ -12,7 +12,7 @@ public class UserMap : BaseMap<User, Guid>
             .WithOne(e => e.User)
             .HasForeignKey(e => e.OrganizerUserId)
             .IsRequired();
-        
+
         builder.HasMany(u => u.CoOrganizedEvents)
             .WithMany(e => e.CoOrganizers)
             .UsingEntity<Dictionary<string, object>>(
@@ -26,18 +26,11 @@ public class UserMap : BaseMap<User, Guid>
             .WithOne(a => a.User)
             .HasForeignKey(a => a.UserId)
             .IsRequired();
-        
+
         builder.HasMany(u => u.Registrations)
             .WithOne(r => r.User)
             .HasForeignKey(r => r.UserId);
 
-       /* builder.HasMany(u => u.Wishlists)
-            .WithMany(e => e.Wishlists)
-            .UsingEntity<Dictionary<string, object>>(
-                "Wishlist",
-                join => join.HasOne<Event>().WithMany().HasForeignKey("EventId"),
-                join => join.HasOne<User>().WithMany().HasForeignKey("UserId"));
-*/
         builder.HasMany(u => u.Attendances)
             .WithOne(a => a.User)
             .HasForeignKey(a => a.UserId);
