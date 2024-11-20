@@ -1,9 +1,12 @@
 ﻿namespace CEventService.API.Models;
 
-public class Attendance
+public class Attendance : BaseEntity<int>
 {
-    public int AttendanceId { get; set; }
-    public required string UserId { get; set; } 
+    public required Guid UserId { get; set; }
     public int ActivityId { get; set; }
     public DateTime AttendanceTime { get; set; }
+    public AttendanceStatus Status { get; set; }
+
+    public User User { get; set; }
+    public Activity Activity { get; set; }
 }

@@ -31,7 +31,7 @@ builder.Services.AddCors(options =>
         builder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
-    });
+    }); 
 });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -93,6 +93,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 using(var scope = app.Services.CreateScope())
@@ -101,7 +103,7 @@ using(var scope = app.Services.CreateScope())
     var dbContext = services.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();
 
-    await DataSeeder.SeedData(dbContext);
+    //await DataSeeder.SeedData(dbContext);
 }
 
 using (var httpClient = new HttpClient())
