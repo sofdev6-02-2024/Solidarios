@@ -1,4 +1,7 @@
-import { EventHomePageDto, EventInputDto } from '@/utils/interfaces/EventInterfaces';
+import {
+  EventHomePageDto,
+  EventInputDto,
+} from '@/utils/interfaces/EventInterfaces';
 
 /**
  * Fetches the events for the home page
@@ -34,8 +37,7 @@ export const createEvent = async (
   eventData: EventInputDto,
 ): Promise<EventInputDto | { error: string }> => {
   try {
-    const response = await fetch(
-      '/api/events', {
+    const response = await fetch('/api/events', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -26,12 +26,12 @@ export interface EventDetailDto extends EventHomePageDto {
 }
 
 export interface EventInputDto {
-  name: string; 
+  name: string;
   description: string;
-  category: string; 
-  eventDate: Date; 
+  category: string;
+  eventDate: Date;
   location: Location;
-  venue: string; 
+  venue: string;
   address: string;
   ticketPrice: number;
   coverPhotoUrl: string;
