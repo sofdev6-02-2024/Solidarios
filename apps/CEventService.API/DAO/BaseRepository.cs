@@ -12,29 +12,29 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
     {
         _dbContext = dbContext;
     }
-    public async Task<IEnumerable<T>> GetAllAsync(int page, int pageSize)
+    public virtual async Task<IEnumerable<T>> GetAllAsync(int page, int pageSize)
     {
         return await _dbContext.Set<T>()
             .Where(e => !e.IsDeleted)
-            .Skip(page)
+            .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _dbContext.Set<T>().
             Where(e => !e.IsDeleted).
             ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(TId id)
+    public virtual async Task<T?> GetByIdAsync(TId id)
     {
         var entity = await _dbContext.FindAsync<T>(id);
-        return !entity.IsDeleted ? entity : null;
+        return entity is { IsDeleted: false } ? entity : null;
     }
 
-    public async Task<T> CreateAsync(T entity)
+    public virtual async Task<T> CreateAsync(T entity)
     {
         entity.IsDeleted = false;
         _dbContext.Set<T>().Add(entity);
@@ -42,14 +42,14 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
         return entity;
     }
 
-    public async Task<T> UpdateAsync(TId id, T entity)
+    public virtual async Task<T> UpdateAsync(TId id, T entity)
     {
         entity.Id = id;
         entity.IsDeleted = false;
         var existingEntity = await GetByIdAsync(id);
         if (existingEntity == null)
         {
-            throw new KeyNotFoundException("Entity not found in the database.");
+            return null;
         }
         
         _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
@@ -58,7 +58,7 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
         return existingEntity;
     }
 
-    public async Task<int> SoftDeleteAsync(TId id)
+    public virtual async Task<int> SoftDeleteAsync(TId id)
     {
         var entity = await GetByIdAsync(id);
         if (entity != null)
