@@ -28,3 +28,30 @@ export async function GET(request: Request) {
     );
   }
 }
+
+/**
+ * Creates a new event in the database
+ *
+ * @param {Request} request
+ * @returns The created event or an error message
+ */
+export async function POST(request: Request) {
+  const fullUrl = `${BASE_URL}/events/api/event`;
+  try {
+    const eventData = await request.json();
+    const response = await axios.post(fullUrl, eventData);
+
+    return NextResponse.json(response.data, { status: 201 });
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error('Error creating event:', error.response?.data || error.message);
+    } else {
+      console.error('Unknown error:', error);
+    }
+
+    return NextResponse.json(
+      { error: 'Failed to create event' },
+      { status: 500 },
+    );
+  }
+}

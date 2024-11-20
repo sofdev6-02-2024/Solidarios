@@ -7,10 +7,15 @@ interface ImageUploadProps {
   onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+const DEFAULT_IMAGE =
+  'https://i.pinimg.com/736x/d3/ba/c7/d3bac7eeb95da380710ff1fd7c4c4068.jpg';
+
 const ImageUpload: React.FC<ImageUploadProps> = ({
   selectedImage,
   onImageChange,
 }) => {
+  const imageToShow = selectedImage || DEFAULT_IMAGE;
+
   return (
     <Box className="image-upload" sx={{ textAlign: 'center', padding: '16px' }}>
       <Typography variant="h6">Upload Image</Typography>
@@ -25,20 +30,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         <input type="file" hidden onChange={onImageChange} />
       </Button>
 
-      {selectedImage ? (
-        <Box>
-          <img
-            src={selectedImage}
-            alt="Selected"
-            className="selected-image"
-            style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
-          />
-        </Box>
-      ) : (
-        <Typography variant="body2" sx={{ color: 'gray', marginTop: '16px' }}>
-          No image selected yet.
-        </Typography>
-      )}
+      <Box>
+        <img
+          src={imageToShow}
+          alt="Selected"
+          className="selected-image"
+          style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
+        />
+      </Box>
     </Box>
   );
 };

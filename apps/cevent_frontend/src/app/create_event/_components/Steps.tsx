@@ -9,6 +9,7 @@ import {
   Button,
 } from '@mui/material';
 import { AddCircleOutline } from '@mui/icons-material';
+import { createEvent } from '@/utils/../services/EventService';
 import '../_styles/Steps.css';
 
 interface GeneralInfoProps {
@@ -47,6 +48,10 @@ const Steps = ({
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
 
   useEffect(() => {
+    console.log('General Info:', generalInfo);
+    console.log('Date and Location:', dateLocation);
+    console.log('Price and Capacity:', priceCapacity);
+
     setIsGeneralInfoComplete(
       !!(
         generalInfo?.title &&
@@ -76,37 +81,36 @@ const Steps = ({
       isPriceCapacityComplete
     ) {
       const eventData = {
-        ...generalInfo,
-        ...dateLocation,
-        ...priceCapacity,
-        coverPhotoUrl: selectedImage,
+        name: generalInfo.title,
+        description: generalInfo.description,
+        category: generalInfo.category,
+        eventDate: new Date(dateLocation.date + 'T' + dateLocation.time),
+        location: {
+          latitude: dateLocation.latitude ?? 0,
+          longitude: dateLocation.longitude ?? 0,
+        },
+        venue: dateLocation.location || '',
+        address: dateLocation.location || '',
+        ticketPrice: priceCapacity.ticketPrice,
+        coverPhotoUrl: selectedImage || '',
+        attendanceTrackingEnabled: false,
+        capacity: priceCapacity.capacity,
       };
-
+  
       try {
-        const response = await fetch(
-          'http://localhost:5149/ceventservice.api/api/Event',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(eventData),
-          },
-        );
-
-        if (!response.ok) {
-          throw new Error(`Failed to create event: ${response.statusText}`);
+        const response = await createEvent(eventData);
+        if ('error' in response) {
+          console.error('Error creating event:', response.error);
+        } else {
+          console.log('Event created successfully:', response);
         }
-
-        const result = await response.json();
-        console.log('Event created:', result);
       } catch (error) {
-        console.error('Error creating event:', error);
+        console.error('Unexpected error creating event:', error);
       }
     } else {
       console.log('Please complete all fields before submitting');
     }
-  };
+  };  
 
   return (
     <Box mb={4} p={3}>
