@@ -7,7 +7,7 @@ import {
   Modal,
 } from '@mui/material';
 import { CalendarToday, AccessTime, LocationOn } from '@mui/icons-material';
-import Calendar from 'react-calendar'; // No es necesario importar Value
+import Calendar from 'react-calendar';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import '../_styles/DateLocation.css';
 

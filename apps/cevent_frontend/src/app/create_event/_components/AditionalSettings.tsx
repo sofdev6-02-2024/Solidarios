@@ -6,7 +6,7 @@ const AdditionalSettings = () => {
   const [attendanceControl, setAttendanceControl] = useState(false);
 
   const handleToggle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { checked } = event.target; // Desestructuramos `checked` desde `event.target`
+    const { checked } = event.target;
     setAttendanceControl(checked);
   };
 

@@ -28,7 +28,7 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
     const { name, value } = e.target;
     setFields((prevFields) => ({
       ...prevFields,
-      [name]: parseFloat(value), // Convertimos el valor a número
+      [name]: parseFloat(value),
     }));
   };
 

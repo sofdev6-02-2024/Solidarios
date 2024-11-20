@@ -96,7 +96,7 @@ const Steps = ({
         attendanceTrackingEnabled: false,
         capacity: priceCapacity.capacity,
       };
-  
+
       try {
         const response = await createEvent(eventData);
         if ('error' in response) {
@@ -110,7 +110,7 @@ const Steps = ({
     } else {
       console.log('Please complete all fields before submitting');
     }
-  };  
+  };
 
   return (
     <Box mb={4} p={3}>

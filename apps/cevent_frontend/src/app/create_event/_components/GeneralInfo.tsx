@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {
-  TextField,
-  FormHelperText,
-  Typography,
-  Box,
-} from '@mui/material';
+import { TextField, FormHelperText, Typography, Box } from '@mui/material';
 import '../_styles/GeneralInfo.css';
 
 interface OnCompleteCallback {
   (
     fields: {
-    title: string;
-    shortDescription: string;
-    description: string;
-    category: string;
+      title: string;
+      shortDescription: string;
+      description: string;
+      category: string;
     },
     isComplete: boolean,
   ): void;
@@ -153,9 +148,7 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
           native: true,
         }}
       >
-        <option value="" disabled>
-          
-        </option>
+        <option value="" disabled></option>
         {categories.map((category) => (
           <option key={category.value} value={category.value}>
             {category.label}
