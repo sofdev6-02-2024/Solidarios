@@ -1,7 +1,0 @@
-{
-    "realm": "solidarios-realm",
-    "enabled": true,
-    "registrationAllowed": true,
-    "loginTheme": "keycloak",
-    "emailTheme": "keycloak"
-}

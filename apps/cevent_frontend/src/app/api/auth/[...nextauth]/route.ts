@@ -108,9 +108,7 @@ export const authOptions: AuthOptions = {
       if (token.id_token) {
         session.id_token = encrypt(token.id_token);
       }
-      if (token.decoded) {
-        session.roles = token.decoded.realm_access.roles;
-      }
+      session.roles = token.decoded?.realm_access.roles;
       session.error = token.error;
       return session;
     },
