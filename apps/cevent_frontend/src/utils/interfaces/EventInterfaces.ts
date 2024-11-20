@@ -45,5 +45,3 @@ export interface EventFilter {
   page?: number;
   pageSize?: number;
 }
-
-

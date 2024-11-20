@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { EventFilter } from '@/utils/interfaces/EventInterfaces';
+import { EventFilter, SortOptions } from '@/utils/interfaces/EventInterfaces';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
       ? Number(searchParams.get('MaxPrice'))
       : undefined,
     Status: searchParams.get('Status') || undefined,
-    SortBy: searchParams.get('SortBy') || undefined,
+    SortBy: (searchParams.get('SortBy') as SortOptions) || undefined,
     IsDescending: searchParams.get('IsDescending') === 'true',
   };
   const queryParams = Object.fromEntries(

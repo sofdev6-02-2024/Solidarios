@@ -9,7 +9,14 @@ import {
   EventHomePageDto,
   SortOptions,
 } from '@/utils/interfaces/EventInterfaces';
-import { Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -88,38 +95,38 @@ const CategoryPage = () => {
           <Typography color="primary" variant="h1">
             {categoryName}
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: "row", gap: 2 }}>
-            <FormControl >
+          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+            <FormControl>
               <InputLabel id="sort-by">Sort By</InputLabel>
-            <Select
-            sx={{color: 'black'}}
-              label="Sort By"
-              value={sortBy}
-              onChange={(e) => {
-                setSortBy(e.target.value as SortOptions);
-                resetEvents();
-              }}
-            >
-              {Object.values(SortOptions).map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </Select>
+              <Select
+                sx={{ color: 'black' }}
+                label="Sort By"
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value as SortOptions);
+                  resetEvents();
+                }}
+              >
+                {Object.values(SortOptions).map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
-            <FormControl >
+            <FormControl>
               <InputLabel id="sort">Sort</InputLabel>
-            <Select
-              label="Sort"
-              value={IsDescending ? DESCENDING : ASCENDING}
-              onChange={(e) => {
-                setIsDescending(Number(e.target.value) === DESCENDING);
-                resetEvents();
-              }}
-            >
-              <MenuItem value={DESCENDING}>Descending</MenuItem>
-              <MenuItem value={ASCENDING}>Ascending</MenuItem>
-            </Select>
+              <Select
+                label="Sort"
+                value={IsDescending ? DESCENDING : ASCENDING}
+                onChange={(e) => {
+                  setIsDescending(Number(e.target.value) === DESCENDING);
+                  resetEvents();
+                }}
+              >
+                <MenuItem value={DESCENDING}>Descending</MenuItem>
+                <MenuItem value={ASCENDING}>Ascending</MenuItem>
+              </Select>
             </FormControl>
           </Box>
         </Box>

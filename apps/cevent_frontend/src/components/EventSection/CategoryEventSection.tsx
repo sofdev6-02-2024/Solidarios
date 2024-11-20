@@ -40,7 +40,7 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
 
   const handleRedirect = () => {
     route.push(`/category/${category}`);
-  }
+  };
   return (
     <Box sx={{ mt: 4 }}>
       <Box
@@ -77,11 +77,15 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
         />
       )}
       {category !== EventCategory.All && (
-      <ButtonBase sx={{marginTop: 2}} onClick={handleRedirect}>
-        <Typography variant="body" color="secondary" sx={{ fontWeight: 'bold' }}>
-          View All
-        </Typography>
-      </ButtonBase>
+        <ButtonBase sx={{ marginTop: 2 }} onClick={handleRedirect}>
+          <Typography
+            variant="body"
+            color="secondary"
+            sx={{ fontWeight: 'bold' }}
+          >
+            View All
+          </Typography>
+        </ButtonBase>
       )}
     </Box>
   );
