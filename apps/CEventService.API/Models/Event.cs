@@ -19,10 +19,10 @@ public class Event : BaseEntity<int>
     public required string Address { get; set; }
     public int AttendeeCount { get; set; }
 
-    public ICollection<Activity> Activities { get; set; }
+    public ICollection<Activity>? Activities { get; set; }
     public ICollection<User>? CoOrganizers { get; set; }
-    public ICollection<Registration> Registrations { get; set; }
-    public ICollection<Wishlist> Wishlists { get; set; }
-    public User User { get; set; }
+    public ICollection<Registration>? Registrations { get; set; }
+    public ICollection<Wishlist>? Wishlists { get; set; }
+    public required User User { get; set; }
     public required EventCategory Category { get; set; }
 }
