@@ -1,25 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, FormHelperText, Typography, Box } from '@mui/material';
+import {
+  OnCompleteCallback,
+  FieldsGeneralInfo,
+} from '@/utils/interfaces/CreateEvent';
 import '../_styles/GeneralInfo.css';
-
-interface OnCompleteCallback {
-  (
-    fields: {
-      title: string;
-      shortDescription: string;
-      description: string;
-      category: string;
-    },
-    isComplete: boolean,
-  ): void;
-}
-
-interface Fields {
-  title: string;
-  shortDescription: string;
-  description: string;
-  category: string;
-}
 
 const categories = [
   { value: 'Conference', label: 'Conference' },
@@ -33,7 +18,7 @@ const categories = [
 ];
 
 const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
-  const [fields, setFields] = useState<Fields>({
+  const [fields, setFields] = useState<FieldsGeneralInfo>({
     title: '',
     shortDescription: '',
     description: '',

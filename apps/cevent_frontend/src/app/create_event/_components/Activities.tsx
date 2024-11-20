@@ -2,20 +2,8 @@ import React, { useState } from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
+import { Activity, ActivitiesProps } from '@/utils/interfaces/CreateEvent';
 import '../_styles/Activities.css';
-
-interface Activity {
-  name: string;
-  description: string;
-  startTime: string;
-  endTime: string;
-  capacity: number;
-  createdAt: string;
-}
-
-interface ActivitiesProps {
-  onAddActivity: (activity: Activity) => void;
-}
 
 const Activities: React.FC<ActivitiesProps> = ({ onAddActivity }) => {
   const [activities, setActivities] = useState<Activity[]>([]);

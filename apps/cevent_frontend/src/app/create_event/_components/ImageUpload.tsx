@@ -1,11 +1,7 @@
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import { ImageUploadProps } from '@/utils/interfaces/CreateEvent';
 import '../_styles/ImageUpload.css';
-
-interface ImageUploadProps {
-  selectedImage: string | null;
-  onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
 
 const DEFAULT_IMAGE =
   'https://i.pinimg.com/736x/d3/ba/c7/d3bac7eeb95da380710ff1fd7c4c4068.jpg';

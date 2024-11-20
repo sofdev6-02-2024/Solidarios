@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, Typography, InputAdornment } from '@mui/material';
 import { AttachMoney } from '@mui/icons-material';
+import {
+  FieldsPriceCapacity,
+  PriceCapacityProps,
+} from '@/utils/interfaces/CreateEvent';
 import '../_styles/PriceCapacity.css';
 
-interface Fields {
-  capacity: number;
-  ticketPrice: number;
-}
-
-interface PriceCapacityProps {
-  onComplete: (fields: Fields, isComplete: boolean) => void;
-}
-
 const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
-  const [fields, setFields] = useState<Fields>({
+  const [fields, setFields] = useState<FieldsPriceCapacity>({
     capacity: 0,
     ticketPrice: 0,
   });

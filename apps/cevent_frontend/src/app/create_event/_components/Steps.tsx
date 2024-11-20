@@ -12,14 +12,14 @@ import { AddCircleOutline } from '@mui/icons-material';
 import { createEvent } from '@/utils/../services/EventService';
 import '../_styles/Steps.css';
 
-interface GeneralInfoProps {
+export interface GeneralInfoProps {
   title: string;
   shortDescription: string;
   description: string;
   category: string;
 }
 
-interface DateLocationProps {
+export interface DateLocationProps {
   date?: string;
   time?: string;
   location?: string;
@@ -27,7 +27,7 @@ interface DateLocationProps {
   longitude?: number | null;
 }
 
-interface PriceCapacityProps {
+export interface PriceCapacityProps {
   capacity: number;
   ticketPrice: number;
 }
