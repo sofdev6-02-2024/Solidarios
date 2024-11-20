@@ -52,7 +52,6 @@ namespace CEventService.API.DAO
         {
             var query = _context.Events.AsQueryable();
 
-            // Filtros
             if (!string.IsNullOrEmpty(filters.Category))
                 query = query.Where(e => e.Category == filters.Category);
 
@@ -71,7 +70,6 @@ namespace CEventService.API.DAO
             if (!string.IsNullOrEmpty(filters.Status))
                 query = query.Where(e => e.Status == filters.Status);
 
-            // Ordenamiento
             if (!string.IsNullOrEmpty(filters.SortBy))
             {
                 query = filters.IsDescending
@@ -79,7 +77,6 @@ namespace CEventService.API.DAO
                     : query.OrderBy(e => EF.Property<object>(e, filters.SortBy));
             }
 
-            // Paginación
             query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
             var events = await query

@@ -8,8 +8,7 @@ export async function GET(
   const { id } = params;
 
   try {
-    //const response = awai
-    //const data = await response.json();
+    //TODO: fetch user by id when the API for fetching user by id is ready
     const data: UserInterface = {
       userId: 1,
       fullName: 'John Doe',
