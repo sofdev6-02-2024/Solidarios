@@ -1,57 +1,55 @@
+import axios from 'axios';
 import {
+  EventDetailDto,
+  EventFilter,
   EventHomePageDto,
-  EventInputDto,
 } from '@/utils/interfaces/EventInterfaces';
 
 /**
  * Fetches the events for the home page
  *
- * @param page number of the page
- * @param pageSize number of events per page
+ * @param filter object containing filter options
  * @returns an array of events
  */
 export const fetchHomePageEvents = async (
-  page: number,
-  pageSize: number,
+  filter: EventFilter,
 ): Promise<EventHomePageDto[]> => {
   try {
-    const response = await fetch(
-      `/api/events/homepage?page=${page}&pageSize=${pageSize}`,
+    const params = {
+      page: filter.page,
+      pageSize: filter.pageSize,
+      Category: filter.Category,
+      StartDate: filter.StartDate,
+      EndDate: filter.EndDate,
+      MinPrice: filter.MinPrice,
+      MaxPrice: filter.MaxPrice,
+      Status: filter.Status,
+      SortBy: filter.SortBy,
+      IsDescending: filter.IsDescending,
+    };
+
+    const response = await axios.get<EventHomePageDto[]>(
+      '/api/events/homepage',
+      { params },
     );
-    if (!response.ok) {
-      return [];
-    }
-    return await response.json();
+
+    return response.data;
   } catch (error) {
+    console.error('Error fetching events:', error);
     return [];
   }
 };
 
-/**
- * Creates a new event in the database
- *
- * @param eventData The data of the event to be created
- * @returns The created event or an error message
- */
-export const createEvent = async (
-  eventData: EventInputDto,
-): Promise<EventInputDto | { error: string }> => {
+export const getEventById = async (
+  id: string,
+): Promise<EventDetailDto | null> => {
   try {
-    const response = await fetch('/api/events', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(eventData),
-    });
-
+    const response = await fetch(`/api/events/${id}`);
     if (!response.ok) {
-      return { error: 'Failed to create event' };
+      return null;
     }
-
     return await response.json();
   } catch (error) {
-    console.error('Error creating event:', error);
-    return { error: 'An unexpected error occurred' };
+    return null;
   }
 };
