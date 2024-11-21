@@ -27,6 +27,7 @@ services:
       - consul
       - servicediscovery
       - sqlserver
+      - notification_sqlserver
     networks:
       - shared-network
 
@@ -60,6 +61,7 @@ services:
       - CONNECTION_STRING="Server=sqlserver_container,1433;Database=DesarrolloDB;User Id=SA;Password=P@pers123;Encrypt=True;TrustServerCertificate=True;"
     depends_on:
       - sqlserver
+      - notification_sqlserver
     networks:
       - shared-network
     volumes:
@@ -77,6 +79,23 @@ services:
       - MSSQL_DB=DesarrolloDB
     ports:
       - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD"]
+      interval: 10s
+      retries: 10
+    networks:
+      - shared-network
+
+  notification_sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: notification_sqlserver_container
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@pers123
+      - MSSQL_PID=Developer 
+      - MSSQL_DB=DesarrolloDB
+    ports:
+      - "3314:1433"
     healthcheck:
       test: ["CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD"]
       interval: 10s
