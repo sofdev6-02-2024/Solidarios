@@ -1,4 +1,3 @@
-
 /**
  * Interface for Event Category
  * @interface
@@ -7,7 +6,7 @@
  * @property {string} color - e.g. '#FFC107'
  */
 export interface EventCategory {
-  keyWord: string; 
-  phrase: string; 
-  color: string; 
+  keyWord: string;
+  phrase: string;
+  color: string;
 }
