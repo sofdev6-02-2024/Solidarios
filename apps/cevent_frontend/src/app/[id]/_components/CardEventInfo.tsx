@@ -31,11 +31,7 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
       `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`,
     );
   };
-  const [remainingTickets, setRemainingTickets] = useState(eventData.capacity);
-  const handlePurchase = (quantity: number) => {
-    setRemainingTickets((prev) => prev - quantity);
-    handleClose();
-  };
+  
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     if (showSnackbar) {
@@ -141,13 +137,11 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
         </Grid>
       </Grid>
 
-      {/* Modal */}
       <TicketModal
         open={open}
         onClose={handleClose}
         pricePerTicket={eventData.ticketPrice}
-        capacity={remainingTickets}
-        onPurchase={handlePurchase}
+        capacity={eventData.capacity - eventData.attendeeCount}
         name={eventData.name}
       />
     </Card>
