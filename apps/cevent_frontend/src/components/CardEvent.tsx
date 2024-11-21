@@ -28,7 +28,7 @@ const CardEvent = ({ eventData }: CardEventProps) => {
   const router = useRouter();
   return (
     <Card sx={styles.cardStyles}>
-      <CardActionArea onClick={() => router.push(`/${eventData.eventId}`)}>
+      <CardActionArea onClick={() => router.push(`/${eventData.id}`)}>
         <CardMedia
           component="img"
           height="140"
@@ -68,7 +68,7 @@ const CardEvent = ({ eventData }: CardEventProps) => {
             />
           </Box>
           <Typography variant="body2" color="text.secondary">
-            {truncateText(eventData.description, 120)}
+            {truncateText(eventData.shortDescription, 120)}
           </Typography>
         </CardContent>
       </CardActionArea>

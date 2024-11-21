@@ -18,7 +18,7 @@ const DetailsEvent = ({ event }: DetailsEventProps) => {
 
   return (
     <Box sx={styleEventDetail.container}>
-      <Box>
+      <Box >
         <Typography gutterBottom variant="h3">
           Event Details
         </Typography>

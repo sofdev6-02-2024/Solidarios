@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     Object.entries(filters).filter(([, value]) => value !== undefined),
   );
   try {
-    const response = await axios.get(`${BASE_URL}/events/api/Event/homepage`, {
+    const response = await axios.get(`${BASE_URL}/events/api/Event/summaryEvent`, {
       params: queryParams,
     });
     return NextResponse.json(response.data, { status: 200 });

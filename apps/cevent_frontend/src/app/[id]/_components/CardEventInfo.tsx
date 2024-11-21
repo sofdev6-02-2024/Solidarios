@@ -21,7 +21,7 @@ interface CardEventInfoProps {
   eventData: EventDetailDto;
   showSnackbar?: (message: string) => void;
 }
-const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
+const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
   const handleOpenMap = () => {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`,
@@ -30,6 +30,9 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
+    if(showSnackbar) {
+      showSnackbar('Link copied to clipboard');
+    }
   };
   return (
     <Card sx={styles.cardStyles}>
@@ -39,7 +42,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
             {eventData.name}
           </Typography>
           <Typography variant="body2" sx={styles.chipCategoryStyles}>
-            {eventData.category}
+            {eventData.category.keyWord}
           </Typography>
 
           <Box sx={styles.infoSection}>

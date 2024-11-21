@@ -6,10 +6,10 @@ import { formatDate, truncateText } from '@/utils/methods/stringMethods';
 import EventIcon from '@mui/icons-material/Event';
 import { useRouter } from 'next/navigation';
 
-const MiniBannerEvent = ({ event }: { event: EventHomePageDto }) => {
+const MiniBannerEvent = ({event}: { event: EventHomePageDto }) => {
   const router = useRouter();
   const handleRedirect = () => {
-    router.push(`/${event.eventId}`);
+    router.push(`/${event.id}`);
   };
 
   return (
@@ -36,11 +36,13 @@ const MiniBannerEvent = ({ event }: { event: EventHomePageDto }) => {
             />
           </Box>
           <Typography variant="body" sx={styles.textDescription}>
-            {truncateText(event.description, 200)}
+            {truncateText(event.shortDescription, 200)}
           </Typography>
-          <Button variant="contained" sx={styles.buttonMoreInfo}>
-            More info
-          </Button>
+          <Box sx={styles.buttonMoreInfo}>
+            <Typography variant="body" sx={styles.textMoreInfo}>
+              More info
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </ButtonBase>

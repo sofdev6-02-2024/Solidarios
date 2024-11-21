@@ -1,3 +1,5 @@
+using CEventService.API.Models;
+
 namespace CEventService.API.DTOs.Event;
 public class EventFilterDto
 {
@@ -6,7 +8,7 @@ public class EventFilterDto
     public DateTime? EndDate { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
-    public string? Status { get; set; }
+    public int Status { get; set; } = -1;
     public string? SortBy { get; set; } 
     public bool IsDescending { get; set; } = false; 
 }

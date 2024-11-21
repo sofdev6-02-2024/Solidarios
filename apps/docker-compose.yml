@@ -74,7 +74,7 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=P@pers123
       - MSSQL_PID=Developer
-      - MSSQL_DB=DesarrolloDB
+      - MSSQL_DB=CeventDB
     ports:
       - "1433:1433"
     healthcheck:

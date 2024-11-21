@@ -1,4 +1,4 @@
-import { EventCategory, CategoryObj } from '@/utils/interfaces/Categories';
+import { EventCategory } from '@/utils/interfaces/Categories';
 import { Box, ButtonBase, Typography } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
 import {
@@ -12,6 +12,7 @@ import SkeletonEventsBox from './SkeletonEventsBox';
 import EmptyEventSection from './EmptyEventSection';
 import SliderEvents from './SliderEvents';
 import { useRouter } from 'next/navigation';
+import { ALL_CATEGORY_VALUE } from '@/utils/constans';
 
 interface EventSectionProps {
   category: EventCategory;
@@ -24,8 +25,8 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
   useEffect(() => {
     const filters: EventFilter = {
       page: 1,
-      pageSize: category === EventCategory.All ? 6 : 9,
-      Category: category !== EventCategory.All ? category : undefined,
+      pageSize: category.keyWord === ALL_CATEGORY_VALUE.keyWord ? 6 : 9,
+      Category: category.keyWord !== ALL_CATEGORY_VALUE.keyWord ? category.keyWord : undefined,
       SortBy: SortOptions.EventDate,
       IsDescending: true,
     };
@@ -39,30 +40,16 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
   }, []);
 
   const handleRedirect = () => {
-    route.push(`/category/${category}`);
+    route.push(`/category/${category.keyWord}`);
   };
   return (
     <Box sx={{ mt: 4 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '8px',
-          justifyContent: CategoryObj[category].KeyWordFirst
-            ? 'flex-start'
-            : 'flex-end',
-          flexDirection: CategoryObj[category].KeyWordFirst
-            ? 'row'
-            : 'row-reverse',
-        }}
-      >
-        <Typography variant="h3" color="primary" sx={{ fontWeight: 'bold' }}>
-          {CategoryObj[category].KeyWord}
-        </Typography>
-        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
-          {CategoryObj[category].Phrase}{' '}
+      <Box>
+        <Typography variant="h4" color="secondary" sx={{ fontWeight: 'bold' }}>
+          {category.keyWord}
         </Typography>
       </Box>
-      {category !== EventCategory.All && (
+      {category.keyWord !== ALL_CATEGORY_VALUE.keyWord && (
         <SliderEvents events={events.slice(0, 3)} />
       )}
       {events.length < 1 ? (
@@ -73,10 +60,10 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
         )
       ) : (
         <EventsBox
-          events={category === EventCategory.All ? events : events.slice(3, 9)}
+          events={category.keyWord === ALL_CATEGORY_VALUE.keyWord ? events : events.slice(3, 9)}
         />
       )}
-      {category !== EventCategory.All && (
+      {category.keyWord !== ALL_CATEGORY_VALUE.keyWord && (
         <ButtonBase sx={{ marginTop: 2 }} onClick={handleRedirect}>
           <Typography
             variant="body"

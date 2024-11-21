@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -21,14 +21,20 @@ const SliderEvents = ({ events }: SliderEventsProps) => {
     autoplaySpeed: 5000,
   };
 
+  useEffect(() => {
+    console.log(events);
+  }
+  , [events]);
+
   return (
     <Box sx={{ marginBottom: '40px' }}>
+      { events.length > 1 ? 
       <Slider {...settings}>
         {events &&
-          events.map((event, index) => (
-            <MiniBannerEvent key={index} event={event} />
+          events.map((event) => (
+            <MiniBannerEvent key={event.id} event={event} />
           ))}
-      </Slider>
+      </Slider> : events[0] && <MiniBannerEvent event={events[0]} />}
     </Box>
   );
 };

@@ -6,18 +6,18 @@ export interface Location {
 }
 
 export interface EventHomePageDto {
-  eventId: number;
+  id: number;
   name: string;
-  category: EventCategory;
+  category: string;
   eventDate: Date;
   address: string;
   ticketPrice: number;
   attendeeCount: number;
-  description: string;
+  shortDescription: string;
   coverPhotoUrl: string;
 }
 
-export interface EventDetailDto extends EventHomePageDto {
+export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   location: Location;
   venue: string;
   attendanceTrackingEnabled: boolean;
@@ -25,6 +25,8 @@ export interface EventDetailDto extends EventHomePageDto {
   capacity: number;
   organizerUserId: number;
   createdAt: Date;
+  category: EventCategory;
+  description: string;
 }
 
 export enum SortOptions {

@@ -5,6 +5,10 @@ import Header from '@/components/Header';
 import ReduxProvider from '@/redux/redux-provider';
 import Footer from '@/components/Footer';
 import SessionProviderWrapper from '@/utils/sessionProviderWrapper';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchCategories } from '@/services/CategoryService';
+import LoadData from '@/components/LoadData';
 
 export const metadata: Metadata = {
   title: 'CEvent',
@@ -16,12 +20,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
+
   return (
     <SessionProviderWrapper>
       <html lang="en">
         <body className="font-inter">
           <ReduxProvider>
             <ThemeRegistry>
+              <LoadData />
               <Header />
               {children}
               <Footer />
