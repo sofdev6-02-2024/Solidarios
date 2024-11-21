@@ -1,4 +1,4 @@
-﻿<details>
+<details>
 <summary>
 
   # Cevent Docker Compose Settings

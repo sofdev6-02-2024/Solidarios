@@ -1,5 +1,4 @@
 'use client';
-
 import {
   AppBar,
   Toolbar,
@@ -20,7 +19,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { routes } from '@/utils/navigation/Routes';
 import { useTheme } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 import styles from '@/styles/components/Header.module.css';
 
 export default function Header() {

@@ -1,81 +1,80 @@
-using AutoMapper;
+using CEventService.API.DAO;
 using CEventService.API.Data;
 using CEventService.API.DTOs.Event;
 using CEventService.API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CEventService.API.DAO
+public class EventRepository : BaseRepository<Event, int>, IEventRepository
 {
-    public class EventRepository : IEventRepository
+    public EventRepository(AppDbContext dbContext) : base(dbContext)
     {
-        private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+    }
 
-        public EventRepository(AppDbContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-        }
+    public override async Task<IEnumerable<Event>> GetAllAsync(int page, int pageSize)
+    {
+        return await _dbContext.Set<Event>()
+            .Where(e => !e.IsDeleted)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Include(e => e.Activities)
+            .Include(e => e.CoOrganizers)
+            .Include(e => e.Category)
+            .ToListAsync();
+    }
 
-        public async Task<IEnumerable<Event>> GetAllAsync(int page, int pageSize)
-        {
-            return await _context.Events
-                .Where(e => !e.IsDeleted)
-                .Skip(page)
-                .Take(pageSize)
-                .ToListAsync();
-        }
+    public override async Task<Event?> GetByIdAsync(int id)
+    {
+        return await _dbContext.Set<Event>()
+            .Include(e => e.Category) 
+            .Include(e => e.Activities)
+            .Include(e => e.CoOrganizers) 
+            .FirstOrDefaultAsync(e => e.Id == id && !e.IsDeleted);
+    }
 
-        public async Task<Event?> GetByIdAsync(int id)
-        {
-            return await _context.Events.FindAsync(id);
-        }
+    public async Task<IEnumerable<EventHomePageDto>> GetSummaryEvents(int page, int pageSize, EventFilterDto filters)
+    {
+         var query = _dbContext.Set<Event>().AsQueryable();
 
-        public async Task<Event> CreateAsync(Event newEvent)
-        {
-            _context.Events.Add(newEvent);
-            newEvent.Status = "PENDING";
-            newEvent.OrganizerUserId = "Users-Not-Implemented-Yet";
-            newEvent.CreatedAt = DateTime.Now;
-            newEvent.AttendeeCount = 0;
-            await _context.SaveChangesAsync();
-            return newEvent;
-        }
+            if (!string.IsNullOrEmpty(filters.Category))
+                query = query.Where(e => e.Category.KeyWord == filters.Category);
 
-        public async Task UpdateAsync(Event updatedEvent)
-        {
-            _context.Events.Update(updatedEvent);
-            await _context.SaveChangesAsync();
-        }
+            if (filters.StartDate.HasValue)
+                query = query.Where(e => e.EventDate >= filters.StartDate.Value);
 
-        public async Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize)
-        {
-            var events =  await _context.Events
-                .Skip(page)
-                .Take(pageSize)
-                .ToListAsync();
-            return _mapper.Map<IEnumerable<EventHomePageDto>>(events);
-        }
+            if (filters.EndDate.HasValue)
+                query = query.Where(e => e.EventDate <= filters.EndDate.Value);
 
-        public async Task<bool> SoftDeleteAsync(int id, string requesterId)
-        {
-            var existingEvent = await _context.Events.FindAsync(id);
+            if (filters.MinPrice.HasValue)
+                query = query.Where(e => e.TicketPrice >= filters.MinPrice.Value);
 
-            if (existingEvent == null || existingEvent.IsDeleted)
+            if (filters.MaxPrice.HasValue)
+                query = query.Where(e => e.TicketPrice <= filters.MaxPrice.Value);
+           
+            if (filters.Status != -1  && filters.Status < 6)
+                query = query.Where(e =>(int)e.Status == filters.Status);
+
+            if (!string.IsNullOrEmpty(filters.SortBy))
             {
-                return false;
+                query = filters.IsDescending
+                    ? query.OrderByDescending(e => EF.Property<object>(e, filters.SortBy))
+                    : query.OrderBy(e => EF.Property<object>(e, filters.SortBy));
             }
 
-            if (existingEvent.OrganizerUserId != requesterId)
+            query = query.Skip((page - 1) * pageSize).Take(pageSize);
+
+            var events = await query.Select(e => new EventHomePageDto
             {
-                return false;
-            }
+                Id = e.Id,
+                Name = e.Name,
+                Category = e.Category.KeyWord,
+                EventDate = e.EventDate,
+                Address = e.Address,
+                TicketPrice = e.TicketPrice,
+                AttendeeCount = e.AttendeeCount,
+                ShortDescription = e.ShortDescription,
+                CoverPhotoUrl = e.CoverPhotoUrl,
+            }).ToListAsync();
 
-            existingEvent.IsDeleted = true;
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
+            return events;
     }
 }

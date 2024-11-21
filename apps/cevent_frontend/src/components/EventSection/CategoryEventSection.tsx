@@ -1,11 +1,18 @@
-import { EventCategory, CategoryObj } from '@/utils/interfaces/Categories';
-import { Box, Typography } from '@mui/material';
+import { EventCategory } from '@/utils/interfaces/Categories';
+import { Box, ButtonBase, Typography } from '@mui/material';
 import { memo, useEffect, useState } from 'react';
-import { EventHomePageDto } from '@/utils/interfaces/EventInterfaces';
+import {
+  EventFilter,
+  EventHomePageDto,
+  SortOptions,
+} from '@/utils/interfaces/EventInterfaces';
 import { fetchHomePageEvents } from '@/services/EventService';
 import EventsBox from './EventsBox';
 import SkeletonEventsBox from './SkeletonEventsBox';
 import EmptyEventSection from './EmptyEventSection';
+import SliderEvents from './SliderEvents';
+import { useRouter } from 'next/navigation';
+import { ALL_CATEGORY_VALUE } from '@/utils/constans';
 
 interface EventSectionProps {
   category: EventCategory;
@@ -14,8 +21,19 @@ interface EventSectionProps {
 const CategoryEventSection = ({ category }: EventSectionProps) => {
   const [events, setEvents] = useState<EventHomePageDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const route = useRouter();
   useEffect(() => {
-    fetchHomePageEvents(1, 6)
+    const filters: EventFilter = {
+      page: 1,
+      pageSize: category.keyWord === ALL_CATEGORY_VALUE.keyWord ? 6 : 9,
+      Category:
+        category.keyWord !== ALL_CATEGORY_VALUE.keyWord
+          ? category.keyWord
+          : undefined,
+      SortBy: SortOptions.EventDate,
+      IsDescending: true,
+    };
+    fetchHomePageEvents(filters)
       .then((data) => {
         setEvents(data);
       })
@@ -23,27 +41,20 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
         setLoading(false);
       });
   }, []);
+
+  const handleRedirect = () => {
+    route.push(`/category/${category.keyWord}`);
+  };
   return (
     <Box sx={{ mt: 4 }}>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: '8px',
-          justifyContent: CategoryObj[category].KeyWordFirst
-            ? 'flex-start'
-            : 'flex-end',
-          flexDirection: CategoryObj[category].KeyWordFirst
-            ? 'row'
-            : 'row-reverse',
-        }}
-      >
-        <Typography variant="h3" color="primary" sx={{ fontWeight: 'bold' }}>
-          {CategoryObj[category].KeyWord}
-        </Typography>
-        <Typography variant="h3" sx={{ fontWeight: 'bold' }}>
-          {CategoryObj[category].Phrase}{' '}
+      <Box>
+        <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
+          {category.keyWord.toUpperCase()}
         </Typography>
       </Box>
+      {category.keyWord !== ALL_CATEGORY_VALUE.keyWord && (
+        <SliderEvents events={events.slice(0, 3)} />
+      )}
       {events.length < 1 ? (
         loading ? (
           <SkeletonEventsBox />
@@ -51,7 +62,24 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
           <EmptyEventSection />
         )
       ) : (
-        <EventsBox events={events} />
+        <EventsBox
+          events={
+            category.keyWord === ALL_CATEGORY_VALUE.keyWord
+              ? events
+              : events.slice(3, 9)
+          }
+        />
+      )}
+      {category.keyWord !== ALL_CATEGORY_VALUE.keyWord && (
+        <ButtonBase sx={{ marginTop: 2 }} onClick={handleRedirect}>
+          <Typography
+            variant="body"
+            color="secondary"
+            sx={{ fontWeight: 'bold' }}
+          >
+            View All
+          </Typography>
+        </ButtonBase>
       )}
     </Box>
   );
