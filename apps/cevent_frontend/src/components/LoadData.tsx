@@ -1,7 +1,7 @@
 'use client';
 
 import { AppDispatch } from '@/redux/store';
-import { fetchCategories } from '@/services/CategoryService';
+import { fetchCategories } from '@/redux/slices/categorySlice';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 

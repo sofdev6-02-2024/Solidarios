@@ -5,11 +5,11 @@ import axios from 'axios';
 const initialState: EventCategory[] = [];
 
 export const fetchCategories = createAsyncThunk(
-    'categories/fetchCategories',
-    async () => {
-      const response = await axios.get<EventCategory[]>(`/api/categories`);
-      return response.data;
-    }
+  'categories/fetchCategories',
+  async () => {
+    const response = await axios.get<EventCategory[]>('/api/categories');
+    return response.data;
+  },
 );
 
 const categorySlice = createSlice({
@@ -24,9 +24,12 @@ const categorySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCategories.fulfilled, (state, action: PayloadAction<EventCategory[]>) => {
-      return action.payload;
-    });
+    builder.addCase(
+      fetchCategories.fulfilled,
+      (state, action: PayloadAction<EventCategory[]>) => {
+        return action.payload;
+      },
+    );
   },
 });
 

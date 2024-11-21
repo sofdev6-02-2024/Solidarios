@@ -30,7 +30,7 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
-    if(showSnackbar) {
+    if (showSnackbar) {
       showSnackbar('Link copied to clipboard');
     }
   };

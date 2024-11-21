@@ -20,8 +20,7 @@ export default function Home() {
       console.log('Categories loaded');
       categories.forEach((category) => {
         console.log(category);
-      }
-      );
+      });
     }
   }, [categories]);
 

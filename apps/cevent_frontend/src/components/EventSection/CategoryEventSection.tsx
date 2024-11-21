@@ -26,7 +26,10 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
     const filters: EventFilter = {
       page: 1,
       pageSize: category.keyWord === ALL_CATEGORY_VALUE.keyWord ? 6 : 9,
-      Category: category.keyWord !== ALL_CATEGORY_VALUE.keyWord ? category.keyWord : undefined,
+      Category:
+        category.keyWord !== ALL_CATEGORY_VALUE.keyWord
+          ? category.keyWord
+          : undefined,
       SortBy: SortOptions.EventDate,
       IsDescending: true,
     };
@@ -45,8 +48,8 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
   return (
     <Box sx={{ mt: 4 }}>
       <Box>
-        <Typography variant="h4" color="secondary" sx={{ fontWeight: 'bold' }}>
-          {category.keyWord}
+        <Typography variant="h5" color="primary" sx={{ fontWeight: 'bold' }}>
+          {category.keyWord.toUpperCase()}
         </Typography>
       </Box>
       {category.keyWord !== ALL_CATEGORY_VALUE.keyWord && (
@@ -60,7 +63,11 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
         )
       ) : (
         <EventsBox
-          events={category.keyWord === ALL_CATEGORY_VALUE.keyWord ? events : events.slice(3, 9)}
+          events={
+            category.keyWord === ALL_CATEGORY_VALUE.keyWord
+              ? events
+              : events.slice(3, 9)
+          }
         />
       )}
       {category.keyWord !== ALL_CATEGORY_VALUE.keyWord && (

@@ -23,18 +23,20 @@ const SliderEvents = ({ events }: SliderEventsProps) => {
 
   useEffect(() => {
     console.log(events);
-  }
-  , [events]);
+  }, [events]);
 
   return (
     <Box sx={{ marginBottom: '40px' }}>
-      { events.length > 1 ? 
-      <Slider {...settings}>
-        {events &&
-          events.map((event) => (
-            <MiniBannerEvent key={event.id} event={event} />
-          ))}
-      </Slider> : events[0] && <MiniBannerEvent event={events[0]} />}
+      {events.length > 1 ? (
+        <Slider {...settings}>
+          {events &&
+            events.map((event) => (
+              <MiniBannerEvent key={event.id} event={event} />
+            ))}
+        </Slider>
+      ) : (
+        events[0] && <MiniBannerEvent event={events[0]} />
+      )}
     </Box>
   );
 };

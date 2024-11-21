@@ -53,6 +53,4 @@ export const styleEventDetail: { [key: string]: SxProps<Theme> } = {
     marginBottom: 2,
     marginTop: 2,
   },
-
-  
 };

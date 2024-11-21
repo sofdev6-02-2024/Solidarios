@@ -6,7 +6,7 @@ import { formatDate, truncateText } from '@/utils/methods/stringMethods';
 import EventIcon from '@mui/icons-material/Event';
 import { useRouter } from 'next/navigation';
 
-const MiniBannerEvent = ({event}: { event: EventHomePageDto }) => {
+const MiniBannerEvent = ({ event }: { event: EventHomePageDto }) => {
   const router = useRouter();
   const handleRedirect = () => {
     router.push(`/${event.id}`);
