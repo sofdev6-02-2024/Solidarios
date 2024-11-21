@@ -25,7 +25,6 @@ interface CardEventInfoProps {
   showSnackbar?: (message: string) => void;
 }
 
-const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
 const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
   const handleOpenMap = () => {
     window.open(
@@ -152,6 +151,6 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
          />
     </Card>
   );
-  };
-}
+};
+
 export default CardEventInfo;
