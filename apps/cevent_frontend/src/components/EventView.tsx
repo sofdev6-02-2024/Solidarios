@@ -49,9 +49,8 @@ const EventView = () => {
             {eventData.name}
           </Typography>
           <Typography variant="body2" sx={styles.chipCategoryStyles}>
-            {eventData.category}
+            {eventData.category.keyWord}
           </Typography>
-
           <Box sx={styles.infoSection}>
             <Box sx={styles.infoRow}>
               <EventIcon sx={styles.iconStyles} />

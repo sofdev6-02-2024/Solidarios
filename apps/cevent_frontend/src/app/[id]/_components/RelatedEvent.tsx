@@ -20,7 +20,7 @@ const RelatedEvent = ({ category }: RelatedEvetnsProps) => {
     const filters: EventFilter = {
       page: 1,
       pageSize: 6,
-      Category: category,
+      Category: category.keyWord,
       IsDescending: true,
       StartDate: new Date().toISOString(),
     };

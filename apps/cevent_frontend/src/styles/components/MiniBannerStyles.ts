@@ -67,6 +67,14 @@ const styles: { [key: string]: SxProps<Theme> } = {
 
   buttonMoreInfo: {
     backgroundColor: 'accent.main',
+    color: 'white',
+    padding: 1,
+    borderRadius: 1,
+  },
+
+  textMoreInfo: {
+    textAlign: 'center',
+    color: 'white',
   },
 };
 

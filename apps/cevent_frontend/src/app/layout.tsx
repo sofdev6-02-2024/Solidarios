@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import ReduxProvider from '@/redux/redux-provider';
 import Footer from '@/components/Footer';
 import SessionProviderWrapper from '@/utils/sessionProviderWrapper';
+import LoadData from '@/components/LoadData';
 
 export const metadata: Metadata = {
   title: 'CEvent',
@@ -22,6 +23,7 @@ export default function RootLayout({
         <body className="font-inter">
           <ReduxProvider>
             <ThemeRegistry>
+              <LoadData />
               <Header />
               {children}
               <Footer />

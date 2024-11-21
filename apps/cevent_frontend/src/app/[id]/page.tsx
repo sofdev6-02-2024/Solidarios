@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Alert, Box, Snackbar, Typography } from '@mui/material';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import { useParams } from 'next/navigation';
 import { getEventById } from '@/services/EventService';
@@ -14,6 +14,8 @@ import SkeletonEventsBox from '@/components/EventSection/SkeletonEventsBox';
 const EventPage = () => {
   const [eventData, setEventData] = useState<EventDetailDto | null>(null);
   const [loading, setLoading] = useState(true);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const params = useParams();
   const id = params.id;
   useEffect(() => {
@@ -48,7 +50,13 @@ const EventPage = () => {
           </Box>
           <Layout>
             <Box sx={{ position: 'relative', height: '220px' }}>
-              <CardEventInfo eventData={eventData} />
+              <CardEventInfo
+                eventData={eventData}
+                showSnackbar={(message: string) => {
+                  setSnackbarMessage(message);
+                  setSnackbarOpen(true);
+                }}
+              />
             </Box>
             <DetailsEvent event={eventData} />
             <RelatedEvent category={eventData.category} />
@@ -57,6 +65,15 @@ const EventPage = () => {
       ) : (
         <Typography>Event not found</Typography>
       )}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

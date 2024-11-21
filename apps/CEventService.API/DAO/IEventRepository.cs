@@ -2,7 +2,7 @@ using CEventService.API.DTOs.Event;
 using CEventService.API.Models;
 
 namespace CEventService.API.DAO;
-public interface IEventRepository : IRepository<Event>
+public interface IEventRepository : IBaseRepository<Event, int>
 {
-    Task<IEnumerable<EventHomePageDto>> GetEventsForHomePageAsync(int page, int pageSize, EventFilterDto filters);
+    Task<IEnumerable<EventHomePageDto>> GetSummaryEvents(int page, int pageSize, EventFilterDto filters);
 }

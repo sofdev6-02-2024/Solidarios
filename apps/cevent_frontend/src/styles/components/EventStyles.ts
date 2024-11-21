@@ -1,4 +1,3 @@
-// EventStyles.ts
 import { SxProps, Theme } from '@mui/material/styles';
 
 const styles: { [key: string]: SxProps<Theme> } = {

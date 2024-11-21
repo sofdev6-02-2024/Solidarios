@@ -47,6 +47,7 @@ export const styleEventDetail: { [key: string]: SxProps<Theme> } = {
   container: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-between',
     gap: 3,
     alignItems: 'left',
     marginBottom: 2,

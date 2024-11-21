@@ -6,6 +6,7 @@ import {
   Button,
   ButtonBase,
   IconButton,
+  Snackbar,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import styles from '@/styles/components/EventStyles';
@@ -16,14 +17,16 @@ import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
-import { formatDate } from '@/utils/methods/stringMethods';
+import { formatDate, fullFormatDate } from '@/utils/methods/stringMethods';
 import TicketModal from './TicketModal';
 
 interface CardEventInfoProps {
   eventData: EventDetailDto;
+  showSnackbar?: (message: string) => void;
 }
 
 const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
+const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
   const handleOpenMap = () => {
     window.open(
       `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`
@@ -36,6 +39,9 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
   };
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
+    if (showSnackbar) {
+      showSnackbar('Link copied to clipboard');
+    }
   };
 
   const [open, setOpen] = React.useState(false);
@@ -50,7 +56,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
             {eventData.name}
           </Typography>
           <Typography variant="body2" sx={styles.chipCategoryStyles}>
-            {eventData.category}
+            {eventData.category.keyWord}
           </Typography>
 
           <Box sx={styles.infoSection}>
@@ -62,7 +68,7 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
                 </Typography>
               </Box>
               <Typography variant="body">
-                {formatDate(eventData.eventDate)}
+                {fullFormatDate(eventData.eventDate)}
               </Typography>
             </Box>
             <Box sx={styles.infoColumn}>
@@ -146,6 +152,6 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
          />
     </Card>
   );
-};
-
+  };
+}
 export default CardEventInfo;

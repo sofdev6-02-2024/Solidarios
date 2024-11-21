@@ -2,17 +2,17 @@
 
 #nullable disable
 
-namespace CEventService.API.Migrations
+namespace NotificationService.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIsDeletedToEvent : Migration
+    public partial class addbool : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "IsDeleted",
-                table: "Events",
+                name: "IsSent",
+                table: "ScheduledNotifications",
                 type: "bit",
                 nullable: false,
                 defaultValue: false);
@@ -22,8 +22,8 @@ namespace CEventService.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsDeleted",
-                table: "Events");
+                name: "IsSent",
+                table: "ScheduledNotifications");
         }
     }
 }
