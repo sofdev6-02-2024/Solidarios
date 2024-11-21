@@ -26,6 +26,14 @@ interface Event {
   price?: string;
 }
 
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  lastName: string;
+  phoneNumber: string;
+}
+
 export default function MyEventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,13 +42,55 @@ export default function MyEventsPage() {
 
   const { data: session, status } = useSession();
   const router = useRouter();
+  console.log(session?.user?.email);
+  
 
   useEffect(() => {
-    setTimeout(() => {
-      setEvents([]);
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+    const fetchUserAndEvents = async () => {
+      if (!session?.user?.email) {
+        console.log("Session user email no disponible.");
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+      
+        const userResponse = await fetch(
+          `http://localhost:5149/events/api/user`
+        );
+        const userData = await userResponse.json();
+        const currentUser: User | undefined = userData.items.find(
+          (user: User) => {
+            console.log("User Email:", user.email);  
+            console.log("Session User Email:", session.user.email);
+            return user.email === session.user.email;
+          }
+        );
+
+        if (!currentUser) {
+          console.error('Usuario no encontrado.');
+          setIsLoading(false);
+          return;
+        }
+
+        const eventsResponse = await fetch(
+          `http://localhost:5149/events/api/event`
+        );
+        const eventsData = await eventsResponse.json();
+        const userEvents = eventsData.items.filter(
+          (event: Event) => event.organizerUserId === currentUser.id
+        );
+
+        setEvents(userEvents);
+      } catch (error) {
+        console.error('Error al obtener eventos:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserAndEvents();
+  }, [session]);
 
   const handleCreateEvent = () => {
     router.push('/create_event');
