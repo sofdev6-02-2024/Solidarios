@@ -49,7 +49,7 @@ public class EventRepository : BaseRepository<Event, int>, IEventRepository
 
             if (filters.MaxPrice.HasValue)
                 query = query.Where(e => e.TicketPrice <= filters.MaxPrice.Value);
-            //status in a int value
+           
             if (filters.Status != -1  && filters.Status < 6)
                 query = query.Where(e =>(int)e.Status == filters.Status);
 
