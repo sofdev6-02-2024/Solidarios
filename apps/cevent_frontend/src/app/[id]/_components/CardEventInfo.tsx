@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Card,
   Box,
@@ -16,19 +17,31 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import { formatDate } from '@/utils/methods/stringMethods';
+import TicketModal from './TicketModal';
+
 interface CardEventInfoProps {
   eventData: EventDetailDto;
 }
+
 const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
   const handleOpenMap = () => {
     window.open(
-      `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`,
+      `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`
     );
   };
-
+  const [remainingTickets, setRemainingTickets] = useState(eventData.capacity); 
+  const handlePurchase = (quantity: number) => {
+    setRemainingTickets((prev) => prev - quantity);
+    handleClose();
+  };
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
   };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Card sx={styles.cardStyles}>
       <Grid display="flex" justifyContent="space-between" container spacing={1}>
@@ -116,11 +129,21 @@ const CardEventInfo = ({ eventData }: CardEventInfoProps) => {
             variant="contained"
             color="primary"
             sx={styles.ticketButtonStyles}
+            onClick={handleOpen}
           >
             Get my ticket
           </Button>
         </Grid>
       </Grid>
+
+      {/* Modal */}
+      <TicketModal
+        open={open}
+        onClose={handleClose}
+        pricePerTicket={eventData.ticketPrice}
+        capacity={remainingTickets}
+        onPurchase={handlePurchase} name={eventData.name}     
+         />
     </Card>
   );
 };
