@@ -11,12 +11,13 @@ import {
 import { AddCircleOutline } from '@mui/icons-material';
 import { createEvent } from '@/utils/../services/EventService';
 import '../_styles/Steps.css';
+import { EventInputDto } from '@/utils/interfaces/EventInterfaces';
 
 export interface GeneralInfoProps {
   title: string;
   shortDescription: string;
   description: string;
-  category: string;
+  category: number;
 }
 
 export interface DateLocationProps {
@@ -80,27 +81,32 @@ const Steps = ({
       isDateLocationComplete &&
       isPriceCapacityComplete
     ) {
-      const eventData = {
+      const eventData : EventInputDto= {
         name: generalInfo.title,
+        shortDescription: generalInfo.shortDescription,
         description: generalInfo.description,
-        category: generalInfo.category,
-        eventDate: new Date(dateLocation.date + 'T' + dateLocation.time),
+        categoryId: 1,
+        eventDate: new Date(),
         location: {
           latitude: dateLocation.latitude ?? 0,
           longitude: dateLocation.longitude ?? 0,
-        },
+        },        
         venue: dateLocation.location || '',
-        address: dateLocation.location || '',
         ticketPrice: priceCapacity.ticketPrice,
-        coverPhotoUrl: selectedImage || '',
-        attendanceTrackingEnabled: false,
+        coverPhotoUrl: selectedImage || 'https://i.postimg.cc/XvfZ2cSP/47b39a54d7fa589dd5cf851ee1d2fb61.jpg',
+        attendanceTrackingEnabled: true,
+        status: 1,
         capacity: priceCapacity.capacity,
+        organizerUserId: '241dcd6c-e45a-44e3-b6ea-08dd0a536259',
+        createdAt: new Date(),
+        address: dateLocation.location || '',                        
+        attendeeCount: 0
       };
 
       try {
         const response = await createEvent(eventData);
-        if ('error' in response) {
-          console.error('Error creating event:', response.error);
+        if (response === null) {
+          console.error('Error creating event:', response);
         } else {
           console.log('Event created successfully:', response);
         }

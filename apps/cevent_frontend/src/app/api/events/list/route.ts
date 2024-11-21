@@ -37,24 +37,32 @@ export async function GET(request: Request) {
  */
 export async function POST(request: Request) {
   const fullUrl = `${BASE_URL}/events/api/event`;
+
   try {
     const eventData = await request.json();
-    const response = await axios.post(fullUrl, eventData);
+    console.log(eventData);
+
+    const response = await axios.post(fullUrl, eventData, {
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+    });
 
     return NextResponse.json(response.data, { status: 201 });
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       console.error(
-        'Error creating event:',
-        error.response?.data || error.message,
+        'Error creando evento:',
+        error.response?.data || error.message
       );
     } else {
-      console.error('Unknown error:', error);
+      console.error('Error desconocido:', error);
     }
 
     return NextResponse.json(
-      { error: 'Failed to create event' },
-      { status: 500 },
+      { error: 'No se pudo crear el evento' },
+      { status: 500 }
     );
   }
 }
+
