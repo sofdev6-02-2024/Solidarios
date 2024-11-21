@@ -40,7 +40,6 @@ public class GatewayController : ControllerBase
             requestMessage.Content.Headers.Add("Content-Type", "application/json");
         }
 
-        // Asegurarse de que el contenido del cuerpo esté disponible para la solicitud
         if (Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) && requestMessage.Content != null)
         {
             var content = await new StreamReader(Request.Body).ReadToEndAsync();
