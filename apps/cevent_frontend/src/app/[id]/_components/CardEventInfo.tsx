@@ -28,10 +28,10 @@ interface CardEventInfoProps {
 const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
   const handleOpenMap = () => {
     window.open(
-      `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`
+      `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`,
     );
   };
-  const [remainingTickets, setRemainingTickets] = useState(eventData.capacity); 
+  const [remainingTickets, setRemainingTickets] = useState(eventData.capacity);
   const handlePurchase = (quantity: number) => {
     setRemainingTickets((prev) => prev - quantity);
     handleClose();
@@ -147,8 +147,9 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
         onClose={handleClose}
         pricePerTicket={eventData.ticketPrice}
         capacity={remainingTickets}
-        onPurchase={handlePurchase} name={eventData.name}     
-         />
+        onPurchase={handlePurchase}
+        name={eventData.name}
+      />
     </Card>
   );
 };

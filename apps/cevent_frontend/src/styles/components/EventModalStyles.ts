@@ -24,10 +24,10 @@ const styles: { [key: string]: SxProps<Theme> } = {
     '& .MuiOutlinedInput-root': {
       borderRadius: 4,
       '& input': {
-        color: '#000', 
+        color: '#000',
       },
     },
-  },  
+  },
 
   ticketsInfoContainer: {
     marginTop: 2,

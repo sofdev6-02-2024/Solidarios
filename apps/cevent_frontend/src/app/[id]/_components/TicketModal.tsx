@@ -1,20 +1,34 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Modal, Box, Typography, TextField, Divider, Button } from '@mui/material';
+import {
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  Divider,
+  Button,
+} from '@mui/material';
 import { useRouter } from 'next/navigation';
 import styles from '@/styles/components/EventModalStyles';
 
 interface EventModalProps {
   open: boolean;
   onClose: () => void;
-  name: string; 
+  name: string;
   pricePerTicket: number;
   capacity: number;
   onPurchase: (quantity: number) => void;
 }
 
-const TicketModal = ({ open, onClose, name, pricePerTicket, capacity, onPurchase }: EventModalProps) => {
+const TicketModal = ({
+  open,
+  onClose,
+  name,
+  pricePerTicket,
+  capacity,
+  onPurchase,
+}: EventModalProps) => {
   const router = useRouter();
   const [quantity, setQuantity] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -44,7 +58,7 @@ const TicketModal = ({ open, onClose, name, pricePerTicket, capacity, onPurchase
       onPurchase(qty);
       // Redirigir al Checkout con el eventName y otros detalles
       router.push(
-        `/checkout?eventName=${encodeURIComponent(name)}&quantity=${qty}&pricePerTicket=${pricePerTicket}&totalPrice=${calculateTotal()}`
+        `/checkout?eventName=${encodeURIComponent(name)}&quantity=${qty}&pricePerTicket=${pricePerTicket}&totalPrice=${calculateTotal()}`,
       );
     }
   };

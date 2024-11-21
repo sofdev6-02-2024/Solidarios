@@ -41,7 +41,9 @@ export default function MyEventsPage() {
               <Button sx={checkoutStyles.inactiveTab}>Pay By QR</Button>
             </Box>
 
-            <Typography sx={checkoutStyles.sectionTitle}>Card Payment</Typography>
+            <Typography sx={checkoutStyles.sectionTitle}>
+              Card Payment
+            </Typography>
 
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -102,7 +104,11 @@ export default function MyEventsPage() {
               </Grid>
             </Grid>
 
-            <Button variant="contained" sx={checkoutStyles.payNowButton} fullWidth>
+            <Button
+              variant="contained"
+              sx={checkoutStyles.payNowButton}
+              fullWidth
+            >
               Pay Now
             </Button>
           </Paper>
@@ -117,24 +123,28 @@ export default function MyEventsPage() {
                 src={coverPhotoUrl} // Imagen dinámica
                 alt="Event Cover"
                 style={{
-                  width: '100%',        // Ancho completo
-                  height: 'auto',       // Mantiene la proporción
-                  borderRadius: '8px',  // Bordes redondeados
+                  width: '100%', // Ancho completo
+                  height: 'auto', // Mantiene la proporción
+                  borderRadius: '8px', // Bordes redondeados
                   marginBottom: '16px', // Espacio debajo de la imagen
                 }}
               />
             )}
 
             {/* Resumen de la orden */}
-            <Typography sx={checkoutStyles.sectionTitle}>Order Summary</Typography>
+            <Typography sx={checkoutStyles.sectionTitle}>
+              Order Summary
+            </Typography>
             <Box sx={checkoutStyles.orderRow}>
-              <Typography>{eventName}   x{quantity}</Typography>
               <Typography>
-                $ {parseFloat(pricePerTicket) * parseInt(quantity, 10)} 
+                {eventName} x{quantity}
+              </Typography>
+              <Typography>
+                $ {parseFloat(pricePerTicket) * parseInt(quantity, 10)}
               </Typography>
             </Box>
             <Box sx={checkoutStyles.totalRow}>
-              <Typography>Platform  (3%)</Typography>
+              <Typography>Platform (3%)</Typography>
               <Typography>${platformFee.toFixed(2)} </Typography>
             </Box>
             <Divider sx={checkoutStyles.divider} />
