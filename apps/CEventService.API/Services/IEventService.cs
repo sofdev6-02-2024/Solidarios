@@ -4,5 +4,5 @@ using CEventService.API.Models;
 namespace CEventService.API.Services;
 public interface IEventService : IBaseService<Event, int>
 {
-    
+    Task<IEnumerable<EventHomePageDto>> GetSummaryEvents(int page, int pageSize, EventFilterDto filters);
 }

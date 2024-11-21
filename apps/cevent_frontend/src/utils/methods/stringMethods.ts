@@ -19,6 +19,16 @@ export const formatDate = (date: Date): string => {
     day: 'numeric',
   });
 };
+
+export const fullFormatDate = (date: Date): string => {
+  return new Date(date).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+};
 /**
  * Cut the last words of a string by commas
  * @param text sentence with commas to cut
@@ -44,7 +54,30 @@ export const extractWordByComma = (
 ): string => {
   const words = text.split(',');
   if (words.length >= numberWord - 1) {
-    return words[words.length - numberWord];
+    const word = words[words.length - numberWord];
+
+    return words.length > 1 ? word : extractWordBySpace(text, numberWord);
+  }
+  return text;
+};
+
+/**
+ * Extract a word from a string by space
+ * @param text sentence with spaces to extract
+ * @param numberWord number of the word to extract starting from the end
+ *
+ * @returns
+ *
+ */
+export const extractWordBySpace = (
+  text: string,
+  numberWord: number,
+): string => {
+  const words = text.split(' ');
+  if (words.length >= numberWord - 1) {
+    const word = words[words.length - numberWord];
+
+    return word !== '' && word !== null! ? word : 'no';
   }
   return text;
 };

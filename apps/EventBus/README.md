@@ -18,6 +18,7 @@ The Event Bus API is a central service that facilitates event-driven communicati
 ## Overview
 
 The Event Bus API provides two main functionalities:
+
 1. **Subscribe**: Microservices can subscribe to specific events by specifying an event type and a callback URL.
 2. **Publish**: Any service can publish an event with a specific event type and payload. The Event Bus forwards the event data to all subscribers registered for that event type.
 
@@ -37,7 +38,7 @@ This service is designed to scale as more microservices join the ecosystem witho
 
 - [.NET 5 or later](https://dotnet.microsoft.com/download/dotnet)
 - [MongoDB](https://www.mongodb.com/try/download/community)
-   - You can either install MongoDB locally or run it using Docker (recommended).
+  - You can either install MongoDB locally or run it using Docker (recommended).
 - Optional: [Webhook.site](https://webhook.site) for testing webhooks.
 
 ---
@@ -60,6 +61,7 @@ docker run -d -p 27017:27017 --name mongodb mongo:latest
 ```
 
 This command:
+
 - Downloads the latest MongoDB Docker image (if not already downloaded).
 - Runs MongoDB in a container named `mongodb` on port `27017`.
 
@@ -114,12 +116,14 @@ The application loads environment variables using the `DotNetEnv` library. If yo
 - **Body**: Callback URL where events of the specified type should be sent.
 
 **Example Request**:
-   ```json
-   POST /api/events/subscribe?eventType=OrderCreated
-   Body: "http://example.com/webhook"
-   ```
+
+```json
+POST /api/events/subscribe?eventType=OrderCreated
+Body: "http://example.com/webhook"
+```
 
 **Response**:
+
 - `200 OK` if the subscription was successful.
 
 ### 2. **Publish an Event**
@@ -128,19 +132,21 @@ The application loads environment variables using the `DotNetEnv` library. If yo
 - **Body**: JSON object with `eventType` and `data` fields.
 
 **Example Request**:
-   ```json
-   {
-     "eventType": "OrderCreated",
-     "data": {
-       "OrderId": "e3c0b2fa-efae-42f6-8e07-d303f6e3f021",
-       "CreatedAt": "2024-11-11T10:00:00Z",
-       "CustomerName": "John Doe",
-       "TotalAmount": 99.99
-     }
-   }
-   ```
+
+```json
+{
+  "eventType": "OrderCreated",
+  "data": {
+    "OrderId": "e3c0b2fa-efae-42f6-8e07-d303f6e3f021",
+    "CreatedAt": "2024-11-11T10:00:00Z",
+    "CustomerName": "John Doe",
+    "TotalAmount": 99.99
+  }
+}
+```
 
 **Response**:
+
 - `200 OK` if the event was successfully forwarded to all subscribers.
 
 ---
@@ -160,6 +166,7 @@ For testing, you can use a service like [Webhook.site](https://webhook.site) to 
 2. Provide the event type you want to subscribe to and the Webhook.site URL as the callback.
 
 **Example**:
+
 ```bash
 curl -X POST "http://localhost:5000/api/events/subscribe?eventType=OrderCreated" \
 -H "Content-Type: application/json" \
@@ -172,6 +179,7 @@ curl -X POST "http://localhost:5000/api/events/subscribe?eventType=OrderCreated"
 2. The Event Bus will forward this event to all subscribers of `OrderCreated`, including your Webhook.site URL.
 
 **Example**:
+
 ```bash
 curl -X POST "http://localhost:5000/api/events/publish" \
 -H "Content-Type: application/json" \
@@ -197,6 +205,7 @@ Go back to Webhook.site and check the logs. You should see the event data displa
 ### Example Subscription
 
 To subscribe a service to an `OrderCreated` event with a callback URL of `http://example.com/webhook`:
+
 ```json
 POST /api/events/subscribe?eventType=OrderCreated
 Body: "http://example.com/webhook"
@@ -205,6 +214,7 @@ Body: "http://example.com/webhook"
 ### Example Event Publication
 
 Publishing an `OrderCreated` event with sample order data:
+
 ```json
 POST /api/events/publish
 {
