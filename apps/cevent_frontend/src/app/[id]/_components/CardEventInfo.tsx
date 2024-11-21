@@ -31,7 +31,7 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
       `https://www.google.com/maps/search/?api=1&query=${eventData.location.latitude},${eventData.location.longitude}`,
     );
   };
-  
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     if (showSnackbar) {
