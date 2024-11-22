@@ -23,6 +23,7 @@ public class EventOutputDto : IMapFrom<Event>
     public DateTime CreatedAt { get; set; }
     public required string Address { get; set; }
     public int AttendeeCount { get; set; }
+    public bool IsPromoted { get; set; }
 
     public ICollection<ActivityOutputDto>? Activities { get; set; }
     public ICollection<UserOutputDto>? CoOrganizers { get; set; }

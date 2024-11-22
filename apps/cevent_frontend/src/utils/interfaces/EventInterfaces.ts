@@ -47,3 +47,22 @@ export interface EventFilter {
   page?: number;
   pageSize?: number;
 }
+
+export interface EventInputDto {
+  name: string;
+  shortDescription: string;
+  description: string;
+  categoryId: number;
+  eventDate: Date;
+  location: Location;
+  venue: string;
+  ticketPrice: number;
+  coverPhotoUrl: string;
+  attendanceTrackingEnabled: boolean;
+  status: number;
+  capacity: number;
+  organizerUserId: string;
+  createdAt: Date;
+  address: string;
+  attendeeCount: number;
+}

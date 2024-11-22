@@ -26,11 +26,12 @@ interface RefreshTokenResponse {
   refresh_token: string;
 }
 
-interface CustomSession extends DefaultSession {
+export interface CustomSession extends DefaultSession {
   access_token?: string;
   id_token?: string;
   roles?: string[];
   error?: string;
+  userId?: string;
 }
 
 async function refreshAccessToken(token: Token): Promise<Token> {
@@ -106,6 +107,8 @@ export const authOptions: AuthOptions = {
       }
       session.roles = token.decoded?.realm_access.roles;
       session.error = token.error;
+      session.userId = token.sub;
+      
       return session;
     },
   },

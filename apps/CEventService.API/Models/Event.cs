@@ -15,9 +15,9 @@ public class Event : BaseEntity<int>
     public required EventStatus Status { get; set; }
     public int Capacity { get; set; }
     public required Guid OrganizerUserId { get; set; }
-    public DateTime CreatedAt { get; set; }
     public required string Address { get; set; }
     public int AttendeeCount { get; set; }
+    public bool IsPromoted { get; set; }
 
     public ICollection<Activity>? Activities { get; set; }
     public ICollection<User>? CoOrganizers { get; set; }

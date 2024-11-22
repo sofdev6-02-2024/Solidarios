@@ -9,7 +9,6 @@ public class Activity : BaseEntity<int>
     public DateTime EndTime { get; set; }
     public required EventStatus Status { get; set; }
     public int Capacity { get; set; }
-    public DateTime CreatedAt { get; set; }
 
     public Event Event { get; set; }
     public ICollection<Attendance>? Attendances { get; set; }
