@@ -14,12 +14,10 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } },
 ) {
-  const { id } = params; 
+  const { id } = params;
 
   try {
-    const response = await axios.get(
-      `${BASE_URL}/events/api/event/${id}`, 
-    );
+    const response = await axios.get(`${BASE_URL}/events/api/event/${id}`);
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     return NextResponse.json(

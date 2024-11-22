@@ -1,4 +1,4 @@
-import { Session } from "next-auth";
+import { Session } from 'next-auth';
 
 export interface CustomSession extends Session {
     error?: string;

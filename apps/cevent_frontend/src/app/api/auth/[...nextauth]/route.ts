@@ -108,7 +108,7 @@ export const authOptions: AuthOptions = {
       session.roles = token.decoded?.realm_access.roles;
       session.error = token.error;
       session.userId = token.sub;
-      
+
       return session;
     },
   },

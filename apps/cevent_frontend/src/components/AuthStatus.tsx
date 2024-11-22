@@ -8,7 +8,6 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-
 async function keycloakSessionLogOut(): Promise<void> {
   try {
     await fetch('/api/auth/logout', { method: 'GET' });

@@ -28,10 +28,6 @@ export async function GET(
       errorMessage = error.response.data;
     }
 
-    return NextResponse.json(
-      { error: errorMessage },
-      { status: statusCode },
-    );
+    return NextResponse.json({ error: errorMessage }, { status: statusCode });
   }
 }
-

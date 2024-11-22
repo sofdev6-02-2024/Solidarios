@@ -12,6 +12,8 @@ import { AddCircleOutline } from '@mui/icons-material';
 import { createEvent } from '@/utils/../services/EventService';
 import '../_styles/Steps.css';
 import { EventInputDto } from '@/utils/interfaces/EventInterfaces';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export interface GeneralInfoProps {
   title: string;
@@ -75,6 +77,8 @@ const Steps = ({
     );
   }, [generalInfo, dateLocation, priceCapacity]);
 
+  const user = useSelector((state: RootState) => state.user.userInfo);
+
   const handleSubmit = async () => {
     if (
       isGeneralInfoComplete &&
@@ -99,7 +103,7 @@ const Steps = ({
         attendanceTrackingEnabled: false,
         status: 1,
         capacity: priceCapacity.capacity,
-        organizerUserId: '241dcd6c-e45a-44e3-b6ea-08dd0a536259', //TODO Change according to the user you have created.
+        organizerUserId: user?.id ?? '',
         createdAt: new Date(),
         address: dateLocation.location || '',
         attendeeCount: 0,
