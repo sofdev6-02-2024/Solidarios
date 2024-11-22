@@ -12,14 +12,12 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
  */
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }, // Aquí extraemos el parámetro `id`
+  { params }: { params: { id: string } },
 ) {
-  const { id } = params; // Extraemos el `id` de los parámetros
-  console.log('id peticion:', id);
+  const { id } = params;
+
   try {
-    const response = await axios.get(
-      `${BASE_URL}/events/api/event/${id}`, // Usamos el `id` en la URL
-    );
+    const response = await axios.get(`${BASE_URL}/events/api/event/${id}`);
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     return NextResponse.json(

@@ -13,29 +13,19 @@ export default function Home() {
     (state: RootState) => state.category,
   );
 
-  useEffect(() => {
-    if (categories.length === 0) {
-      console.log('No categories');
-    } else {
-      console.log('Categories loaded');
-      categories.forEach((category) => {
-        console.log(category);
-      });
-    }
-  }, [categories]);
-
   return (
     <Layout>
       <CategoryEventSection category={ALL_CATEGORY_VALUE} />
-      {categories.map((category) => {
-        if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
-        return (
-          <CategoryEventSection
-            key={category.keyWord}
-            category={category as EventCategory}
-          />
-        );
-      })}
+      {categories &&
+        categories.map((category) => {
+          if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
+          return (
+            <CategoryEventSection
+              key={category.keyWord}
+              category={category as EventCategory}
+            />
+          );
+        })}
     </Layout>
   );
 }

@@ -1,13 +1,8 @@
+import { UserInterface } from '@/utils/interfaces/UserInterfaces';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface User {
-  id: string;
-  fullname: string;
-  email: string;
-}
-
 interface UserState {
-  userInfo: User | null;
+  userInfo: UserInterface | null;
 }
 
 const initialState: UserState = {
@@ -18,7 +13,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserInfo(state, action: PayloadAction<User>) {
+    setUserInfo(state, action: PayloadAction<UserInterface>) {
       state.userInfo = action.payload;
     },
     clearUserInfo(state) {

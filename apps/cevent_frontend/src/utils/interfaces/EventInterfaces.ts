@@ -29,6 +29,20 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   description: string;
 }
 
+export interface EventSearchToUserDto
+  extends Omit<EventHomePageDto, 'category'> {
+  location: Location;
+  venue: string;
+  attendanceTrackingEnabled: boolean;
+  status: string;
+  capacity: number;
+  organizerUserId: string;
+  createdAt: Date;
+  category: EventCategory;
+  description: string;
+  activities: number;
+}
+
 export enum SortOptions {
   EventDate = 'EventDate',
   TicketPrice = 'TicketPrice',
@@ -46,4 +60,23 @@ export interface EventFilter {
   IsDescending?: boolean;
   page?: number;
   pageSize?: number;
+}
+
+export interface EventInputDto {
+  name: string;
+  shortDescription: string;
+  description: string;
+  categoryId: number;
+  eventDate: Date;
+  location: Location;
+  venue: string;
+  ticketPrice: number;
+  coverPhotoUrl: string;
+  attendanceTrackingEnabled: boolean;
+  status: number;
+  capacity: number;
+  organizerUserId: string;
+  createdAt: Date;
+  address: string;
+  attendeeCount: number;
 }

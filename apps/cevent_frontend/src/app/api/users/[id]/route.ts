@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { UserInterface } from '@/utils/interfaces/UserInterfaces';
+import axios from 'axios';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 export async function GET(
   request: Request,
@@ -8,21 +10,24 @@ export async function GET(
   const { id } = params;
 
   try {
-    //TODO: fetch user by id when the API for fetching user by id is ready
-    const data: UserInterface = {
-      userId: 1,
-      fullName: 'John Doe',
-      email: 'jhondoe@hgon.com',
-      phoneNumber: '123456789',
-      profilePhotoUrl: 'https://i.postimg.cc/fW189xD9/2148859448.jpg',
-      role: 'Admin',
-      createdAt: new Date(),
-    };
-    return NextResponse.json(data, { status: 200 });
-  } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to fetch user' },
-      { status: 500 },
+    console.log('id :: ', id);
+    const fullUrl = `${BASE_URL}/events/api/user/${id}`;
+    console.log('fullUrl :: ', fullUrl);
+    const response = await axios.get<UserInterface>(
+      `${BASE_URL}/events/api/user/${id}`,
     );
+    console.log('response :: ', response.data);
+
+    return NextResponse.json(response.data, { status: 200 });
+  } catch (error) {
+    let statusCode = 500;
+    let errorMessage = 'Failed to fetch user';
+
+    if (axios.isAxiosError(error) && error.response) {
+      statusCode = error.response.status;
+      errorMessage = error.response.data;
+    }
+
+    return NextResponse.json({ error: errorMessage }, { status: statusCode });
   }
 }

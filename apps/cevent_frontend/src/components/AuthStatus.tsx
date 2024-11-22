@@ -1,13 +1,12 @@
 'use client';
 
+import { RootState } from '@/redux/store';
+import { CustomSession } from '@/utils/interfaces/AuthSesion';
 import { Button, Typography } from '@mui/material';
 import { Session } from 'next-auth';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useEffect } from 'react';
-
-interface CustomSession extends Session {
-  error?: string;
-}
+import { useSelector } from 'react-redux';
 
 async function keycloakSessionLogOut(): Promise<void> {
   try {
@@ -20,6 +19,7 @@ async function keycloakSessionLogOut(): Promise<void> {
 export default function AuthStatus(): JSX.Element {
   const { data: session, status } = useSession();
   const customSession = session as CustomSession;
+  const user = useSelector((state: RootState) => state.user.userInfo);
 
   useEffect(() => {
     if (
@@ -36,7 +36,8 @@ export default function AuthStatus(): JSX.Element {
   } else if (customSession) {
     return (
       <div>
-        <Typography variant="h6">Welcome, {session?.user?.name}.</Typography>
+        <Typography variant="h6">Welcome, {user?.name}.</Typography>
+        <Typography variant="body1">Your ID: {user?.id}</Typography>
         <Button
           variant="contained"
           color="primary"
