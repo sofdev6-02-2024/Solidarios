@@ -56,7 +56,6 @@ const TicketModal = ({
     const qty = parseInt(quantity, 10);
     if (qty > 0 && qty <= capacity) {
       onPurchase(qty);
-      // Redirigir al Checkout con el eventName y otros detalles
       router.push(
         `/checkout?eventName=${encodeURIComponent(name)}&quantity=${qty}&pricePerTicket=${pricePerTicket}&totalPrice=${calculateTotal()}`,
       );

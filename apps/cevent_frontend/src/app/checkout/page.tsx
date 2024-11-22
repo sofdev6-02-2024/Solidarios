@@ -12,7 +12,6 @@ import {
   Button,
 } from '@mui/material';
 import checkoutStyles from '@/styles/components/CheckoutStyles';
-import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 
 export default function MyEventsPage() {
   const searchParams = useSearchParams();
@@ -20,12 +19,10 @@ export default function MyEventsPage() {
   const quantity = searchParams.get('quantity') || '0';
   const pricePerTicket = searchParams.get('pricePerTicket') || '0';
   const totalPrice = parseFloat(searchParams.get('totalPrice') || '0');
-  const coverPhotoUrl = searchParams.get('coverPhotoUrl'); // Imagen del evento
+  const coverPhotoUrl = searchParams.get('coverPhotoUrl'); 
 
-  // Calculate platform fee (3% of total price)
   const platformFee = totalPrice * 0.03;
 
-  // Calculate final total price after adding the platform fee
   const finalTotalPrice = totalPrice + platformFee;
 
   return (
@@ -33,7 +30,6 @@ export default function MyEventsPage() {
       <Typography sx={checkoutStyles.title}>Checkout</Typography>
 
       <Grid container spacing={4}>
-        {/* Left Section: Payment Form */}
         <Grid item xs={12} md={7}>
           <Paper elevation={3} sx={checkoutStyles.formContainer}>
             <Box sx={checkoutStyles.tabs}>
@@ -114,24 +110,21 @@ export default function MyEventsPage() {
           </Paper>
         </Grid>
 
-        {/* Right Section: Order Summary */}
         <Grid item xs={12} md={5}>
           <Paper elevation={3} sx={checkoutStyles.orderSummary}>
-            {/* Imagen del evento */}
             {coverPhotoUrl && (
               <img
-                src={coverPhotoUrl} // Imagen dinámica
+                src={coverPhotoUrl} 
                 alt="Event Cover"
                 style={{
-                  width: '100%', // Ancho completo
-                  height: 'auto', // Mantiene la proporción
-                  borderRadius: '8px', // Bordes redondeados
-                  marginBottom: '16px', // Espacio debajo de la imagen
+                  width: '100%', 
+                  height: 'auto', 
+                  borderRadius: '8px',
+                  marginBottom: '16px', 
                 }}
               />
             )}
 
-            {/* Resumen de la orden */}
             <Typography sx={checkoutStyles.sectionTitle}>
               Order Summary
             </Typography>
