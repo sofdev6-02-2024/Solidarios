@@ -17,4 +17,22 @@ public class EventService : BaseService<Event, int>, IEventService
         var events = _eventRepository.GetSummaryEvents(page, pageSize, filters);
         return events;
     }
+    
+    public async Task<ICollection<Event>> GetPromotedEvents(int page, int pageSize)
+    {
+        return await _eventRepository.GetFilteredPagedAsync(
+            e => !e.IsDeleted && e.IsPromoted,
+            page,
+            pageSize
+        );
+    }
+    
+    public async Task<ICollection<Event>> GetPromotedEvents(int page, int pageSize, string category)
+    {
+        return await _eventRepository.GetFilteredPagedAsync(
+            e => !e.IsDeleted && e.IsPromoted && e.Category.KeyWord.Equals(category),
+            page,
+            pageSize
+        );
+    }
 }
