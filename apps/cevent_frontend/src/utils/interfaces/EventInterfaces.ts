@@ -50,7 +50,7 @@ export interface EventFilter {
 
 export interface EventInputDto {
   name: string;
-  shortDescription: string
+  shortDescription: string;
   description: string;
   categoryId: number;
   eventDate: Date;
@@ -59,7 +59,7 @@ export interface EventInputDto {
   ticketPrice: number;
   coverPhotoUrl: string;
   attendanceTrackingEnabled: boolean;
-  status: number
+  status: number;
   capacity: number;
   organizerUserId: string;
   createdAt: Date;

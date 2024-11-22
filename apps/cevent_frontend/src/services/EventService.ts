@@ -55,7 +55,6 @@ export const getEventById = async (
   }
 };
 
-
 /**
  * Crea un nuevo evento
  *
@@ -63,17 +62,17 @@ export const getEventById = async (
  * @returns el evento creado o null en caso de error
  */
 export const createEvent = async (
-  eventData: EventInputDto
+  eventData: EventInputDto,
 ): Promise<EventInputDto | null> => {
   try {
     const response = await axios.post<EventInputDto>(
-      '/api/events/list', 
+      '/api/events/list',
       eventData,
       {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     if (response.status === 201) {
