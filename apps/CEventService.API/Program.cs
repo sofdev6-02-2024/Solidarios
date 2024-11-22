@@ -5,6 +5,7 @@ using CEventService.API.DAO;
 using CEventService.API.Services;
 using dotenv.net;
 using dotenv.net.Utilities;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -33,6 +34,12 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     }); 
 });
+
+builder.Services.AddControllers()
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssemblyContaining<Program>();
+    });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
