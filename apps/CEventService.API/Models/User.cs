@@ -13,4 +13,5 @@ public class User : BaseEntity<Guid>
     public ICollection<Event>? CoOrganizedEvents { get; set; }
     public ICollection<Attendance> Attendances { get; set; }
     public ICollection<Wishlist> Wishlists { get; set; }
+    public ICollection<EventClick>? EventClicks { get; set; }
 }

@@ -25,4 +25,6 @@ public class Event : BaseEntity<int>
     public ICollection<Wishlist>? Wishlists { get; set; }
     public required User User { get; set; }
     public required EventCategory Category { get; set; }
+    
+    public ICollection<EventClick>? EventClicks { get; set; }
 }
