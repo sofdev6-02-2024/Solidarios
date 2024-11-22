@@ -4,6 +4,7 @@ export const routes = {
   myEvents: '/my_events',
   profile: '/profile',
   createEvent: '/create_event',
+  checkoutTicket: '/checkout',
 };
 
 export type Routes = typeof routes;

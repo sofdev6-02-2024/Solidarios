@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Card,
   Box,
@@ -17,10 +18,13 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import { formatDate, fullFormatDate } from '@/utils/methods/stringMethods';
+import TicketModal from './TicketModal';
+
 interface CardEventInfoProps {
   eventData: EventDetailDto;
   showSnackbar?: (message: string) => void;
 }
+
 const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
   const handleOpenMap = () => {
     window.open(
@@ -34,6 +38,11 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
       showSnackbar('Link copied to clipboard');
     }
   };
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Card sx={styles.cardStyles}>
       <Grid display="flex" justifyContent="space-between" container spacing={1}>
@@ -121,11 +130,20 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
             variant="contained"
             color="primary"
             sx={styles.ticketButtonStyles}
+            onClick={handleOpen}
           >
             Get my ticket
           </Button>
         </Grid>
       </Grid>
+
+      <TicketModal
+        open={open}
+        onClose={handleClose}
+        pricePerTicket={eventData.ticketPrice}
+        capacity={eventData.capacity - eventData.attendeeCount}
+        name={eventData.name}
+      />
     </Card>
   );
 };
