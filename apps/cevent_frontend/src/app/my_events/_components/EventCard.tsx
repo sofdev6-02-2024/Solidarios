@@ -20,7 +20,7 @@ export default function EventCard({ event }: EventCardProps) {
       <CardMedia
         component="img"
         sx={{ width: '100%', height: '300px', objectFit: 'cover' }}
-        image="https://i.pinimg.com/736x/f1/24/77/f124772add8643a64bcf03d9d67665fe.jpg"
+        image={event.coverPhotoUrl}
         alt={event.name}
       />
 
