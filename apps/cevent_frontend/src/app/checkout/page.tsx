@@ -19,7 +19,7 @@ export default function MyEventsPage() {
   const quantity = searchParams.get('quantity') || '0';
   const pricePerTicket = searchParams.get('pricePerTicket') || '0';
   const totalPrice = parseFloat(searchParams.get('totalPrice') || '0');
-  const coverPhotoUrl = searchParams.get('coverPhotoUrl'); 
+  const coverPhotoUrl = searchParams.get('coverPhotoUrl');
 
   const platformFee = totalPrice * 0.03;
 
@@ -114,13 +114,13 @@ export default function MyEventsPage() {
           <Paper elevation={3} sx={checkoutStyles.orderSummary}>
             {coverPhotoUrl && (
               <img
-                src={coverPhotoUrl} 
+                src={coverPhotoUrl}
                 alt="Event Cover"
                 style={{
-                  width: '100%', 
-                  height: 'auto', 
+                  width: '100%',
+                  height: 'auto',
                   borderRadius: '8px',
-                  marginBottom: '16px', 
+                  marginBottom: '16px',
                 }}
               />
             )}
