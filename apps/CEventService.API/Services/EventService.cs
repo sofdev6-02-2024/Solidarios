@@ -26,4 +26,13 @@ public class EventService : BaseService<Event, int>, IEventService
             pageSize
         );
     }
+    
+    public async Task<ICollection<Event>> GetPromotedEvents(int page, int pageSize, string category)
+    {
+        return await _eventRepository.GetFilteredPagedAsync(
+            e => !e.IsDeleted && e.IsPromoted && e.Category.KeyWord.Equals(category),
+            page,
+            pageSize
+        );
+    }
 }
