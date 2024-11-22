@@ -67,14 +67,19 @@ export const createEvent = async (
 ): Promise<EventInputDto | null> => {
   try {
     const response = await axios.post<EventInputDto>(
-      '/api/events/list',
-      eventData
+      '/api/events/list', 
+      eventData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
     );
-  
+
     if (response.status === 201) {
       return response.data;
     }
-    
+
     return null;
   } catch (error) {
     console.error('Error creando el evento:', error);

@@ -4,7 +4,7 @@ import { ImageUploadProps } from '@/utils/interfaces/CreateEvent';
 import '../_styles/ImageUpload.css';
 
 const DEFAULT_IMAGE =
-  'https://i.pinimg.com/736x/d3/ba/c7/d3bac7eeb95da380710ff1fd7c4c4068.jpg';
+  'https://i.postimg.cc/XvfZ2cSP/47b39a54d7fa589dd5cf851ee1d2fb61.jpg';
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   selectedImage,

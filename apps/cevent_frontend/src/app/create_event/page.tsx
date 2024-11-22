@@ -16,7 +16,7 @@ interface GeneralInfoData {
   title: string;
   shortDescription: string;
   description: string;
-  category: string;
+  categoryId: number;
 }
 
 interface DateLocationData {
@@ -35,7 +35,7 @@ const CreateEvent = () => {
     title: '',
     shortDescription: '',
     description: '',
-    category: '',
+    categoryId: 0,
   });
   const [dateLocation, setDateLocation] = useState<DateLocationData>({
     latitude: null,

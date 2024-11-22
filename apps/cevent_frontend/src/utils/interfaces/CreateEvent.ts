@@ -17,7 +17,7 @@ export interface OnCompleteCallback {
       title: string;
       shortDescription: string;
       description: string;
-      category: string;
+      categoryId: number;
     },
     isComplete: boolean,
   ): void;
@@ -27,7 +27,7 @@ export interface FieldsGeneralInfo {
   title: string;
   shortDescription: string;
   description: string;
-  category: string;
+  categoryId: number;
 }
 
 export interface ImageUploadProps {

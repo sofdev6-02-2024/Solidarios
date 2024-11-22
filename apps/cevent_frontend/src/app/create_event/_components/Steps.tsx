@@ -17,11 +17,11 @@ export interface GeneralInfoProps {
   title: string;
   shortDescription: string;
   description: string;
-  category: number;
+  categoryId: number;
 }
 
 export interface DateLocationProps {
-  date?: string;
+  date?: Date;
   time?: string;
   location?: string;
   latitude?: number | null;
@@ -58,7 +58,7 @@ const Steps = ({
         generalInfo?.title &&
         generalInfo?.shortDescription &&
         generalInfo?.description &&
-        generalInfo?.category
+        generalInfo?.categoryId
       ),
     );
     setIsDateLocationComplete(
@@ -81,26 +81,28 @@ const Steps = ({
       isDateLocationComplete &&
       isPriceCapacityComplete
     ) {
-      const eventData : EventInputDto= {
-        name: generalInfo.title,
-        shortDescription: generalInfo.shortDescription,
-        description: generalInfo.description,
-        categoryId: 1,
-        eventDate: new Date(),
+      const eventData: EventInputDto = {
+        name: generalInfo.title ?? '',
+        shortDescription: generalInfo.shortDescription ?? '',
+        description: generalInfo.description ?? '',
+        categoryId: generalInfo.categoryId ?? 0,
+        eventDate: dateLocation.date ?? new Date(),
         location: {
           latitude: dateLocation.latitude ?? 0,
           longitude: dateLocation.longitude ?? 0,
-        },        
+        },
         venue: dateLocation.location || '',
         ticketPrice: priceCapacity.ticketPrice,
-        coverPhotoUrl: selectedImage || 'https://i.postimg.cc/XvfZ2cSP/47b39a54d7fa589dd5cf851ee1d2fb61.jpg',
-        attendanceTrackingEnabled: true,
+        coverPhotoUrl:
+          selectedImage ||
+          'https://i.postimg.cc/XvfZ2cSP/47b39a54d7fa589dd5cf851ee1d2fb61.jpg',
+        attendanceTrackingEnabled: false,
         status: 1,
         capacity: priceCapacity.capacity,
-        organizerUserId: '241dcd6c-e45a-44e3-b6ea-08dd0a536259',
+        organizerUserId: '241dcd6c-e45a-44e3-b6ea-08dd0a536259', //TODO Change according to the user you have created.
         createdAt: new Date(),
-        address: dateLocation.location || '',                        
-        attendeeCount: 0
+        address: dateLocation.location || '',
+        attendeeCount: 0,
       };
 
       try {

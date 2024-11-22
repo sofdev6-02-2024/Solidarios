@@ -40,11 +40,10 @@ export async function POST(request: Request) {
 
   try {
     const eventData = await request.json();
-    console.log(eventData);
 
     const response = await axios.post(fullUrl, eventData, {
       headers: {
-        'Content-Type': 'application/json', 
+        'Content-Type': 'application/json',
       },
     });
 
@@ -53,7 +52,7 @@ export async function POST(request: Request) {
     if (axios.isAxiosError(error)) {
       console.error(
         'Error creando evento:',
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     } else {
       console.error('Error desconocido:', error);
@@ -61,8 +60,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(
       { error: 'No se pudo crear el evento' },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
-

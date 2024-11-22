@@ -4,26 +4,20 @@ import {
   OnCompleteCallback,
   FieldsGeneralInfo,
 } from '@/utils/interfaces/CreateEvent';
+import { fetchCategories } from '@/services/CategoryService';
 import '../_styles/GeneralInfo.css';
-
-const categories = [
-  { value: 'Conference', label: 'Conference' },
-  { value: 'Workshop', label: 'Workshop' },
-  { value: 'Networking', label: 'Networking' },
-  { value: 'Music', label: 'Music' },
-  { value: 'Sports', label: 'Sports' },
-  { value: 'Technology', label: 'Technology' },
-  { value: 'Art', label: 'Art' },
-  { value: 'Social', label: 'Social' },
-];
 
 const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
   const [fields, setFields] = useState<FieldsGeneralInfo>({
     title: '',
     shortDescription: '',
     description: '',
-    category: '',
+    categoryId: 0,
   });
+
+  const [categories, setCategories] = useState<
+    { keyWord: string; phrase: string; color: string; id: number }[]
+  >([]);
 
   const handleFieldChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,10 +27,37 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
       }));
     };
 
-  const checkCompletion = () => {
-    const { title, shortDescription, description, category } = fields;
-    return !!(title && shortDescription && description && category);
+  const handleCategoryChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+    const categoryId = e.target.value as number;
+    setFields((prevFields) => ({
+      ...prevFields,
+      categoryId,
+    }));
   };
+
+  const checkCompletion = () => {
+    const { title, shortDescription, description, categoryId } = fields;
+    return !!(title && shortDescription && description && categoryId);
+  };
+
+  useEffect(() => {
+    const fetchCategoryList = async () => {
+      try {
+        const fetchedCategories = await fetchCategories();
+        const formattedCategories = fetchedCategories.map((category: any) => ({
+          keyWord: category.keyWord || '',
+          phrase: category.phrase || '',
+          color: category.color || '',
+          id: category.id || 0,
+        }));
+        setCategories(formattedCategories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategoryList();
+  }, []);
 
   useEffect(() => {
     const isComplete = checkCompletion();
@@ -123,8 +144,8 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         fullWidth
         margin="normal"
         select
-        value={fields.category}
-        onChange={handleFieldChange('category')}
+        value={fields.categoryId}
+        onChange={handleCategoryChange}
         aria-label="Category"
         InputProps={{
           className: 'text-field-outline',
@@ -135,8 +156,8 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
       >
         <option value="" disabled></option>
         {categories.map((category) => (
-          <option key={category.value} value={category.value}>
-            {category.label}
+          <option key={category.id} value={category.id}>
+            {category.keyWord}
           </option>
         ))}
       </TextField>
