@@ -3,6 +3,7 @@ import {
   EventDetailDto,
   EventFilter,
   EventHomePageDto,
+  EventInputDto,
 } from '@/utils/interfaces/EventInterfaces';
 
 /**
@@ -50,6 +51,37 @@ export const getEventById = async (
     }
     return await response.json();
   } catch (error) {
+    return null;
+  }
+};
+
+/**
+ * Crea un nuevo evento
+ *
+ * @param eventData objeto que contiene los datos del evento
+ * @returns el evento creado o null en caso de error
+ */
+export const createEvent = async (
+  eventData: EventInputDto,
+): Promise<EventInputDto | null> => {
+  try {
+    const response = await axios.post<EventInputDto>(
+      '/api/events/list',
+      eventData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    if (response.status === 201) {
+      return response.data;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Error creando el evento:', error);
     return null;
   }
 };
