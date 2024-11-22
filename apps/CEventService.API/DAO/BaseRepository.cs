@@ -36,6 +36,7 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
 
     public virtual async Task<T> CreateAsync(T entity)
     {
+        entity.CreatedAt = DateTime.Now;
         entity.IsDeleted = false;
         _dbContext.Set<T>().Add(entity);
         await _dbContext.SaveChangesAsync();

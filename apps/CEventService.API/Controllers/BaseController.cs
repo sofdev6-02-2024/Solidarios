@@ -47,7 +47,7 @@ public abstract class BaseController<T, TOutputDto, TInputDto, TId> : Controller
     }
 
     [HttpPut("{id}")]
-    public virtual async Task<ActionResult> Update(TId id, [FromBody] TInputDto inputDto)
+    public virtual async Task<ActionResult> Update(TId id, [FromBody] TInputDto inputDto, [FromHeader] Guid userId)
     {
         var model = _mapper.Map<T>(inputDto);
         var updatedItem = await _service.UpdateAsync(id, model);
@@ -57,7 +57,7 @@ public abstract class BaseController<T, TOutputDto, TInputDto, TId> : Controller
     }
 
     [HttpDelete("{id}")]
-    public virtual async Task<IActionResult> SoftDelete(TId id)
+    public virtual async Task<IActionResult> SoftDelete(TId id, [FromHeader] Guid userId)
     {
         var result = await _service.SoftDeleteAsync(id);
         return result > 0 ? NoContent() : NotFound();
