@@ -21,4 +21,4 @@ export const registerUser = async (
   } catch (error) {
     return null;
   }
-}
+};

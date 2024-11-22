@@ -58,8 +58,8 @@ export const getEventById = async (
 
 export const fetchAllEvents = async (): Promise<EventSearchToUserDto[]> => {
   try {
-    const response = await axios.get<EventSearchToUserDto[]>(
-      '/api/events/list');
+    const response =
+      await axios.get<EventSearchToUserDto[]>('/api/events/list');
     return response.data;
   } catch (error) {
     console.error('Error fetching all homepage events:', error);

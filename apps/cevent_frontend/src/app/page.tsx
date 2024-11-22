@@ -16,15 +16,16 @@ export default function Home() {
   return (
     <Layout>
       <CategoryEventSection category={ALL_CATEGORY_VALUE} />
-      {categories && categories.map((category) => {
-        if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
-        return (
-          <CategoryEventSection
-            key={category.keyWord}
-            category={category as EventCategory}
-          />
-        );
-      })}
+      {categories &&
+        categories.map((category) => {
+          if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
+          return (
+            <CategoryEventSection
+              key={category.keyWord}
+              category={category as EventCategory}
+            />
+          );
+        })}
     </Layout>
   );
 }
