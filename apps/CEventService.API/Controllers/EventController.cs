@@ -19,6 +19,16 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         _eventService = eventService;
     }
 
+    [HttpGet("summaryEvent")]
+    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetEventsForHomePage(
+        [FromQuery] EventFilterDto filters,
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var events = await _eventService.GetSummaryEvents(page, pageSize, filters);
+        return Ok(events);
+    }
+
     [Authorize]
     [HttpPost]
     public override async Task<ActionResult<EventOutputDto>> Create([FromBody] EventInputDto inputDto)
@@ -44,18 +54,6 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         if (validationResult is not null) return validationResult;
 
         return await base.SoftDelete(id, userId);
-    }
-    
-    [Route("homepage/")]
-    [HttpGet]
-    public virtual async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetAll([FromQuery] int page = 1,
-        [FromQuery] int pageSize = 10)
-    {
-        var items = await _eventService.GetAllAsync(page, pageSize);
-        if (items == null || !items.Any()) return NotFound();
-
-        var itemsDto = _mapper.Map<IEnumerable<EventHomePageDto>>(items);
-        return Ok(itemsDto);
     }
 
     private async Task<ActionResult?> ValidateEventOwnershipAsync(int eventId, Guid userId)

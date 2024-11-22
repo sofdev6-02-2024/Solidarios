@@ -6,5 +6,5 @@ public class EventCategory : BaseEntity<int>
     public string Color { get; set; } = null!;
     public string Phrase { get; set; } = null!;
     
-    public ICollection<Event> Events { get; set; }
+    public ICollection<Event>? Events { get; set; }
 }
