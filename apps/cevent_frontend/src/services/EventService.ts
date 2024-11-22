@@ -4,6 +4,7 @@ import {
   EventFilter,
   EventHomePageDto,
   EventInputDto,
+  EventSearchToUserDto,
 } from '@/utils/interfaces/EventInterfaces';
 
 /**
@@ -52,6 +53,17 @@ export const getEventById = async (
     return await response.json();
   } catch (error) {
     return null;
+  }
+};
+
+export const fetchAllEvents = async (): Promise<EventSearchToUserDto[]> => {
+  try {
+    const response = await axios.get<EventSearchToUserDto[]>(
+      '/api/events/list');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all homepage events:', error);
+    return [];
   }
 };
 

@@ -14,83 +14,58 @@ import { useSession } from 'next-auth/react';
 import EventCard from './_components/EventCard';
 import EmptyEventSection from './_components/EmptyEventSection';
 import LoginPromptSection from './_components/LoginPromptSection';
-
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  location: string;
-  attendees: number;
-  activities: number;
-  description?: string;
-  price?: string;
-}
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  lastName: string;
-  phoneNumber: string;
-}
+import { useSelector } from 'react-redux';
+import { fetchAllEvents } from '@/services/EventService';
+import { RootState } from '@/redux/store';
+import { EventDTO } from '@/utils/interfaces/SearchEventsOfUsers';
 
 export default function MyEventsPage() {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<EventDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 3;
+  const user = useSelector((state: RootState) => state.user.userInfo);
 
   const { data: session, status } = useSession();
   const router = useRouter();
-  console.log(session?.user?.email);
-  
 
   useEffect(() => {
-    const fetchUserAndEvents = async () => {
-      if (!session?.user?.email) {
-        console.log("Session user email no disponible.");
+    const fetchEventsForUser = async () => {
+      if (!user?.id) {
+        console.log('No user ID available.');
         return;
       }
 
       try {
-        setIsLoading(true);
-      
-        const userResponse = await fetch(
-          `http://localhost:5149/events/api/user`
-        );
-        const userData = await userResponse.json();
-        const currentUser: User | undefined = userData.items.find(
-          (user: User) => {
-            console.log("User Email:", user.email);  
-            console.log("Session User Email:", session.user.email);
-            return user.email === session.user.email;
-          }
+        const allEvents = await fetchAllEvents();
+        console.log('Fetched events:', allEvents);
+        const userEvents = allEvents.filter(
+          (event) => event.organizerUserId === user?.id,
         );
 
-        if (!currentUser) {
-          console.error('Usuario no encontrado.');
-          setIsLoading(false);
-          return;
-        }
+        const mappedEvents = userEvents.map((event) => ({
+          id: event.id,
+          name: event.name ?? '',
+          location: event.location,
+          venue: event.venue ?? '',
+          attendees: event.attendeeCount ?? 0,
+          activities: event.activities ?? 0,
+          description: event.description ?? '',
+          price: event.ticketPrice ?? 0,
+          organizerUserId: event.organizerUserId ?? '',
+          createdAt: event.createdAt ?? new Date(),
+        }));
 
-        const eventsResponse = await fetch(
-          `http://localhost:5149/events/api/event`
-        );
-        const eventsData = await eventsResponse.json();
-        const userEvents = eventsData.items.filter(
-          (event: Event) => event.organizerUserId === currentUser.id
-        );
-
-        setEvents(userEvents);
+        setEvents(mappedEvents);
       } catch (error) {
-        console.error('Error al obtener eventos:', error);
+        console.error('Error fetching user events:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchUserAndEvents();
-  }, [session]);
+    fetchEventsForUser();
+  }, [user?.id]);
 
   const handleCreateEvent = () => {
     router.push('/create_event');

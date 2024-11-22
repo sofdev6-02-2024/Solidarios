@@ -1,27 +1,9 @@
 'use client';
 
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Box,
-  Chip,
-} from '@mui/material';
-
-interface EventCardProps {
-  event: {
-    id: number;
-    title: string;
-    date: string;
-    location: string;
-    attendees: number;
-    activities: number;
-    description?: string;
-    price?: string;
-  };
-}
+import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
+import { formatDate } from '@/utils/methods/stringMethods';
+import { EventCardProps } from '@/utils/interfaces/SearchEventsOfUsers';
 
 export default function EventCard({ event }: EventCardProps) {
   return (
@@ -39,14 +21,14 @@ export default function EventCard({ event }: EventCardProps) {
         component="img"
         sx={{ width: '100%', height: '300px', objectFit: 'cover' }}
         image="https://i.pinimg.com/736x/f1/24/77/f124772add8643a64bcf03d9d67665fe.jpg"
-        alt={event.title}
+        alt={event.name}
       />
 
       <CardContent
         sx={{
-          paddingTop: '1rem',
+          paddingTop: '1.5rem',
           paddingLeft: '2rem',
-          paddingRight: '8rem',
+          paddingRight: '5rem',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
@@ -61,7 +43,7 @@ export default function EventCard({ event }: EventCardProps) {
             color="textSecondary"
             mb={2}
           >
-            {event.title || 'Lorem ipsum description text for the event.'}
+            {event.name || 'Lorem ipsum description text for the event.'}
           </Typography>
           <Typography variant="body1" color="textSecondary" paragraph>
             {event.description ||
@@ -102,7 +84,7 @@ export default function EventCard({ event }: EventCardProps) {
               alignSelf: 'start',
             }}
           >
-            📅 {event.date}
+            📅 {formatDate(event.createdAt)}
           </Typography>
           <Typography
             variant="body2"
@@ -115,7 +97,7 @@ export default function EventCard({ event }: EventCardProps) {
               alignSelf: 'start',
             }}
           >
-            📍 {event.location}
+            📍 {event.venue}
           </Typography>
           <Typography
             variant="body2"
@@ -128,7 +110,7 @@ export default function EventCard({ event }: EventCardProps) {
               alignSelf: 'start',
             }}
           >
-            👥 {event.attendees} Attendees
+            👥 {event.attendees ?? 0}
           </Typography>
           <Typography
             variant="body2"
@@ -141,7 +123,7 @@ export default function EventCard({ event }: EventCardProps) {
               alignSelf: 'start',
             }}
           >
-            🔖 Activities: {event.activities}
+            🔖 Activities: 0 {event.activities ?? 0}
           </Typography>
           <Typography
             variant="body2"
