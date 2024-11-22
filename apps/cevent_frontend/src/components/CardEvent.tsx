@@ -18,21 +18,17 @@ import {
 } from '@/utils/methods/stringMethods';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import styles from '@/styles/components/CardEventStyles';
-import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface CardEventProps {
   eventData: EventHomePageDto;
 }
 
 const CardEvent = ({ eventData }: CardEventProps) => {
-  useEffect(() => {
-    console.log('CardEvent rendered');
-    console.log(eventData);
-  }, [eventData]);
-
+  const router = useRouter();
   return (
     <Card sx={styles.cardStyles}>
-      <CardActionArea>
+      <CardActionArea onClick={() => router.push(`/${eventData.id}`)}>
         <CardMedia
           component="img"
           height="140"
@@ -72,7 +68,7 @@ const CardEvent = ({ eventData }: CardEventProps) => {
             />
           </Box>
           <Typography variant="body2" color="text.secondary">
-            {truncateText(eventData.description, 120)}
+            {truncateText(eventData.shortDescription, 120)}
           </Typography>
         </CardContent>
       </CardActionArea>

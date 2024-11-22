@@ -95,6 +95,10 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 using(var scope = app.Services.CreateScope())
@@ -102,13 +106,13 @@ using(var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();
-
-    //await DataSeeder.SeedData(dbContext);
 }
+
+var logger = app.Services.GetRequiredService<ILogger<ServiceDiscoveryClient>>();
 
 using (var httpClient = new HttpClient())
 {
-    var serviceDiscoveryClient = new ServiceDiscoveryClient(httpClient,serviceDiscoveryUrl, serviceName, serviceAddress, servicePort);
+    var serviceDiscoveryClient = new ServiceDiscoveryClient(logger, httpClient, serviceDiscoveryUrl, serviceName, serviceAddress, servicePort);
     await serviceDiscoveryClient.RegisterServiceAsync();
 }
 

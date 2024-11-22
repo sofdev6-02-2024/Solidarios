@@ -9,18 +9,21 @@ public class ServiceDiscoveryClient
     private readonly string _serviceName;
     private readonly string _serviceUrl;
     private readonly int _port;
+    private readonly ILogger<ServiceDiscoveryClient> _logger;
 
-    public ServiceDiscoveryClient(HttpClient httpClient, string serviceDiscoveryUrl, string serviceName, string serviceAddress, int port)
+    public ServiceDiscoveryClient(ILogger<ServiceDiscoveryClient> logger, HttpClient httpClient, string serviceDiscoveryUrl, string serviceName, string serviceAddress, int port)
     {
         _httpClient = httpClient;
         _serviceDiscoveryUrl = serviceDiscoveryUrl;
         _serviceName = serviceName;
         _serviceUrl = serviceAddress;
         _port = port;
+        _logger = logger;
     }
 
     public async Task RegisterServiceAsync()
     {
+        _logger.LogInformation($"Registering service {_serviceName} with address {_serviceUrl} and port {_port} to service discovery at {_serviceDiscoveryUrl}");
         var response = await _httpClient.GetAsync($"{_serviceDiscoveryUrl}/api/service-registry/services");
         if (response.IsSuccessStatusCode)
         {

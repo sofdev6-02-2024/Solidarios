@@ -67,8 +67,6 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    //everytime a jwt token is created, this callback is called
-    //ecnrypted token sent to broswer, sensitve information allowed
     async jwt({ token, account }: { token: Token; account: Account | null }) {
       const nowTimeStamp = Math.floor(Date.now() / 1000);
 
@@ -93,8 +91,6 @@ export const authOptions: AuthOptions = {
         }
       }
     },
-    //everytime a session is called from any component, this callback is called
-    //not ecnrptyped infromation
     async session({
       session,
       token,
@@ -108,9 +104,7 @@ export const authOptions: AuthOptions = {
       if (token.id_token) {
         session.id_token = encrypt(token.id_token);
       }
-      if (token.decoded) {
-        session.roles = token.decoded.realm_access.roles;
-      }
+      session.roles = token.decoded?.realm_access.roles;
       session.error = token.error;
       return session;
     },
