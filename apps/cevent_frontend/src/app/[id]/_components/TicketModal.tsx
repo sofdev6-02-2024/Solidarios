@@ -18,7 +18,6 @@ interface EventModalProps {
   name: string;
   pricePerTicket: number;
   capacity: number;
-  onPurchase: (quantity: number) => void;
 }
 
 const TicketModal = ({
@@ -27,7 +26,6 @@ const TicketModal = ({
   name,
   pricePerTicket,
   capacity,
-  onPurchase,
 }: EventModalProps) => {
   const router = useRouter();
   const [quantity, setQuantity] = useState<string>('');
@@ -38,6 +36,7 @@ const TicketModal = ({
 
     if (!/^\d*$/.test(value)) {
       setError('Please enter a valid number.');
+      return;
     } else if (parseInt(value, 10) > capacity) {
       setError(`Only ${capacity} tickets are available.`);
     } else {
@@ -55,7 +54,6 @@ const TicketModal = ({
   const handleConfirmPurchase = () => {
     const qty = parseInt(quantity, 10);
     if (qty > 0 && qty <= capacity) {
-      onPurchase(qty);
       router.push(
         `/checkout?eventName=${encodeURIComponent(name)}&quantity=${qty}&pricePerTicket=${pricePerTicket}&totalPrice=${calculateTotal()}`,
       );
@@ -89,10 +87,6 @@ const TicketModal = ({
           error={!!error}
           helperText={error}
           sx={styles.textField}
-          inputProps={{
-            inputMode: 'numeric',
-            pattern: '[0-9]*',
-          }}
         />
 
         <Box sx={styles.ticketsInfoContainer}>
