@@ -1,9 +1,9 @@
 export interface UserInterface {
-  userId: number;
-  fullName: string;
+  id: string;
+  name: string;
+  lastName: string;
   email: string;
   phoneNumber: string;
-  profilePhotoUrl: string;
-  role: string;
-  createdAt: Date;
+  photoUrl: string;
+  createdAt?: Date;
 }
