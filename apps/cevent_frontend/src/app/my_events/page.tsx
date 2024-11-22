@@ -37,7 +37,7 @@ export default function MyEventsPage() {
       }
 
       try {
-        const allEvents = await fetchAllEvents();        
+        const allEvents = await fetchAllEvents();
         const userEvents = allEvents.filter(
           (event) => event.organizerUserId === user?.id,
         );
