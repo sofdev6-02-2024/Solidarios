@@ -18,9 +18,8 @@ function useLoginUser() {
     if (idUser) {
       const user = await getUserById(idUser);
       if (user) {
-
         dispatch(setUserInfo(user));
-        console.log("state regisred user :: ", user)
+        console.log('state regisred user :: ', user);
       } else {
         const userToCreate: UserInterface = {
           id: idUser,
@@ -29,7 +28,7 @@ function useLoginUser() {
           lastName: session?.user?.name ?? '',
           email: session?.user?.email ?? '',
           phoneNumber: '+59100000000',
-          photoUrl: 'null'
+          photoUrl: 'null',
         };
         const response = await registerUser(userToCreate);
         if (response) {
@@ -42,7 +41,7 @@ function useLoginUser() {
 
   useEffect(() => {
     if (session) {
-      if(loading) return;
+      if (loading) return;
       hanldleLogIn();
     } else {
       dispatch(clearUserInfo());

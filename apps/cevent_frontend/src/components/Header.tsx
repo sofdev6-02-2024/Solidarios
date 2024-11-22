@@ -30,7 +30,7 @@ export default function Header() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const {session} = useLoginUser();
+  const { session } = useLoginUser();
 
   const handleNavigation = (route: string) => {
     router.push(route);

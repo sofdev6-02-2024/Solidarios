@@ -29,6 +29,20 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   description: string;
 }
 
+export interface EventSearchToUserDto
+  extends Omit<EventHomePageDto, 'category'> {
+  location: Location;
+  venue: string;
+  attendanceTrackingEnabled: boolean;
+  status: string;
+  capacity: number;
+  organizerUserId: string;
+  createdAt: Date;
+  category: EventCategory;
+  description: string;
+  activities: number;
+}
+
 export enum SortOptions {
   EventDate = 'EventDate',
   TicketPrice = 'TicketPrice',

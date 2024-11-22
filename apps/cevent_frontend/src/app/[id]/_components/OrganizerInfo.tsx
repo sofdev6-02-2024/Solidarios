@@ -12,8 +12,8 @@ const OrganizerInfo = ({ organizerType, user }: OrganizerInfoProps) => {
       <Box sx={styleEventOrganizer.infoUser}>
         <Avatar
           sx={styleEventOrganizer.avatar}
-          src={user.profilePhotoUrl}
-          alt={user.fullName}
+          src={user?.photoUrl}
+          alt={user?.name}
         />
         <Box sx={styleEventOrganizer.containerName}>
           <Typography
@@ -23,7 +23,7 @@ const OrganizerInfo = ({ organizerType, user }: OrganizerInfoProps) => {
             {organizerType}
           </Typography>
           <Typography fontWeight="bold" variant="bodyLarge">
-            {user.fullName}
+            {user?.name}
           </Typography>
         </Box>
       </Box>
