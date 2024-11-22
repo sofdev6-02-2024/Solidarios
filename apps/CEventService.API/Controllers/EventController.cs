@@ -29,7 +29,6 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         return Ok(events);
     }
 
-    [Authorize]
     [HttpPost]
     public override async Task<ActionResult<EventOutputDto>> Create([FromBody] EventInputDto inputDto)
     {
