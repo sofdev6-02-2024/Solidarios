@@ -14,6 +14,7 @@ export interface EventCardProps {
     description?: string;
     price?: number;
     createdAt: Date;
+    coverPhotoUrl: string;
   };
 }
 
@@ -28,4 +29,5 @@ export interface EventDTO {
   price?: number;
   organizerUserId: string;
   createdAt: Date;
+  coverPhotoUrl: string;
 }

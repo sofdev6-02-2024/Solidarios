@@ -38,7 +38,6 @@ export default function MyEventsPage() {
 
       try {
         const allEvents = await fetchAllEvents();
-        console.log('Fetched events:', allEvents);
         const userEvents = allEvents.filter(
           (event) => event.organizerUserId === user?.id,
         );
@@ -54,6 +53,7 @@ export default function MyEventsPage() {
           price: event.ticketPrice ?? 0,
           organizerUserId: event.organizerUserId ?? '',
           createdAt: event.createdAt ?? new Date(),
+          coverPhotoUrl: event.coverPhotoUrl ?? '',
         }));
 
         setEvents(mappedEvents);
