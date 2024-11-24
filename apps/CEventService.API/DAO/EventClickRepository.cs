@@ -10,9 +10,10 @@ public class EventClickRepository : BaseRepository<EventClick, int>, IEventClick
     {
     }
 
-    public async Task<IEnumerable<Event>> MostClicked(int page, int pageSize)
+    public async Task<IEnumerable<Event>> GetMostClickedEvents(Func<EventClick, bool>? predicate, int page, int pageSize)
     {
-        return await _dbContext.Set<EventClick>()
+        var clickCounts = await _dbContext.Set<EventClick>()
+            .Where(ec => predicate == null || predicate(ec))
             .GroupBy(ec => ec.EventId)
             .Select(group => new
             {
@@ -22,10 +23,12 @@ public class EventClickRepository : BaseRepository<EventClick, int>, IEventClick
             .OrderByDescending(e => e.ClickCount)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .Join(_dbContext.Set<Event>(),
-                click => click.EventId,
-                eventItem => eventItem.Id,
-                (click, eventItem) => eventItem)
             .ToListAsync();
+
+        var result = await _dbContext.Set<Event>()
+            .Where(e => clickCounts.Select(cc => cc.EventId).Contains(e.Id))
+            .ToListAsync();
+
+        return result;
     }
 }

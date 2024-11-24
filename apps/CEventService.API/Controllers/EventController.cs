@@ -78,7 +78,7 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         return Ok(response);
     }
 
-    [HttpGet("banner/category")]
+    [HttpGet("banner/{category}")]
     public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEventsByCategory([FromQuery] string category, int page = 1, int pageSize = 10)
     {
         var response = await GetPromotedEventsAsync(page, pageSize, category);
@@ -88,8 +88,8 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
     private async Task<IEnumerable<EventHomePageDto>> GetPromotedEventsAsync(int page, int pageSize, string category = null)
     {
         var promotedEvents = category == null
-            ? (await _eventService.GetPromotedEvents(page, pageSize)).ToList()
-            : (await _eventService.GetPromotedEvents(page, pageSize, category)).ToList();
+            ? (await _eventClickService.MostClickedPromoted(page, pageSize)).ToList()
+            : (await _eventClickService.MostClickedPromoted(page, pageSize, category)).ToList();
 
         if (promotedEvents.Count < pageSize)
         {
