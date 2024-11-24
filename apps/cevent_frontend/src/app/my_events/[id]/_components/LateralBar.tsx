@@ -13,15 +13,15 @@ import { stylesBar } from '../_styles/lateralBarStyle';
 import { ManagementSections } from '@/utils/interfaces/EventManagement';
 
 interface LateralBarProps {
-    value: ManagementSections;
-    setValue: (value: ManagementSections) => void;
-    }
+  value: ManagementSections;
+  setValue: (value: ManagementSections) => void;
+}
 
-
-const LateralBar = ( { value, setValue }: LateralBarProps) => {
- 
-  const handleChange = (event: React.SyntheticEvent, newValue: ManagementSections) => {
-    
+const LateralBar = ({ value, setValue }: LateralBarProps) => {
+  const handleChange = (
+    event: React.SyntheticEvent,
+    newValue: ManagementSections,
+  ) => {
     setValue(newValue);
   };
 

@@ -7,16 +7,13 @@ export const stylesBar: { [key: string]: SxProps<Theme> } = {
     backgroundColor: 'white',
     gap: '2rem',
     minHeight: '80vh',
-    height: '100%',
-    width: "auto",
-    
+    width: 'auto',
     alignItems: 'center',
     boxShadow: '2px 0 5px rgba(0, 0, 0, 0.1)',
     paddingTop: '10rem',
   },
 
-    icon: {
-        fontSize: '2rem',
-    },
+  icon: {
+    fontSize: '2rem',
+  },
 };
-

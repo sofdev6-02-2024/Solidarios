@@ -30,13 +30,10 @@ const PromoteEventSection = ({ event }: PromoteEventSectionProps) => {
             aria-label="promote event tabs"
           >
             <Tab label="Banner promotions" />
-            <Tab label="Email promotions" />
           </Tabs>
         </Box>
         <Box sx={{ padding: 2 }}>
           {value === 0 && <BannerPromotion eventData={event} />}
-          {value === 1 && <Typography>Content for Tab 2</Typography>}
-          {value === 2 && <Typography>Content for Tab 3</Typography>}
         </Box>
       </Layout>
     </Box>

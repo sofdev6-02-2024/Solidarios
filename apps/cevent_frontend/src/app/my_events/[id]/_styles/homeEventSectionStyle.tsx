@@ -5,8 +5,7 @@ export const stylesPage: { [key: string]: SxProps<Theme> } = {
     width: '100%',
   },
 
-    icon: {
-        fontSize: '2rem',
-    },
+  icon: {
+    fontSize: '2rem',
+  },
 };
-

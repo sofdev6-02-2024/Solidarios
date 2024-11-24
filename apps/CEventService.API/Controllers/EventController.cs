@@ -55,6 +55,20 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         return await base.SoftDelete(id, userId);
     }
 
+    [HttpPost("PromotionEvent")]
+    public async Task<ActionResult> PromoteEvent([FromBody] PromoteEventDto promoteEventDto)
+    {
+        var result = await _eventService.PromoteEvent(promoteEventDto.EventId, promoteEventDto.IsPromoted);
+        if (result)
+        {
+            return Ok("Event promotion status updated successfully.");
+        }
+        else
+        {
+            return StatusCode(500, "An error occurred while updating the event promotion status.");
+        }
+    }
+
     private async Task<ActionResult?> ValidateEventOwnershipAsync(int eventId, Guid userId)
     {
         var eventEntity = await _eventService.GetByIdAsync(eventId);

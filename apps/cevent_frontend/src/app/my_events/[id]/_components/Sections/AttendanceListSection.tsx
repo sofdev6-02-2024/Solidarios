@@ -1,12 +1,17 @@
+import Layout from '@/components/Layout';
+import { Box, Typography } from '@mui/material';
+
 const AttendanceListSection = () => {
-
-    return (
-        <div>
-            <h1>Attendance List Section</h1>
-        </div>
-
-    )
-
-}
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Layout>
+        <Typography color="primary" variant="display">
+          Attendance{' '}
+        </Typography>
+        <Typography variant="display">Section</Typography>
+      </Layout>
+    </Box>
+  );
+};
 
 export default AttendanceListSection;

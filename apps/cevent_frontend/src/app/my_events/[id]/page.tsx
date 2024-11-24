@@ -1,7 +1,7 @@
 'use client';
 import Layout from '@/components/Layout';
 import { Box, Typography } from '@mui/material';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import LateralBar from './_components/LateralBar';
 import { ManagementSections } from '@/utils/interfaces/EventManagement';
@@ -12,19 +12,28 @@ import PromoteEventSection from './_components/Sections/PromoteEventSection';
 import EditEventSection from './_components/Sections/EditEventSection';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import { getEventById } from '@/services/EventService';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const EventManagementPage = () => {
   const { id } = useParams();
   const [section, setSection] = useState(ManagementSections.Home);
   const [event, setEvent] = useState<EventDetailDto | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const user = useSelector((state: RootState) => state.user.userInfo);
+  const router = useRouter();
   useEffect(() => {
     if (id) {
       getEventById(id.toString())
-        .then((response) => {
-          if (response) {
-            setEvent(response);
+        .then((event) => {
+          if (event && user) {
+            if (event.organizerUserId !== user.id) {
+              setEvent(null);
+              router.push('/not_found');
+              return;
+            } else {
+              setEvent(event);
+            }
           }
         })
         .finally(() => {
@@ -34,11 +43,7 @@ const EventManagementPage = () => {
   }, [id]);
 
   return (
-    <Box
-      display={'flex'}
-      flexDirection={'row'}
-      sx={{ minHeight: '80vh', width: '100%' }}
-    >
+    <Box display={'flex'} flexDirection={'row'} sx={{ width: '100%' }}>
       <LateralBar value={section} setValue={setSection} />
       {loading ? (
         <Typography>Loading...</Typography>
@@ -50,7 +55,7 @@ const EventManagementPage = () => {
             <AttendanceListSection />
           )}
           {section === ManagementSections.PromoteEvent && (
-            <PromoteEventSection />
+            <PromoteEventSection event={event} />
           )}
           {section === ManagementSections.EditEvent && <EditEventSection />}
         </>

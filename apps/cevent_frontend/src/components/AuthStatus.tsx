@@ -26,12 +26,11 @@ export default function AuthStatus(): JSX.Element {
       status !== 'loading' &&
       customSession &&
       customSession?.error === 'RefreshAccessTokenError'
-
     ) {
       signOut({ callbackUrl: '/' });
     } else {
-      console.log("id_ token", customSession?.id_token);
-      console.log("access_token", customSession?.access_token);
+      console.log('id_ token', customSession?.id_token);
+      console.log('access_token', customSession?.access_token);
     }
   }, [customSession, status]);
 
@@ -42,8 +41,12 @@ export default function AuthStatus(): JSX.Element {
       <div>
         <Typography variant="h6">Welcome, {user?.name}.</Typography>
         <Typography variant="body1">Your ID: {user?.id}</Typography>
-        <Typography variant="body1">Your id token: {customSession.id_token}</Typography>
-        <Typography variant="body1">Your id token: {customSession.access_token}</Typography>
+        <Typography variant="body1">
+          Your id token: {customSession.id_token}
+        </Typography>
+        <Typography variant="body1">
+          Your id token: {customSession.access_token}
+        </Typography>
         <Button
           variant="contained"
           color="primary"

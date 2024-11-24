@@ -17,4 +17,14 @@ public class EventService : BaseService<Event, int>, IEventService
         var events = _eventRepository.GetSummaryEvents(page, pageSize, filters);
         return events;
     }
+
+    public async Task<bool> PromoteEvent(int eventId, bool isPromoted)
+    {
+        var eventSearched = await _eventRepository.GetByIdAsync(eventId);
+        if (eventSearched is null) return false;
+        eventSearched.IsPromoted = isPromoted;
+        var response = await _eventRepository.UpdateAsync(eventId, eventSearched);
+        if (response is null) return false;
+        return true;
+    }
 }

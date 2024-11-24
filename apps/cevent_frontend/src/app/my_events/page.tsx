@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import { fetchAllEvents } from '@/services/EventService';
 import { RootState } from '@/redux/store';
 import { EventDTO } from '@/utils/interfaces/SearchEventsOfUsers';
+import Layout from '@/components/Layout';
 
 export default function MyEventsPage() {
   const [events, setEvents] = useState<EventDTO[]>([]);
@@ -106,20 +107,22 @@ export default function MyEventsPage() {
 
   return (
     <Box sx={{ padding: '2rem' }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h4" fontWeight="bold">
-          My Events
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={handleCreateEvent}
-          sx={{ borderRadius: '10px' }}
-        >
-          Create Event
-        </Button>
-      </Box>
+      <Layout>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h4" fontWeight="bold">
+            My Events
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={handleCreateEvent}
+            sx={{ borderRadius: '10px' }}
+          >
+            Create Event
+          </Button>
+        </Box>
+      </Layout>
 
       {isLoading ? (
         <Box display="flex" justifyContent="center" mt={4}>

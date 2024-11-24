@@ -6,8 +6,8 @@ import CardEventInfo from '@/app/[id]/_components/CardEventInfo';
 import CardEventSummary from '../CardEventInfo';
 
 export interface SectionProps {
-    event: EventDetailDto;
-} 
+  event: EventDetailDto;
+}
 
 const HomeSection = ({ event }: SectionProps) => {
   return (
