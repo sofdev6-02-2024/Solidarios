@@ -48,7 +48,7 @@ const EventManagementPage = () => {
       <LateralBar value={section} setValue={setSection} />
       {loading ? (
         <Layout>
-          <LinearLoading text='Loading Event'/>
+          <LinearLoading text="Loading Event" />
         </Layout>
       ) : event ? (
         <>
@@ -64,8 +64,8 @@ const EventManagementPage = () => {
         </>
       ) : (
         <Layout>
-        <LinearLoading text='Please wait a moment'/>
-      </Layout>
+          <LinearLoading text="Please wait a moment" />
+        </Layout>
       )}
     </Box>
   );

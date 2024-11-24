@@ -17,7 +17,7 @@ const LinearLoading = ({ text }: LinearLoadingProps) => {
         }}
       >
         <Typography color="primary" variant="body">
-         { text ? text : 'Loading...' }
+          {text ? text : 'Loading...'}
         </Typography>
         <Box sx={{ width: '100%', mt: 2 }}>
           <LinearProgress />
