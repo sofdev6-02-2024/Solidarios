@@ -21,20 +21,11 @@ export default function EventCard({ event }: EventCardProps) {
       sx={{ height: 'auto' }}
       onClick={() => router.push(`${routes.myEvents}/${event.id}`)}
     >
-      <Card
-        sx={{
-          mb: 3,
-          borderRadius: 4,
-          boxShadow: 3,
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <Card>
         <CardMedia
           component="img"
           sx={{ width: '100%', height: '300px', objectFit: 'cover' }}
-          image="https://i.pinimg.com/736x/f1/24/77/f124772add8643a64bcf03d9d67665fe.jpg"
+          image={event.coverPhotoUrl}
           alt={event.name}
         />
 

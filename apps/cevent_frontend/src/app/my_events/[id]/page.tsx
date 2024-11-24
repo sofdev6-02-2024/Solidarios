@@ -1,6 +1,6 @@
 'use client';
 import Layout from '@/components/Layout';
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import LateralBar from './_components/LateralBar';
@@ -14,6 +14,7 @@ import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import { getEventById } from '@/services/EventService';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import LinearLoading from '@/components/Loaders/LinearLoading';
 
 const EventManagementPage = () => {
   const { id } = useParams();
@@ -40,13 +41,15 @@ const EventManagementPage = () => {
           setLoading(false);
         });
     }
-  }, [id]);
+  }, [id, user]);
 
   return (
     <Box display={'flex'} flexDirection={'row'} sx={{ width: '100%' }}>
       <LateralBar value={section} setValue={setSection} />
       {loading ? (
-        <Typography>Loading...</Typography>
+        <Layout>
+          <LinearLoading text='Loading Event'/>
+        </Layout>
       ) : event ? (
         <>
           {section === ManagementSections.Home && <HomeSection event={event} />}
@@ -60,7 +63,9 @@ const EventManagementPage = () => {
           {section === ManagementSections.EditEvent && <EditEventSection />}
         </>
       ) : (
-        <Typography variant="h6">Event not found</Typography>
+        <Layout>
+        <LinearLoading text='Please wait a moment'/>
+      </Layout>
       )}
     </Box>
   );

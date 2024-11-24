@@ -12,11 +12,14 @@ namespace CEventService.API.Controllers;
 public class EventController : BaseController<Event, EventOutputDto, EventInputDto, int>
 {
     private readonly IEventService _eventService;
+    private readonly IEventClickService _eventClickService;
 
-    public EventController(IMapper mapper, IEventService eventService)
+
+    public EventController(IMapper mapper, IEventService eventService, IEventClickService eventClickService)
         : base(mapper, eventService)
     {
         _eventService = eventService;
+        _eventClickService = eventClickService;
     }
 
     [HttpGet("summaryEvent")]
@@ -80,4 +83,36 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
 
         return null;
     }
+    
+    [HttpGet("banner")]
+    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEvents(int page = 1, int pageSize = 10)
+    {
+        var response = await GetPromotedEventsAsync(page, pageSize);
+        return Ok(response);
+    }
+
+    [HttpGet("banner/category")]
+    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEventsByCategory([FromQuery] string category, int page = 1, int pageSize = 10)
+    {
+        var response = await GetPromotedEventsAsync(page, pageSize, category);
+        return Ok(response);
+    }
+
+    private async Task<IEnumerable<EventHomePageDto>> GetPromotedEventsAsync(int page, int pageSize, string category = null)
+    {
+        var promotedEvents = category == null
+            ? (await _eventService.GetPromotedEvents(page, pageSize)).ToList()
+            : (await _eventService.GetPromotedEvents(page, pageSize, category)).ToList();
+
+        if (promotedEvents.Count < pageSize)
+        {
+            var mostClicked = await _eventClickService.MostClicked(page, pageSize - promotedEvents.Count);
+            var mostClickedWithoutDuplicates = mostClicked.Where(mc => promotedEvents.All(pe => pe.Id != mc.Id));
+            promotedEvents.AddRange(mostClickedWithoutDuplicates);
+        }
+
+        return _mapper.Map<IEnumerable<EventHomePageDto>>(promotedEvents);
+    }
+
+
 }

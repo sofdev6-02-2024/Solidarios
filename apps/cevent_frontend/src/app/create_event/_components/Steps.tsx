@@ -51,7 +51,9 @@ const Steps = ({
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
-  const route = useRouter();
+
+  const router = useRouter();
+
   useEffect(() => {
     setIsGeneralInfoComplete(
       !!(
@@ -112,7 +114,7 @@ const Steps = ({
         if (response === null) {
           console.error('Error creating event:', response);
         } else {
-          route.push(routes.myEvents);
+          router.push(routes.myEvents);
         }
       } catch (error) {
         console.error('Unexpected error creating event:', error);

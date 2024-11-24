@@ -28,6 +28,9 @@ const PaymentForm = ({
   };
 
   useEffect(() => {
+
+    console.log('PaymentFormProps',linkToRedirect);
+    console.log('current url',window.location.href.replace(DOMAIN, ''));
     const paymentOpion: PaymentInterface = {
       amount: PRICE_PROMOTION,
       currency: CURRENCY_PROMOTION,
@@ -49,10 +52,11 @@ const PaymentForm = ({
 
     while (attempts < 3) {
       response = await callBackFunction();
+      console.log("response operation :: ",response);
       if (response) {
         const currentUrl = window.location.href.replace(DOMAIN, '');
         if (linkToRedirect === currentUrl) {
-          router.refresh();
+          window.location.reload();
         } else {
           router.push(linkToRedirect);
         }
