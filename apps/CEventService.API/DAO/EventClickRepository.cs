@@ -1,4 +1,5 @@
-﻿using CEventService.API.Data;
+﻿using System.Linq.Expressions;
+using CEventService.API.Data;
 using CEventService.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,25 +11,38 @@ public class EventClickRepository : BaseRepository<EventClick, int>, IEventClick
     {
     }
 
-    public async Task<IEnumerable<Event>> GetMostClickedEvents(Func<EventClick, bool>? predicate, int page, int pageSize)
+    public async Task<IEnumerable<Event>> GetMostClickedEvents(Expression<Func<EventClick, bool>>? predicate, int page, int pageSize)
     {
-        var clickCounts = await _dbContext.Set<EventClick>()
-            .Where(ec => predicate == null || predicate(ec))
+        var clickCountsQuery = _dbContext.Set<EventClick>()
+            .Where(predicate ?? (_ => true))
             .GroupBy(ec => ec.EventId)
             .Select(group => new
             {
                 EventId = group.Key,
                 ClickCount = group.Count()
-            })
+            });
+
+        var clickCounts = await clickCountsQuery
             .OrderByDescending(e => e.ClickCount)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        var result = await _dbContext.Set<Event>()
-            .Where(e => clickCounts.Select(cc => cc.EventId).Contains(e.Id))
+        var eventIds = clickCounts.Select(cc => cc.EventId).ToList();
+        var events = await _dbContext.Set<Event>()
+            .Where(e => eventIds.Contains(e.Id))
             .ToListAsync();
 
-        return result;
+        var orderedEvents = clickCounts
+            .Join(events,
+                cc => cc.EventId,
+                e => e.Id,
+                (cc, e) => new { Event = e, cc.ClickCount }) 
+            .OrderByDescending(e => e.ClickCount)           
+            .Select(e => e.Event)                           
+            .ToList();
+
+        return orderedEvents;
     }
+
 }

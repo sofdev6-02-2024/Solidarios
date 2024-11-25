@@ -79,7 +79,7 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
     }
 
     [HttpGet("banner/{category}")]
-    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEventsByCategory([FromQuery] string category, int page = 1, int pageSize = 10)
+    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEventsByCategory(string category, int page = 1, int pageSize = 10)
     {
         var response = await GetPromotedEventsAsync(page, pageSize, category);
         return Ok(response);
