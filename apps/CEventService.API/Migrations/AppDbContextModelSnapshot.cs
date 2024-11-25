@@ -82,17 +82,13 @@ namespace CEventService.API.Migrations
                     b.Property<int>("ActivityId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("AttendanceTime")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -152,6 +148,9 @@ namespace CEventService.API.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<bool>("IsPromoted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -198,6 +197,9 @@ namespace CEventService.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -219,6 +221,40 @@ namespace CEventService.API.Migrations
                     b.ToTable("EventCategory", (string)null);
                 });
 
+            modelBuilder.Entity("CEventService.API.Models.EventClick", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EventClick", (string)null);
+                });
+
             modelBuilder.Entity("CEventService.API.Models.Registration", b =>
                 {
                     b.Property<int>("Id")
@@ -233,6 +269,9 @@ namespace CEventService.API.Migrations
                     b.Property<DateTime?>("AttendedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
@@ -240,9 +279,6 @@ namespace CEventService.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
-
-                    b.Property<DateTime>("RegisteredAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("TicketId")
                         .IsRequired()
@@ -293,6 +329,9 @@ namespace CEventService.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Id")
@@ -309,7 +348,7 @@ namespace CEventService.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("AddedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EventId")
@@ -421,6 +460,25 @@ namespace CEventService.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("CEventService.API.Models.EventClick", b =>
+                {
+                    b.HasOne("CEventService.API.Models.Event", "Event")
+                        .WithMany("EventClicks")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("CEventService.API.Models.User", "User")
+                        .WithMany("EventClicks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CEventService.API.Models.Registration", b =>
                 {
                     b.HasOne("CEventService.API.Models.Event", "Event")
@@ -483,6 +541,8 @@ namespace CEventService.API.Migrations
                 {
                     b.Navigation("Activities");
 
+                    b.Navigation("EventClicks");
+
                     b.Navigation("Registrations");
 
                     b.Navigation("Wishlists");
@@ -496,6 +556,8 @@ namespace CEventService.API.Migrations
             modelBuilder.Entity("CEventService.API.Models.User", b =>
                 {
                     b.Navigation("Attendances");
+
+                    b.Navigation("EventClicks");
 
                     b.Navigation("EventsCreated");
 

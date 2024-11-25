@@ -1,5 +1,4 @@
 'use client';
-
 import {
   AppBar,
   Toolbar,
@@ -19,9 +18,10 @@ import { Box } from '@mui/system';
 import { useRouter, usePathname } from 'next/navigation';
 import { routes } from '@/utils/navigation/Routes';
 import { useTheme } from '@mui/material/styles';
-import { useState, useEffect } from 'react';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import styles from '@/styles/components/Header.module.css';
+import useLoginUser from '@/hooks/useLoginUser';
 
 export default function Header() {
   const router = useRouter();
@@ -30,13 +30,7 @@ export default function Header() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    if (session) {
-      router.push('/');
-    }
-  }, [session, router]);
+  const { session } = useLoginUser();
 
   const handleNavigation = (route: string) => {
     router.push(route);

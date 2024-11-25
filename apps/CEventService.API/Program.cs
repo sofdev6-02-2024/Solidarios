@@ -1,27 +1,28 @@
-using Microsoft.OpenApi.Models;
-using CEventService.API.Data;
-using Microsoft.EntityFrameworkCore;
 using CEventService.API.DAO;
+using CEventService.API.Data;
 using CEventService.API.Services;
 using dotenv.net;
 using dotenv.net.Utilities;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
-DotEnv.Load(options: new DotEnvOptions(
-            envFilePaths: new[] { ".env" },
-            ignoreExceptions: false,
-            probeForEnv: true,
-            probeLevelsToSearch: 6
-        ));
+DotEnv.Load(new DotEnvOptions(
+    envFilePaths: new[] { ".env" },
+    ignoreExceptions: false,
+    probeForEnv: true,
+    probeLevelsToSearch: 6
+));
 
 var connectionString = EnvReader.GetStringValue("CONNECTION_STRING");
 var serviceDiscoveryUrl = EnvReader.GetStringValue("SERVICE_DISCOVERY_URL");
 var serviceName = EnvReader.GetStringValue("SERVICE_NAME");
 var serviceAddress = EnvReader.GetStringValue("SERVICE_ADRESS");
 var servicePort = EnvReader.GetIntValue("SERVICE_PORT");
-var authIssuer  = EnvReader.GetStringValue("AUTH_ISSUER");
-var authAudience  = EnvReader.GetStringValue("AUTH_AUDIENCE");
+var authIssuer = EnvReader.GetStringValue("AUTH_ISSUER");
+var authAudience = EnvReader.GetStringValue("AUTH_AUDIENCE");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -31,8 +32,11 @@ builder.Services.AddCors(options =>
         builder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
-    }); 
+    });
 });
+
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => { fv.RegisterValidatorsFromAssemblyContaining<Program>(); });
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -46,7 +50,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = authIssuer,
-            ValidAudience = authAudience,
+            ValidAudience = authAudience
         };
 
         options.MetadataAddress = $"{authIssuer}/.well-known/openid-configuration";
@@ -84,10 +88,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlServer(connectionString);
-});
+builder.Services.AddDbContext<AppDbContext>(options => { options.UseSqlServer(connectionString); });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -95,20 +96,27 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IEventClickRepository, EventClickRepository>();
+builder.Services.AddScoped<IEventClickService, EventClickService>();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 
 var app = builder.Build();
-using(var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();
-
-    //await DataSeeder.SeedData(dbContext);
 }
+
+var logger = app.Services.GetRequiredService<ILogger<ServiceDiscoveryClient>>();
 
 using (var httpClient = new HttpClient())
 {
-    var serviceDiscoveryClient = new ServiceDiscoveryClient(httpClient,serviceDiscoveryUrl, serviceName, serviceAddress, servicePort);
+    var serviceDiscoveryClient = new ServiceDiscoveryClient(logger, httpClient, serviceDiscoveryUrl, serviceName,
+        serviceAddress, servicePort);
     await serviceDiscoveryClient.RegisterServiceAsync();
 }
 

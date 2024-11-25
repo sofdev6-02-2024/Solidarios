@@ -1,10 +1,11 @@
-﻿using CEventService.API.Data;
+﻿using System.Linq.Expressions;
+using CEventService.API.Data;
 using CEventService.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CEventService.API.DAO;
 
-public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T : BaseEntity<TId>
+public abstract class BaseRepository<T, TId> : IBaseRepository<T, TId> where T : BaseEntity<TId>
 {
     protected readonly AppDbContext _dbContext;
 
@@ -12,6 +13,7 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
     {
         _dbContext = dbContext;
     }
+
     public virtual async Task<IEnumerable<T>> GetAllAsync(int page, int pageSize)
     {
         return await _dbContext.Set<T>()
@@ -23,9 +25,7 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
 
     public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _dbContext.Set<T>().
-            Where(e => !e.IsDeleted).
-            ToListAsync();
+        return await _dbContext.Set<T>().Where(e => !e.IsDeleted).ToListAsync();
     }
 
     public virtual async Task<T?> GetByIdAsync(TId id)
@@ -36,6 +36,7 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
 
     public virtual async Task<T> CreateAsync(T entity)
     {
+        entity.CreatedAt = DateTime.Now;
         entity.IsDeleted = false;
         _dbContext.Set<T>().Add(entity);
         await _dbContext.SaveChangesAsync();
@@ -47,11 +48,8 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
         entity.Id = id;
         entity.IsDeleted = false;
         var existingEntity = await GetByIdAsync(id);
-        if (existingEntity == null)
-        {
-            return null;
-        }
-        
+        if (existingEntity == null) return null;
+
         _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
         await _dbContext.SaveChangesAsync();
 
@@ -68,5 +66,17 @@ public abstract class BaseRepository <T, TId> : IBaseRepository<T, TId> where T 
         }
 
         return await _dbContext.SaveChangesAsync();
+    }
+
+    public virtual async Task<ICollection<T>> GetFilteredPagedAsync(
+        Expression<Func<T, bool>> filter,
+        int page,
+        int pageSize)
+    {
+        return await _dbContext.Set<T>()
+            .Where(filter)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 }

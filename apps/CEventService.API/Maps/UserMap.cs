@@ -35,4 +35,11 @@ public class UserMap : BaseMap<User, Guid>
             .WithOne(a => a.User)
             .HasForeignKey(a => a.UserId);
     }
+
+    protected override void ConfigureTableAndKeys(EntityTypeBuilder<User> builder)
+    {
+        builder.ToTable("User");
+        builder.HasKey(a => a.Id);
+        builder.HasIndex(a => a.Id).IsUnique();
+    }
 }

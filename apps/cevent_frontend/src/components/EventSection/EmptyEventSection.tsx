@@ -14,14 +14,14 @@ const EmptyEventSection = () => {
       }}
     >
       <Image
-        src="https://i.postimg.cc/XJssnvgV/7117865-3371469-1.png"
+        src="/images/notFoundImage.png"
         alt="Empty"
         width={150}
         height={150}
       />
 
       <Typography variant="bodyLarge" color="primary">
-        No upcoming events found
+        No events found
       </Typography>
     </Box>
   );

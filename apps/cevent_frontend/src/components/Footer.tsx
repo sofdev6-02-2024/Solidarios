@@ -4,7 +4,11 @@ import styles from '@/styles/components/Footer.module.css';
 
 const Footer: React.FC = () => {
   return (
-    <Box component="footer" className={styles.footer}>
+    <Box
+      component="footer"
+      className={styles.footer}
+      sx={{ position: 'relative', zIndex: 10 }}
+    >
       <Box className={styles.footerSection}>
         <Typography variant="h5" className={styles.footerTitle}>
           Cvent
