@@ -68,5 +68,25 @@ namespace TicketService.API.Controllers
 
             return Ok(ticket);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllTickets()
+        {
+            try
+            {
+                var tickets = await _ticketService.GetAllTicketsAsync();
+
+                if (tickets == null || !tickets.Any())
+                {
+                    return NotFound("No tickets found");
+                }
+
+                return Ok(tickets);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
     }
 }
