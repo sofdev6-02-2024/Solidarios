@@ -6,6 +6,7 @@ import {
   EventInputDto,
   EventSearchToUserDto,
 } from '@/utils/interfaces/EventInterfaces';
+import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 
 /**
  * Fetches the events for the home page
@@ -37,7 +38,6 @@ export const fetchHomePageEvents = async (
 
     return response.data;
   } catch (error) {
-    console.error('Error fetching events:', error);
     return [];
   }
 };
@@ -46,11 +46,11 @@ export const getEventById = async (
   id: string,
 ): Promise<EventDetailDto | null> => {
   try {
-    const response = await fetch(`/api/events/${id}`);
-    if (!response.ok) {
-      return null;
+    const response = await axios.get<EventDetailDto>(`/api/events/${id}`);
+    if (response.status === 200) {
+      return response.data;
     }
-    return await response.json();
+    return null;
   } catch (error) {
     return null;
   }
@@ -62,7 +62,6 @@ export const fetchAllEvents = async (): Promise<EventSearchToUserDto[]> => {
       await axios.get<EventSearchToUserDto[]>('/api/events/list');
     return response.data;
   } catch (error) {
-    console.error('Error fetching all homepage events:', error);
     return [];
   }
 };
@@ -93,7 +92,32 @@ export const createEvent = async (
 
     return null;
   } catch (error) {
-    console.error('Error creando el evento:', error);
     return null;
+  }
+};
+
+/**
+ * Updates the status of an event
+ *
+ * @param eventPromoteDto object containing the event id and the new status
+ * @returns true if the status was updated successfully, false otherwise
+ */
+export const updatePromoteStatusEvent = async (
+  eventPromoteDto: PromoteEventDto,
+): Promise<boolean> => {
+  try {
+    const response = await axios.post(
+      '/api/events/promotion',
+      eventPromoteDto,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+
+    return response.status === 201;
+  } catch (error) {
+    return false;
   }
 };

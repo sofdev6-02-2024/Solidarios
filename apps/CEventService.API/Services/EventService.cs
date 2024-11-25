@@ -5,6 +5,7 @@ using CEventService.API.Models;
 namespace CEventService.API.Services;
 
 public class EventService : BaseService<Event, int>, IEventService
+
 {
     private readonly IEventRepository _eventRepository;
     public EventService(IEventRepository repository) : base(repository)
@@ -16,6 +17,16 @@ public class EventService : BaseService<Event, int>, IEventService
     {
         var events = _eventRepository.GetSummaryEvents(page, pageSize, filters);
         return events;
+    }
+
+    public async Task<bool> PromoteEvent(int eventId, bool isPromoted)
+    {
+        var eventSearched = await _eventRepository.GetByIdAsync(eventId);
+        if (eventSearched is null) return false;
+        eventSearched.IsPromoted = isPromoted;
+        var response = await _eventRepository.UpdateAsync(eventId, eventSearched);
+        if (response is null) return false;
+        return true;
     }
     
     public async Task<ICollection<Event>> GetPromotedEvents(int page, int pageSize)

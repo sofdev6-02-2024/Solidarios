@@ -57,7 +57,6 @@ export async function POST(request: Request) {
     } else {
       console.error('Error desconocido:', error);
     }
-
     return NextResponse.json(
       { error: 'No se pudo crear el evento' },
       { status: 500 },

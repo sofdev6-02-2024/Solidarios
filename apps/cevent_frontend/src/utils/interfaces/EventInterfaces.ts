@@ -5,6 +5,15 @@ export interface Location {
   latitude: number;
 }
 
+export interface Activity {
+  eventId: number;
+  name: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  capacity: number;
+}
+
 export interface EventHomePageDto {
   id: number;
   name: string;
@@ -23,10 +32,14 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   attendanceTrackingEnabled: boolean;
   status: string;
   capacity: number;
-  organizerUserId: number;
+  organizerUserId: string;
   createdAt: Date;
   category: EventCategory;
   description: string;
+  isPromoted?: boolean;
+  address: string;
+  activities: Activity[];
+  coOrganizers: string[];
 }
 
 export interface EventSearchToUserDto
@@ -80,3 +93,20 @@ export interface EventInputDto {
   address: string;
   attendeeCount: number;
 }
+
+export enum SizeBanner {
+  Small = 'Small',
+  Medium = 'Medium',
+  Large = 'Large',
+}
+
+export interface Size {
+  width: number;
+  height: number;
+}
+
+export const sizeBannerObj: Record<SizeBanner, Size> = {
+  Small: { width: 300, height: 300 },
+  Medium: { width: 960, height: 540 },
+  Large: { width: 1920, height: 1080 },
+};

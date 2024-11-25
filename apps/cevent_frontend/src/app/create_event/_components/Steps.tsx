@@ -15,6 +15,7 @@ import { EventInputDto } from '@/utils/interfaces/EventInterfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
+import { routes } from '@/utils/navigation/Routes';
 
 export interface GeneralInfoProps {
   title: string;
@@ -54,10 +55,6 @@ const Steps = ({
   const router = useRouter();
 
   useEffect(() => {
-    console.log('General Info:', generalInfo);
-    console.log('Date and Location:', dateLocation);
-    console.log('Price and Capacity:', priceCapacity);
-
     setIsGeneralInfoComplete(
       !!(
         generalInfo?.title &&
@@ -117,8 +114,7 @@ const Steps = ({
         if (response === null) {
           console.error('Error creating event:', response);
         } else {
-          console.log('Event created successfully:', response);
-          router.push('/');
+          router.push(routes.myEvents);
         }
       } catch (error) {
         console.error('Unexpected error creating event:', error);
