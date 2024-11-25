@@ -4,8 +4,8 @@ namespace CEventService.API.Services;
 
 public interface IEventClickService : IBaseService<EventClick, int>
 {
-    Task<IEnumerable<Event>> MostClicked(int page, int pageSize);
-    Task<IEnumerable<Event>> MostClicked(int page, int pageSize, string category);
-    Task<IEnumerable<Event>> MostClickedPromoted(int page, int pageSize);
-    Task<IEnumerable<Event>> MostClickedPromoted(int page, int pageSize, string category);
+    Task<ICollection<Event>> MostClicked(int page, int pageSize);
+    Task<ICollection<Event>> MostClicked(int page, int pageSize, string category);
+    Task<ICollection<Event>> MostClickedPromoted(int page, int pageSize);
+    Task<ICollection<Event>> MostClickedPromoted(int page, int pageSize, string category);
 }
