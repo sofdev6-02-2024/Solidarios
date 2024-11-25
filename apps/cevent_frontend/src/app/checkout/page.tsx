@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Box,
   Grid,
@@ -12,109 +12,88 @@ import {
   Button,
 } from '@mui/material';
 import checkoutStyles from '@/styles/components/CheckoutStyles';
+import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
+import { getEventById } from '@/services/EventService';
+import PaymentForm from '@/components/Checkout/PaymentForm';
+import { PaymentInterface } from '@/utils/interfaces/Payment';
+import LinearLoading from '@/components/Loaders/LinearLoading';
+import Layout from '@/components/Layout';
 
-export default function MyEventsPage() {
+export default function Checkout() {
   const searchParams = useSearchParams();
-  const eventName = searchParams.get('eventName') || 'Unnamed Event';
+  const eventId = searchParams.get('eventId') || '';
   const quantity = searchParams.get('quantity') || '0';
-  const pricePerTicket = searchParams.get('pricePerTicket') || '0';
-  const totalPrice = parseFloat(searchParams.get('totalPrice') || '0');
-  const coverPhotoUrl = searchParams.get('coverPhotoUrl');
+  const [eventData, setEventData] = useState<EventDetailDto | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const [platformFee, setPlatformFee] = useState<number>(0);
+  const [finalTotalPrice, setFinalTotalPrice] = useState<number>(0);
 
-  const platformFee = totalPrice * 0.03;
+  useEffect(() => {
+    if (eventId && quantity) {
+      getEventById(eventId)
+        .then((event) => {
+          if (event) {
+            setEventData(event);
+            const platform = event.ticketPrice * 0.03;
+            setPlatformFee(platform);
+            const totalPrice = event.ticketPrice * parseInt(quantity, 10);
+            setFinalTotalPrice(totalPrice + platform);
+          } else {
+            router.push('/not_found');
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          router.push('/not_found');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      router.push('/not_found ');
+    }
+  }, [eventId, quantity, router]);
 
-  const finalTotalPrice = totalPrice + platformFee;
+  const getATicket = (): Promise<boolean> => {
+    return new Promise((resolve, reject) => {
+      resolve(true);
+    });
+  };
 
   return (
     <Box sx={checkoutStyles.container}>
-      <Typography sx={checkoutStyles.title}>Checkout</Typography>
+      <Layout >
+      <Typography color="primary" sx={checkoutStyles.title}>Checkout</Typography>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={3}>
         <Grid item xs={12} md={7}>
-          <Paper elevation={3} sx={checkoutStyles.formContainer}>
-            <Box sx={checkoutStyles.tabs}>
-              <Button sx={checkoutStyles.activeTab}>Pay By Card</Button>
-              <Button sx={checkoutStyles.inactiveTab}>Pay By QR</Button>
-            </Box>
-
-            <Typography sx={checkoutStyles.sectionTitle}>
-              Card Payment
-            </Typography>
-
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="First Name (optional)"
-                  variant="outlined"
-                  sx={checkoutStyles.inputField}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Last Name (optional)"
-                  variant="outlined"
-                  sx={checkoutStyles.inputField}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Email Address (optional)"
-                  variant="outlined"
-                  sx={checkoutStyles.inputField}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Phone Number (optional)"
-                  variant="outlined"
-                  sx={checkoutStyles.inputField}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Card Number"
-                  variant="outlined"
-                  sx={checkoutStyles.inputField}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Expiration Date"
-                  variant="outlined"
-                  sx={checkoutStyles.inputField}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="CVC"
-                  variant="outlined"
-                  sx={checkoutStyles.inputField}
-                />
-              </Grid>
-            </Grid>
-
-            <Button
-              variant="contained"
-              sx={checkoutStyles.payNowButton}
-              fullWidth
-            >
-              Pay Now
-            </Button>
+          <Paper
+            elevation={3}
+            sx={{ ...checkoutStyles.formContainer, maxWidth: '800px' }}
+          >
+            {finalTotalPrice > 0 ? (
+              <PaymentForm
+                callBackFunction={getATicket}
+                linkToRedirect={'/my_tickets'}
+                paymentInterface={
+                  {
+                    amount: finalTotalPrice,
+                    currency: 'usd',
+                  } as PaymentInterface
+                }
+              />
+            ) : (
+              <LinearLoading text="Loading checkout information" />
+            )}
           </Paper>
         </Grid>
 
         <Grid item xs={12} md={5}>
           <Paper elevation={3} sx={checkoutStyles.orderSummary}>
-            {coverPhotoUrl && (
+            {eventData?.coverPhotoUrl && (
               <img
-                src={coverPhotoUrl}
+                src={eventData?.coverPhotoUrl}
                 alt="Event Cover"
                 style={{
                   width: '100%',
@@ -130,11 +109,9 @@ export default function MyEventsPage() {
             </Typography>
             <Box sx={checkoutStyles.orderRow}>
               <Typography>
-                {eventName} x{quantity}
+                {eventData?.name} x{quantity}
               </Typography>
-              <Typography>
-                $ {parseFloat(pricePerTicket) * parseInt(quantity, 10)}
-              </Typography>
+              <Typography>$ {eventData?.ticketPrice}</Typography>
             </Box>
             <Box sx={checkoutStyles.totalRow}>
               <Typography>Platform (3%)</Typography>
@@ -148,6 +125,7 @@ export default function MyEventsPage() {
           </Paper>
         </Grid>
       </Grid>
+      </Layout>
     </Box>
   );
 }

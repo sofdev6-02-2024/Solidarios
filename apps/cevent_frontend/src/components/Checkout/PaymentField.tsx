@@ -10,8 +10,12 @@ import { useRef, useState } from 'react';
 
 interface PaymentFieldProps {
   callBackFunction: () => Promise<boolean>;
+  setSnackBarMessage: (message: string) => void;
+  setOpenSnackBar: (open: boolean) => void;
+  setStatusOperation: (status: boolean) => void;
 }
-const PaymentField = ({ callBackFunction }: PaymentFieldProps) => {
+const PaymentField = ({ callBackFunction
+  , setSnackBarMessage, setOpenSnackBar, setStatusOperation }: PaymentFieldProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isDataSending, setIsDataSending] = useState(false);
@@ -31,9 +35,18 @@ const PaymentField = ({ callBackFunction }: PaymentFieldProps) => {
     });
 
     if (response.error) {
-      console.error('Payment failed:', response.error);
+      setStatusOperation(false);
+      setSnackBarMessage('Error processing payment');
+      setOpenSnackBar(true);
+      setIsDataSending(false);
     } else {
-      await callBackFunction();
+      setStatusOperation(true);
+      setSnackBarMessage('Payment processed successfully');
+      setOpenSnackBar(true);
+      setTimeout(async () => {
+        await callBackFunction();
+      }, 2500);
+      
     }
   };
   return (

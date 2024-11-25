@@ -2,6 +2,7 @@ import { Box, Modal, Typography } from '@mui/material';
 import { styleModal } from '@/styles/components/ModalCheckoutStyles';
 import PaymentForm from './PaymentForm';
 import './../../styles/components/customScroll.css';
+import { CURRENCY_PROMOTION, PRICE_PROMOTION } from '@/utils/constans';
 interface ModalCheckoutProps {
   isOpen: boolean;
   onClose: () => void;
@@ -47,6 +48,10 @@ const ModalCheckout = ({
             <PaymentForm
               callBackFunction={callBackFunction}
               linkToRedirect={linkToRedirect}
+              paymentInterface={{
+                amount: PRICE_PROMOTION,
+                currency: CURRENCY_PROMOTION,
+              }}
             />
           </Box>
         </Box>
