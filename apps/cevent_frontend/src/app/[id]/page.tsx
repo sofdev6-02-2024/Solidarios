@@ -1,7 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Alert, Box, Snackbar, Typography } from '@mui/material';
-import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
+import {
+  EventDetailDto,
+  EventClickDto,
+} from '@/utils/interfaces/EventInterfaces';
 import { useParams } from 'next/navigation';
 import { getEventById } from '@/services/EventService';
 import CardEventInfo from './_components/CardEventInfo';
@@ -11,6 +14,8 @@ import { styles } from '@/styles/components/EventPageStyles';
 import DetailsEvent from './_components/DetailsEvent';
 import RelatedEvent from './_components/RelatedEvent';
 import SkeletonEventsBox from '@/components/EventSection/SkeletonEventsBox';
+import { createClickedEvent } from '@/services/EventService';
+
 const EventPage = () => {
   const [eventData, setEventData] = useState<EventDetailDto | null>(null);
   const [loading, setLoading] = useState(true);
@@ -29,6 +34,24 @@ const EventPage = () => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    const postClick = async () => {
+      if (eventData) {
+        try {
+          const eventClick: EventClickDto = {
+            eventId: eventData.id,
+            userId: eventData.organizerUserId,
+          };
+          await createClickedEvent(eventClick);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+
+    postClick();
+  }, [eventData]);
 
   return (
     <>

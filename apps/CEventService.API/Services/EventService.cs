@@ -8,9 +8,11 @@ public class EventService : BaseService<Event, int>, IEventService
 
 {
     private readonly IEventRepository _eventRepository;
-    public EventService(IEventRepository repository) : base(repository)
+    private readonly IEventClickRepository _eventClickRepository;
+    public EventService(IEventRepository repository, IEventClickRepository eventClickRepository) : base(repository)
     {
         _eventRepository = repository;
+        _eventClickRepository = eventClickRepository;
     }
 
     public Task<IEnumerable<EventHomePageDto>> GetSummaryEvents(int page, int pageSize, EventFilterDto filters)
@@ -26,6 +28,12 @@ public class EventService : BaseService<Event, int>, IEventService
         eventSearched.IsPromoted = isPromoted;
         var response = await _eventRepository.UpdateAsync(eventId, eventSearched);
         if (response is null) return false;
+        var responseCreate = await _eventClickRepository.CreateAsync(new EventClick
+        {
+            EventId = eventId,
+            UserId = response.OrganizerUserId
+        });
+        
         return true;
     }
     
