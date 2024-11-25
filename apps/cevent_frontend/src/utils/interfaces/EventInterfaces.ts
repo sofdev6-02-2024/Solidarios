@@ -112,6 +112,6 @@ export const sizeBannerObj: Record<SizeBanner, Size> = {
 };
 
 export interface EventClickDto {
-  eventId: number,
-  userId: string
+  eventId: number;
+  userId: string;
 }
