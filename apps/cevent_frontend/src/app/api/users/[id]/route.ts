@@ -10,13 +10,9 @@ export async function GET(
   const { id } = params;
 
   try {
-    console.log('id :: ', id);
-    const fullUrl = `${BASE_URL}/events/api/user/${id}`;
-    console.log('fullUrl :: ', fullUrl);
     const response = await axios.get<UserInterface>(
       `${BASE_URL}/events/api/user/${id}`,
     );
-    console.log('response :: ', response.data);
 
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
