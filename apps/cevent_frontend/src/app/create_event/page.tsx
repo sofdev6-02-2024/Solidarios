@@ -86,6 +86,7 @@ const CreateEvent = () => {
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
         <Activities
           onAddActivity={(newActivity) =>
+            //TODO: Add implementation
             console.log('Nueva actividad agregada:', newActivity)
           }
         />
