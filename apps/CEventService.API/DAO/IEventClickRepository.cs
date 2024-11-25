@@ -1,8 +1,10 @@
-﻿using CEventService.API.Models;
+﻿using System.Linq.Expressions;
+using CEventService.API.Models;
 
 namespace CEventService.API.DAO;
 
 public interface IEventClickRepository : IBaseRepository<EventClick, int>
 {
-    Task<IEnumerable<Event>> MostClicked(int page, int pageSize);
+    Task<ICollection<Event>>
+        GetMostClickedEvents(Expression<Func<EventClick, bool>>? predicate, int page, int pageSize);
 }

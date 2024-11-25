@@ -11,10 +11,22 @@ public class EventClickService : BaseService<EventClick, int>, IEventClickServic
     {
         _repository = repository;
     }
-
-
-    public async Task<IEnumerable<Event>> MostClicked(int page, int pageSize)
+    
+    public async Task<ICollection<Event>> MostClicked(int page, int pageSize)
     {
-        return await _repository.MostClicked(page, pageSize);
+        return await _repository.GetMostClickedEvents(null, page, pageSize);
+    }
+    public async Task<ICollection<Event>> MostClicked(int page, int pageSize, string category)
+    {
+        return await _repository.GetMostClickedEvents(ec => ec.Event.Category.KeyWord.ToLower() == category.ToLower(), page, pageSize);
+    }
+    
+    public async Task<ICollection<Event>> MostClickedPromoted(int page, int pageSize)
+    {
+        return await _repository.GetMostClickedEvents(ec => ec.Event.IsPromoted, page, pageSize);
+    }
+    public async Task<ICollection<Event>> MostClickedPromoted(int page, int pageSize, string category)
+    {
+        return await _repository.GetMostClickedEvents(ec => ec.Event.IsPromoted && ec.Event.Category.KeyWord.ToLower() == category.ToLower(), page, pageSize);
     }
 }

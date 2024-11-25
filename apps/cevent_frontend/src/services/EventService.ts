@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  EventClickDto,
   EventDetailDto,
   EventFilter,
   EventHomePageDto,
@@ -63,6 +64,36 @@ export const fetchAllEvents = async (): Promise<EventSearchToUserDto[]> => {
     return response.data;
   } catch (error) {
     return [];
+  }
+};
+
+export const fetchBannerEvents = async (
+  category: string,
+): Promise<EventHomePageDto[]> => {
+  try {
+    const params = {
+      page: 1,
+      pageSize: 10,
+    };
+    const response = await axios.get<EventHomePageDto[]>(
+      `/api/events/banner/${category}`,
+      { params },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const createClickedEvent = async (
+  data: EventClickDto,
+): Promise<void> => {
+  try {
+    const response = await axios.post('api/events/clicks', data);
+  } catch (error) {
+    console.error(error);
   }
 };
 
