@@ -14,11 +14,9 @@ public class EventClickRepository : BaseRepository<EventClick, int>, IEventClick
 
     public async Task<ICollection<Event>> GetMostClickedEvents(Expression<Func<EventClick, bool>>? predicate, int page, int pageSize)
     {
-        // Retrieve all events to ensure inclusion of those with no clicks
         IQueryable<Event> allEventsQuery = _dbContext.Set<Event>()
-            .Include(e => e.Category); // Include navigation property for filtering
+            .Include(e => e.Category); 
 
-        // If predicate is provided, filter events based on it
         if (predicate != null)
         {
             var filteredEventIds = await _dbContext.Set<EventClick>()
@@ -27,11 +25,9 @@ public class EventClickRepository : BaseRepository<EventClick, int>, IEventClick
                 .Distinct()
                 .ToListAsync();
 
-            // Filter allEventsQuery based on the filtered event IDs
             allEventsQuery = allEventsQuery.Where(e => filteredEventIds.Contains(e.Id));
         }
 
-        // Query for click counts grouped by EventId
         var clickCountsQuery = _dbContext.Set<EventClick>()
             .Where(predicate ?? (_ => true))
             .GroupBy(ec => ec.EventId)
@@ -43,7 +39,6 @@ public class EventClickRepository : BaseRepository<EventClick, int>, IEventClick
 
         var clickCounts = await clickCountsQuery.ToListAsync();
 
-        // Merge click counts with all events
         var allEvents = await allEventsQuery.ToListAsync();
         var eventWithClickCounts = allEvents
             .GroupJoin(
