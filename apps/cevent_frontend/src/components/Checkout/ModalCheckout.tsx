@@ -33,14 +33,14 @@ const ModalCheckout = ({
                 Promotion
               </Typography>
               <Typography fontWeight={300} variant="body">
-                $50
+                ${PRICE_PROMOTION}
               </Typography>
             </Box>
             <Box sx={styleModal.line}></Box>
             <Box sx={styleModal.boxDetails}>
               <Typography variant="h3">Total</Typography>
               <Typography fontWeight={300} variant="h3">
-                $50
+                ${PRICE_PROMOTION}
               </Typography>
             </Box>
           </Box>

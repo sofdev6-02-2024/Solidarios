@@ -8,6 +8,7 @@ import ModalCheckout from '@/components/Checkout/ModalCheckout';
 import { updatePromoteStatusEvent } from '@/services/EventService';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 import BannerEvent from '@/components/BannerEvent';
+import { PRICE_PROMOTION } from '@/utils/constans';
 
 interface BannerPromotionProps {
   eventData: EventDetailDto;
@@ -32,7 +33,7 @@ const BannerPromotion = ({ eventData }: BannerPromotionProps) => {
       <Typography variant="body">
         You can add priority to your event by enabling the priority option
         through a small fixed fee to be charged. The promotion has a cost of
-        $50.00
+        ${PRICE_PROMOTION}
       </Typography>
       <Typography variant="h3">Status of your banner</Typography>
       <Box sx={stylesStatus.container}>

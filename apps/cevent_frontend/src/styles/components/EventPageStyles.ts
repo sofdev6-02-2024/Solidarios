@@ -18,6 +18,7 @@ export const styleEventOrganizer: { [key: string]: SxProps<Theme> } = {
     flexDirection: 'column',
     alignItems: 'left',
     gap: 1,
+    maxWidth: 200,
   },
   avatar: {
     width: '40px',

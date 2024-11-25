@@ -11,6 +11,7 @@ import {
   ListItemText,
   Divider,
   useMediaQuery,
+  Avatar,
 } from '@mui/material';
 import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import { MdSearch, MdNotifications } from 'react-icons/md';
@@ -22,6 +23,9 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import styles from '@/styles/components/Header.module.css';
 import useLoginUser from '@/hooks/useLoginUser';
+import DrawerProfile from './DrawerProfile';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export default function Header() {
   const router = useRouter();
@@ -29,6 +33,7 @@ export default function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const user = useSelector((state: RootState) => state.user.userInfo);
 
   const { session } = useLoginUser();
 
@@ -153,12 +158,9 @@ export default function Header() {
                 <IconButton
                   size="large"
                   color="inherit"
-                  onClick={() => handleNavigation(routes.profile)}
+                  onClick={() => setDrawerOpen(true)}
                 >
-                  <AccountCircle style={{ fontSize: 40 }} />
-                </IconButton>
-                <IconButton size="large" color="inherit">
-                  <MdNotifications />
+                  <Avatar alt={user?.name} src={user?.photoUrl} />
                 </IconButton>
               </>
             ) : (
@@ -180,6 +182,8 @@ export default function Header() {
           </>
         )}
       </Toolbar>
+      { drawerOpen && <DrawerProfile isDrawerOpen={drawerOpen} setIsDrawerOpen={setDrawerOpen} /> }
+   
     </AppBar>
   );
 }

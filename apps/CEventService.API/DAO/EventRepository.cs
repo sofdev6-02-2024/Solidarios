@@ -54,6 +54,9 @@ public class EventRepository : BaseRepository<Event, int>, IEventRepository
         if (filters.Status != -1 && filters.Status < 6)
             query = query.Where(e => (int)e.Status == filters.Status);
 
+        if (filters.IsPromoted.HasValue)
+            query = query.Where(e => e.IsPromoted == filters.IsPromoted.Value);
+
         if (!string.IsNullOrEmpty(filters.SortBy))
             query = filters.IsDescending
                 ? query.OrderByDescending(e => EF.Property<object>(e, filters.SortBy))

@@ -22,7 +22,16 @@ const OrganizerInfo = ({ organizerType, user }: OrganizerInfoProps) => {
           >
             {organizerType}
           </Typography>
-          <Typography fontWeight="bold" variant="bodyLarge">
+          <Typography
+            sx={{
+              maxWidth: 120,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+            fontWeight="bold"
+            variant="body"
+          >
             {user?.name}
           </Typography>
         </Box>
@@ -31,7 +40,17 @@ const OrganizerInfo = ({ organizerType, user }: OrganizerInfoProps) => {
         <Typography sx={styleEventOrganizer.grayText} variant="caption">
           Email
         </Typography>
-        <Typography variant="body">{user.email}</Typography>
+        <Typography
+          sx={{
+            ...styleEventOrganizer.grayText,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+          variant="body"
+        >
+          {user.email}
+        </Typography>
       </Box>
     </Box>
   );

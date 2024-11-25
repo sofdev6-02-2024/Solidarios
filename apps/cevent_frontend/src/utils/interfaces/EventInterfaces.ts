@@ -73,6 +73,7 @@ export interface EventFilter {
   IsDescending?: boolean;
   page?: number;
   pageSize?: number;
+  IsPromoted?: boolean;
 }
 
 export interface EventInputDto {

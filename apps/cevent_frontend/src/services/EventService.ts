@@ -30,6 +30,7 @@ export const fetchHomePageEvents = async (
       Status: filter.Status,
       SortBy: filter.SortBy,
       IsDescending: filter.IsDescending,
+      IsPromoted: filter.IsPromoted,
     };
 
     const response = await axios.get<EventHomePageDto[]>(
