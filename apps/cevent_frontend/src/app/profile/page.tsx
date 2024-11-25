@@ -14,10 +14,20 @@ export default function ProfilePage() {
   return (
     <Box>
       <Layout>
-        <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" mt={4}>
-          <Avatar alt={user?.name} src={user?.photoUrl} sx={{ width: 100, height: 100 }} />
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+          mt={4}
+        >
+          <Avatar
+            alt={user?.name}
+            src={user?.photoUrl}
+            sx={{ width: 100, height: 100 }}
+          />
           <Typography variant="h4" mt={2}>
-            {user?.name} 
+            {user?.name}
           </Typography>
           <Typography variant="body1" color="textSecondary">
             {user?.email}
@@ -33,11 +43,18 @@ export default function ProfilePage() {
         </Box>
 
         <Box mt={4} display="flex" justifyContent="center">
-          <Paper elevation={3} sx={{ padding: 2, width: '100%', maxWidth: 600 }}>
-            <Typography variant="h6" gutterBottom>Información Personal</Typography>
+          <Paper
+            elevation={3}
+            sx={{ padding: 2, width: '100%', maxWidth: 600 }}
+          >
+            <Typography variant="h6" gutterBottom>
+              Información Personal
+            </Typography>
             <Typography variant="body1">Nombre: {user?.name}</Typography>
             <Typography variant="body1">Correo: {user?.email}</Typography>
-            <Typography variant="body1">Teléfono: {user?.phoneNumber}</Typography>
+            <Typography variant="body1">
+              Teléfono: {user?.phoneNumber}
+            </Typography>
           </Paper>
         </Box>
       </Layout>

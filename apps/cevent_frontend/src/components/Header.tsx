@@ -182,8 +182,12 @@ export default function Header() {
           </>
         )}
       </Toolbar>
-      { drawerOpen && <DrawerProfile isDrawerOpen={drawerOpen} setIsDrawerOpen={setDrawerOpen} /> }
-   
+      {drawerOpen && (
+        <DrawerProfile
+          isDrawerOpen={drawerOpen}
+          setIsDrawerOpen={setDrawerOpen}
+        />
+      )}
     </AppBar>
   );
 }

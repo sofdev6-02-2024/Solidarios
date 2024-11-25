@@ -16,7 +16,7 @@ import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 interface EventModalProps {
   open: boolean;
   onClose: () => void;
-  eventData : EventDetailDto;
+  eventData: EventDetailDto;
   pricePerTicket: number;
   capacity: number;
 }
@@ -55,9 +55,7 @@ const TicketModal = ({
   const handleConfirmPurchase = () => {
     const qty = parseInt(quantity, 10);
     if (qty > 0 && qty <= capacity) {
-      router.push(
-        `/checkout?eventId=${eventData.id}&quantity=${qty}`,
-      );
+      router.push(`/checkout?eventId=${eventData.id}&quantity=${qty}`);
     }
   };
 

@@ -27,16 +27,20 @@ const SliderBanners = ({ events }: SliderEventsProps) => {
   }, [events]);
 
   return (
-    <Box >
+    <Box>
       {events.length > 1 ? (
         <Slider {...settings}>
           {events &&
             events.map((event) => (
-              <BannerEvent redirectToEvent={true} eventData={event} size={"full"} />
+              <BannerEvent
+                redirectToEvent={true}
+                eventData={event}
+                size={'full'}
+              />
             ))}
         </Slider>
       ) : (
-        events[0] && <BannerEvent eventData={events[0]} size={"full"} />
+        events[0] && <BannerEvent eventData={events[0]} size={'full'} />
       )}
     </Box>
   );

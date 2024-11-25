@@ -14,8 +14,12 @@ interface PaymentFieldProps {
   setOpenSnackBar: (open: boolean) => void;
   setStatusOperation: (status: boolean) => void;
 }
-const PaymentField = ({ callBackFunction
-  , setSnackBarMessage, setOpenSnackBar, setStatusOperation }: PaymentFieldProps) => {
+const PaymentField = ({
+  callBackFunction,
+  setSnackBarMessage,
+  setOpenSnackBar,
+  setStatusOperation,
+}: PaymentFieldProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isDataSending, setIsDataSending] = useState(false);
@@ -46,7 +50,6 @@ const PaymentField = ({ callBackFunction
       setTimeout(async () => {
         await callBackFunction();
       }, 2500);
-      
     }
   };
   return (

@@ -99,7 +99,12 @@ const PaymentForm = ({
   ) : (
     <>
       <Elements stripe={stripePromise} options={options}>
-        <PaymentField callBackFunction={handlePayment} setSnackBarMessage={setSnackBarMessage} setOpenSnackBar={setOpenSnackBar} setStatusOperation={setStatusOperation} />
+        <PaymentField
+          callBackFunction={handlePayment}
+          setSnackBarMessage={setSnackBarMessage}
+          setOpenSnackBar={setOpenSnackBar}
+          setStatusOperation={setStatusOperation}
+        />
       </Elements>
       <Snackbar
         open={openSnackBar}

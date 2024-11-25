@@ -32,8 +32,8 @@ const BannerPromotion = ({ eventData }: BannerPromotionProps) => {
       </Typography>
       <Typography variant="body">
         You can add priority to your event by enabling the priority option
-        through a small fixed fee to be charged. The promotion has a cost of
-        ${PRICE_PROMOTION}
+        through a small fixed fee to be charged. The promotion has a cost of $
+        {PRICE_PROMOTION}
       </Typography>
       <Typography variant="h3">Status of your banner</Typography>
       <Box sx={stylesStatus.container}>

@@ -63,68 +63,70 @@ export default function Checkout() {
 
   return (
     <Box sx={checkoutStyles.container}>
-      <Layout >
-      <Typography color="primary" sx={checkoutStyles.title}>Checkout</Typography>
+      <Layout>
+        <Typography color="primary" sx={checkoutStyles.title}>
+          Checkout
+        </Typography>
 
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={7}>
-          <Paper
-            elevation={3}
-            sx={{ ...checkoutStyles.formContainer, maxWidth: '800px' }}
-          >
-            {finalTotalPrice > 0 ? (
-              <PaymentForm
-                callBackFunction={getATicket}
-                linkToRedirect={'/my_tickets'}
-                paymentInterface={
-                  {
-                    amount: finalTotalPrice,
-                    currency: 'usd',
-                  } as PaymentInterface
-                }
-              />
-            ) : (
-              <LinearLoading text="Loading checkout information" />
-            )}
-          </Paper>
-        </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={7}>
+            <Paper
+              elevation={3}
+              sx={{ ...checkoutStyles.formContainer, maxWidth: '800px' }}
+            >
+              {finalTotalPrice > 0 ? (
+                <PaymentForm
+                  callBackFunction={getATicket}
+                  linkToRedirect={'/my_tickets'}
+                  paymentInterface={
+                    {
+                      amount: finalTotalPrice,
+                      currency: 'usd',
+                    } as PaymentInterface
+                  }
+                />
+              ) : (
+                <LinearLoading text="Loading checkout information" />
+              )}
+            </Paper>
+          </Grid>
 
-        <Grid item xs={12} md={5}>
-          <Paper elevation={3} sx={checkoutStyles.orderSummary}>
-            {eventData?.coverPhotoUrl && (
-              <img
-                src={eventData?.coverPhotoUrl}
-                alt="Event Cover"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '8px',
-                  marginBottom: '16px',
-                }}
-              />
-            )}
+          <Grid item xs={12} md={5}>
+            <Paper elevation={3} sx={checkoutStyles.orderSummary}>
+              {eventData?.coverPhotoUrl && (
+                <img
+                  src={eventData?.coverPhotoUrl}
+                  alt="Event Cover"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '8px',
+                    marginBottom: '16px',
+                  }}
+                />
+              )}
 
-            <Typography sx={checkoutStyles.sectionTitle}>
-              Order Summary
-            </Typography>
-            <Box sx={checkoutStyles.orderRow}>
-              <Typography>
-                {eventData?.name} x{quantity}
+              <Typography sx={checkoutStyles.sectionTitle}>
+                Order Summary
               </Typography>
-              <Typography>$ {eventData?.ticketPrice}</Typography>
-            </Box>
-            <Box sx={checkoutStyles.totalRow}>
-              <Typography>Platform (3%)</Typography>
-              <Typography>${platformFee.toFixed(2)} </Typography>
-            </Box>
-            <Divider sx={checkoutStyles.divider} />
-            <Box sx={checkoutStyles.totalRow}>
-              <Typography>Total Price</Typography>
-              <Typography>${finalTotalPrice.toFixed(2)} </Typography>
-            </Box>
-          </Paper>
+              <Box sx={checkoutStyles.orderRow}>
+                <Typography>
+                  {eventData?.name} x{quantity}
+                </Typography>
+                <Typography>$ {eventData?.ticketPrice}</Typography>
+              </Box>
+              <Box sx={checkoutStyles.totalRow}>
+                <Typography>Platform (3%)</Typography>
+                <Typography>${platformFee.toFixed(2)} </Typography>
+              </Box>
+              <Divider sx={checkoutStyles.divider} />
+              <Box sx={checkoutStyles.totalRow}>
+                <Typography>Total Price</Typography>
+                <Typography>${finalTotalPrice.toFixed(2)} </Typography>
+              </Box>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
       </Layout>
     </Box>
   );
