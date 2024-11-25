@@ -142,7 +142,7 @@ const CardEventInfo = ({ eventData, showSnackbar }: CardEventInfoProps) => {
         onClose={handleClose}
         pricePerTicket={eventData.ticketPrice}
         capacity={eventData.capacity - eventData.attendeeCount}
-        name={eventData.name}
+        eventData={eventData}
       />
     </Card>
   );

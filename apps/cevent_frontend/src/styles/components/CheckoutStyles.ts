@@ -3,7 +3,7 @@ import { SxProps, Theme } from '@mui/material/styles';
 const styles: { [key: string]: SxProps<Theme> } = {
   container: {
     padding: '20px',
-    fontFamily: 'Arial, sans-serif',
+    width: '100%',
   },
 
   title: {
