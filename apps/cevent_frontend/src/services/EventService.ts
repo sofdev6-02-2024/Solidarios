@@ -66,6 +66,28 @@ export const fetchAllEvents = async (): Promise<EventSearchToUserDto[]> => {
   }
 };
 
+export const fetchBannerEvents = async (
+  category: string,
+): Promise<EventHomePageDto[]> => {
+  try {
+    console.log(category);
+    const params = {
+      page: 1,
+      pageSize: 10,
+    };
+    const response = await axios.get<EventHomePageDto[]>(
+      `/api/events/banner/${category}`,
+      { params },
+    );
+
+    console.log('request response', response);
+
+    return response.data;
+  } catch (error) {
+    return [];
+  }
+};
+
 /**
  * Crea un nuevo evento
  *
