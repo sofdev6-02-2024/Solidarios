@@ -62,10 +62,10 @@ export default function MyEventsPage() {
         pageSize: pageSize,
         OrganizerUserId: user?.id,
       };
-      const response = await fetchHomePageEvents(filter);
+      const response: EventHomePageDto[] = await fetchHomePageEvents(filter);
       currentResponse = response.length;
       totalEvents += response.length;
-    } while (currentResponse % pageSize === 0);
+    } while (currentResponse !== 0);
 
     setTotalPages(Math.ceil(totalEvents / PAGE_SIZE));
   };
