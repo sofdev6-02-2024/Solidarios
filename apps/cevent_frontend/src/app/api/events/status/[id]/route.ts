@@ -9,7 +9,6 @@ export async function POST(
   { params }: { params: { id: string } },
 ) {
   const eventStatus = await request.json();
-  console.log('eventStatus:: ', eventStatus);
 
   const { id } = params;
   try {
