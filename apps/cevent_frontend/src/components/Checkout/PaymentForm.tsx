@@ -44,8 +44,6 @@ const PaymentForm = ({
       amount: parseFloat((paymentInterface.amount * 100).toFixed(0)),
       currency: CURRENCY_PROMOTION,
     };
-
-    console.log('paymentOpion by form: ', paymentOpion);
     getAccessPayment(paymentOpion)
       .then((clientSecret) => {
         if (clientSecret) {
@@ -68,7 +66,6 @@ const PaymentForm = ({
         if (linkToRedirect === currentUrl) {
           window.location.reload();
         } else {
-          console.log('linkToRedirect >>>', linkToRedirect);
           router.push(linkToRedirect);
         }
         return true;

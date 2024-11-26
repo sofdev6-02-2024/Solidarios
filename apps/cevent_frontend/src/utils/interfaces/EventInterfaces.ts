@@ -117,3 +117,10 @@ export interface EventClickDto {
   eventId: number;
   userId: string;
 }
+
+export interface EventStatus {
+  categoryId?: number;
+  status?: number;
+  isPromoted?: boolean;
+  attendeeCount?: number;
+}

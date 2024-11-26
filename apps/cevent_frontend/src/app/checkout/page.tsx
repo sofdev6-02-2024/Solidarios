@@ -12,12 +12,19 @@ import {
   Button,
 } from '@mui/material';
 import checkoutStyles from '@/styles/components/CheckoutStyles';
-import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
-import { getEventById } from '@/services/EventService';
+import {
+  EventDetailDto,
+  EventStatus,
+} from '@/utils/interfaces/EventInterfaces';
+import { getEventById, updateStatusEvent } from '@/services/EventService';
 import PaymentForm from '@/components/Checkout/PaymentForm';
 import { PaymentInterface } from '@/utils/interfaces/Payment';
 import LinearLoading from '@/components/Loaders/LinearLoading';
 import Layout from '@/components/Layout';
+import { generateTicket } from '@/services/TicketService';
+import { TicketPostInterface } from '@/utils/interfaces/TIcketsInterfaces';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export default function Checkout() {
   const searchParams = useSearchParams();
@@ -28,6 +35,7 @@ export default function Checkout() {
   const router = useRouter();
   const [platformFee, setPlatformFee] = useState<number>(0);
   const [finalTotalPrice, setFinalTotalPrice] = useState<number>(0);
+  const user = useSelector((state: RootState) => state.user.userInfo);
 
   useEffect(() => {
     if (eventId && quantity) {
@@ -55,10 +63,21 @@ export default function Checkout() {
     }
   }, [eventId, quantity, router]);
 
-  const getATicket = (): Promise<boolean> => {
-    return new Promise((resolve, reject) => {
-      resolve(true);
-    });
+  const getATicket = async (): Promise<boolean> => {
+    if (eventId) {
+      const ticketPost: TicketPostInterface = {
+        eventId: eventData?.id || 0,
+        userId: user?.id || '',
+      };
+      const dataUpdated = await getEventById(eventId);
+      const response = await generateTicket(ticketPost);
+      const eventStatus: EventStatus = {
+        attendeeCount: (dataUpdated?.attendeeCount ?? 0) + parseInt(quantity),
+      };
+      const status = await updateStatusEvent(eventStatus, parseInt(eventId));
+      return response && status ? true : false;
+    }
+    return false;
   };
 
   return (

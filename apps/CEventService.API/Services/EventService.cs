@@ -65,4 +65,26 @@ public class EventService : BaseService<Event, int>, IEventService
         };
         return stadistics;
     }
+
+    public async Task<Event> UpdateStatus(int eventId, UpdateStatusEventDto updateStatusEventDto)
+    {
+       var eventEntity = await _eventRepository.GetByIdAsync(eventId);
+        if (eventEntity == null)
+         
+        if (updateStatusEventDto.CategoryId.HasValue)
+            eventEntity.CategoryId = updateStatusEventDto.CategoryId.Value;
+
+        if (updateStatusEventDto.Status.HasValue)
+            eventEntity.Status = updateStatusEventDto.Status.Value;
+
+        if (updateStatusEventDto.IsPromoted.HasValue)
+            eventEntity.IsPromoted = updateStatusEventDto.IsPromoted.Value;
+
+        if (updateStatusEventDto.AttendeeCount.HasValue)
+            eventEntity.AttendeeCount = updateStatusEventDto.AttendeeCount.Value;
+
+        await _eventRepository.UpdateAsync(eventEntity.Id, eventEntity);
+
+        return eventEntity;
+    }
 }
