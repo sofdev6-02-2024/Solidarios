@@ -4,16 +4,46 @@ import Layout from '@/components/Layout';
 import { useRoles } from '@/hooks/use-roles';
 import { RootState } from '@/redux/store';
 import { UserInterface } from '@/utils/interfaces/UserInterfaces';
-import { Box, Typography, Avatar, Paper, Button } from '@mui/material';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import {
+  Box,
+  Typography,
+  Avatar,
+  Paper,
+  Button,
+  IconButton,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import CardInfoUser from './_components/CardInfoUser';
+import EditEventCard from './_components/EditProfileCard';
+import UploadImage from '@/components/UploadImage';
+import { UploadWidgetResult } from '@/utils/interfaces/UploadImage';
+import { setUserInfo } from '@/redux/slices/userSlice';
+import { updateUser } from '@/services/UserService';
 
 export default function ProfilePage() {
   const { hasRole, roles } = useRoles();
   const user = useSelector((state: RootState) => state.user.userInfo);
+  const [openEdit, setOpenEdit] = useState(false);
+  const dispatch = useDispatch();
+
+  const onCompleteUploadImage = (file: UploadWidgetResult) => {
+    if (user) {
+      const userUpdated: UserInterface = {
+        ...user,
+        photoUrl: file.fileUrl,
+      };
+      updateUser(userUpdated).then((response) => {
+        if (response) {
+          dispatch(setUserInfo(userUpdated));
+        }
+      });
+    }
+  };
 
   return (
-    <Box sx={{ height: '70vh' }}>
+    <Box sx={{ minHeight: '70vh' }}>
       <Layout>
         <Box
           display="flex"
@@ -41,23 +71,16 @@ export default function ProfilePage() {
               Admin Account
             </Typography>
           )}
+          <UploadImage onComplete={onCompleteUploadImage} />
         </Box>
-
-        <Box mt={4} display="flex" justifyContent="center">
-          <Paper
-            elevation={3}
-            sx={{ padding: 2, width: '100%', maxWidth: 600 }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Información Personal
-            </Typography>
-            <Typography variant="body1">Nombre: {user?.name}</Typography>
-            <Typography variant="body1">Correo: {user?.email}</Typography>
-            <Typography variant="body1">
-              Teléfono: {user?.phoneNumber}
-            </Typography>
-          </Paper>
-        </Box>
+        {openEdit && user ? (
+          <EditEventCard user={user} setOpenEdit={setOpenEdit} />
+        ) : (
+          <CardInfoUser
+            user={user as UserInterface}
+            setOpenEdit={setOpenEdit}
+          />
+        )}
       </Layout>
     </Box>
   );

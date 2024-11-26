@@ -34,13 +34,17 @@ public class GatewayController : ControllerBase
         {
             requestMessage.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
         }
-        if (Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) &&
+
+        if ((Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+             Request.Method.Equals("PUT", StringComparison.OrdinalIgnoreCase)) &&
             !requestMessage.Content.Headers.Contains("Content-Type"))
         {
             requestMessage.Content.Headers.Add("Content-Type", "application/json");
         }
 
-        if (Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) && requestMessage.Content != null)
+        if ((Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+             Request.Method.Equals("PUT", StringComparison.OrdinalIgnoreCase)) &&
+            requestMessage.Content != null)
         {
             var content = await new StreamReader(Request.Body).ReadToEndAsync();
             requestMessage.Content = new StringContent(content, Encoding.UTF8, "application/json");
