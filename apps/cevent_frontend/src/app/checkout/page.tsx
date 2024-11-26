@@ -74,7 +74,7 @@ export default function Checkout() {
               elevation={3}
               sx={{ ...checkoutStyles.formContainer, maxWidth: '800px' }}
             >
-              {finalTotalPrice > 0 ? (
+              {finalTotalPrice > 0 && eventData ? (
                 <PaymentForm
                   callBackFunction={getATicket}
                   linkToRedirect={'/my_tickets'}

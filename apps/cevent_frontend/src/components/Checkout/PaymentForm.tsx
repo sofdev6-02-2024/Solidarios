@@ -41,9 +41,11 @@ const PaymentForm = ({
 
   useEffect(() => {
     const paymentOpion: PaymentInterface = {
-      amount: paymentInterface.amount * 100,
+      amount: parseFloat((paymentInterface.amount * 100).toFixed(0)),
       currency: CURRENCY_PROMOTION,
     };
+
+    console.log('paymentOpion by form: ', paymentOpion);
     getAccessPayment(paymentOpion)
       .then((clientSecret) => {
         if (clientSecret) {

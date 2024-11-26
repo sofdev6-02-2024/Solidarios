@@ -74,6 +74,7 @@ export interface EventFilter {
   page?: number;
   pageSize?: number;
   IsPromoted?: boolean;
+  OrganizerUserId?: string;
 }
 
 export interface EventInputDto {

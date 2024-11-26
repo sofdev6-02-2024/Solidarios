@@ -1,6 +1,7 @@
 using CEventService.API.DAO;
 using CEventService.API.DTOs.Event;
 using CEventService.API.Models;
+using DTOs.Audit;
 
 namespace CEventService.API.Services;
 
@@ -53,5 +54,15 @@ public class EventService : BaseService<Event, int>, IEventService
             page,
             pageSize
         );
+    }
+
+    public async Task<BasicDataCounterDto> GetBasicDataCounter()
+    {
+        var totalEvents = (await _eventRepository.GetAllAsync()).Count();
+        var stadistics = new BasicDataCounterDto
+        {
+            TotalEvents = totalEvents,
+        };
+        return stadistics;
     }
 }

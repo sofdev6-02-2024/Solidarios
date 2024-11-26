@@ -11,5 +11,6 @@ public class EventFilterDto
     public int Status { get; set; } = -1;
     public string? SortBy { get; set; } 
     public bool? IsPromoted { get; set; }
+    public Guid? OrganizerUserId { get; set; }
     public bool IsDescending { get; set; } = false; 
 }

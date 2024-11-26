@@ -8,6 +8,7 @@ import {
   EventSearchToUserDto,
 } from '@/utils/interfaces/EventInterfaces';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
+import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
 
 /**
  * Fetches the events for the home page
@@ -31,6 +32,7 @@ export const fetchHomePageEvents = async (
       SortBy: filter.SortBy,
       IsDescending: filter.IsDescending,
       IsPromoted: filter.IsPromoted,
+      OrganizerUserId: filter.OrganizerUserId,
     };
 
     const response = await axios.get<EventHomePageDto[]>(
@@ -151,5 +153,21 @@ export const updatePromoteStatusEvent = async (
     return response.status === 201;
   } catch (error) {
     return false;
+  }
+};
+
+/**
+ *  Fetches the stadistics of the events
+ *
+ * @returns event stadistics object
+ */
+export const getEventStadistics = async (): Promise<EventsStadistic | null> => {
+  try {
+    const response = await axios.get<EventsStadistic>(
+      '/api/events/audit/eventsStadistics',
+    );
+    return response.data;
+  } catch (error) {
+    return null;
   }
 };

@@ -19,7 +19,6 @@ function useLoginUser() {
       const user = await getUserById(idUser);
       if (user) {
         dispatch(setUserInfo(user));
-        console.log('state regisred user :: ', user);
       } else {
         const userToCreate: UserInterface = {
           id: idUser,
