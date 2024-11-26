@@ -21,10 +21,6 @@ const SliderEvents = ({ events }: SliderEventsProps) => {
     autoplaySpeed: 5000,
   };
 
-  useEffect(() => {
-    console.log(events);
-  }, [events]);
-
   return (
     <Box sx={{ marginBottom: '40px' }}>
       {events.length > 1 ? (

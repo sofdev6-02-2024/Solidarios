@@ -22,10 +22,6 @@ const SliderBanners = ({ events }: SliderEventsProps) => {
     autoplaySpeed: 5000,
   };
 
-  useEffect(() => {
-    console.log(events);
-  }, [events]);
-
   return (
     <Box>
       {events.length > 1 ? (
