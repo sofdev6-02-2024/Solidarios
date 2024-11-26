@@ -1,5 +1,9 @@
 import axios from 'axios';
 import { TicketRequestDto } from '@/utils/interfaces/TicketInterfaces';
+import {
+  TicketPostInterface,
+  TicketViewInterface,
+} from '@/utils/interfaces/TIcketsInterfaces';
 
 /**
  * Fetches tickets based on the given parameters
@@ -29,5 +33,20 @@ export const fetchTickets = async (
   } catch (error: any) {
     console.error('Error fetching tickets:', error.message || error);
     return [];
+  }
+};
+
+export const generateTicket = async (
+  ticketPost: TicketPostInterface,
+): Promise<TicketViewInterface | null> => {
+  try {
+    const response = await axios.post<TicketViewInterface>(
+      '/api/tickets',
+      ticketPost,
+    );
+
+    return response.data;
+  } catch (error) {
+    return null;
   }
 };
