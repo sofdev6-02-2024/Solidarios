@@ -6,6 +6,7 @@ import {
   EventHomePageDto,
   EventInputDto,
   EventSearchToUserDto,
+  EventStatus,
 } from '@/utils/interfaces/EventInterfaces';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
@@ -169,5 +170,21 @@ export const getEventStadistics = async (): Promise<EventsStadistic | null> => {
     return response.data;
   } catch (error) {
     return null;
+  }
+};
+
+export const updateStatusEvent = async (
+  eventState: EventStatus,
+  eventId: number,
+): Promise<boolean> => {
+  try {
+    const response = await axios.post(
+      '/api/events/status/' + eventId,
+      eventState,
+    );
+
+    return response.status === 201;
+  } catch (error) {
+    return false;
   }
 };

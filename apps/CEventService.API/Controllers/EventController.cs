@@ -131,6 +131,17 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         return Ok(response);
     }
 
+    [HttpPost("UpdateStatus/{id}")]
+    public async Task<ActionResult> UpdateStatus(int id, [FromBody] UpdateStatusEventDto updateStatusEventDto)
+    {
+        var eventUpdated = await _eventService.UpdateStatus(id, updateStatusEventDto);
+        if (eventUpdated is null)
+        {
+            return NotFound("Event not found.");
+        }
+        return Ok(_mapper.Map<EventOutputDto>(eventUpdated));
+    }
+
     private async Task<IEnumerable<EventHomePageDto>> GetPromotedEventsAsync(int page, int pageSize, string category = null)
     {
         var promotedEvents = category == null
