@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import PlaceIcon from '@mui/icons-material/Place';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import { EventSearchToUserDto } from '@/utils/interfaces/EventInterfaces';
 
 interface TicketCardProps {
@@ -23,17 +24,43 @@ export default function TicketCard({ event }: TicketCardProps) {
         flexDirection: 'column',
         borderRadius: 2,
         boxShadow: 3,
+        position: 'relative',
       }}
     >
       <CardMedia
         component="img"
         height="140"
         image={event.coverPhotoUrl}
-        alt={event.name} 
+        alt={event.name}
+        sx={{
+          position: 'relative',
+        }}
       />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 155,
+          right: 8,
+          zIndex: 1,          
+        }}
+      >
+        {event.ticketCount > 1 && (
+          <Chip
+            label={<><ConfirmationNumberIcon sx={{ fontSize: 14, mr: 0.5 }} />{event.ticketCount}</>}
+            color="secondary"
+            sx={{ ml: 1 }}
+          />
+        )}
+
+        <Chip label={`$${event.ticketPrice}`} color="primary" />
+      </Box>
+
       <CardContent>
+        <Typography variant="h6" component="div" gutterBottom>
+          {event.name}
+        </Typography>
         <Stack direction="row" spacing={1} mb={1}>
-          <Chip label={event.capacity} color="primary" size="small" /> 
+          <Chip label={event.capacity} color="primary" size="small" />
           <Typography variant="body2" color="text.secondary">
             <EventIcon
               sx={{ fontSize: 16, verticalAlign: 'middle', mr: 0.5 }}
@@ -44,14 +71,11 @@ export default function TicketCard({ event }: TicketCardProps) {
             <PlaceIcon
               sx={{ fontSize: 16, verticalAlign: 'middle', mr: 0.5 }}
             />
-            {event.venue} 
+            {event.venue}
           </Typography>
         </Stack>
-        <Typography variant="h6" component="div" gutterBottom>
-          {event.name} 
-        </Typography>
         <Typography variant="body2" color="text.secondary">
-          {event.shortDescription} 
+          {event.shortDescription}
         </Typography>
         <Box
           mt={2}
@@ -59,12 +83,6 @@ export default function TicketCard({ event }: TicketCardProps) {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography variant="body2" color="text.secondary">
-            {event.attendeeCount} Attendees 
-          </Typography>
-          <Typography variant="body1" fontWeight="bold">
-            ${event.ticketPrice.toFixed(2)} 
-          </Typography>
         </Box>
       </CardContent>
     </Card>

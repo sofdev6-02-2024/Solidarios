@@ -1,25 +1,20 @@
 'use client';
 
 import { Box, Typography, Pagination, CircularProgress } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2'; // Importación de Grid2
+import Grid from '@mui/material/Grid2';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 import TicketCard from './_components/TicketCard';
 import LoginPromptSection from './_components/LoginPromptSection';
 import EmptyTicketSection from './_components/EmptyTicketSection';
+import { fetchTickets } from '@/services/TicketService';
 import { fetchAllEvents } from '@/services/EventService';
 import { EventSearchToUserDto } from '@/utils/interfaces/EventInterfaces';
-
-interface TicketData {
-  TicketId: string;
-  EventId: number;
-  UserId: string;
-}
+import { TicketRequestDto } from '@/utils/interfaces/TicketInterfaces';
 
 export default function MyTicketsPage() {
-  const [tickets, setTickets] = useState<TicketData[]>([]);
-  const [events, setEvents] = useState<EventSearchToUserDto[]>([]);
   const [filteredEvents, setFilteredEvents] = useState<EventSearchToUserDto[]>([]);
   const [page, setPage] = useState(1);
   const itemsPerPage = 4;
@@ -27,30 +22,42 @@ export default function MyTicketsPage() {
   const user = useSelector((state: RootState) => state.user.userInfo);
 
   useEffect(() => {
-    if (session) {
-      const mockTickets: TicketData[] = [
-        { TicketId: '1', EventId: 1002, UserId: 'a11d80f5-320e-4e03-8fb7-32657778db78' },
-        { TicketId: '2', EventId: 1003, UserId: 'a11d80f5-320e-4e03-8fb7-32657778db78' },
-        { TicketId: '3', EventId: 1003, UserId: 'a11d80f5-320e-4e03-8fb7-32657778db78' },
-        { TicketId: '4', EventId: 1004, UserId: 'a11d80f5-320e-4e03-8fb7-32657778db78' },
-      ];
-      setTickets(mockTickets);
-    }
-
-    const fetchEvents = async () => {
-      const allEvents = await fetchAllEvents();
-      setEvents(allEvents);
-
+    const fetchUserTicketsAndEvents = async () => {
       if (session) {
-        const userTickets = tickets.filter(ticket => ticket.UserId === user?.id);
-        const eventIds = userTickets.map(ticket => ticket.EventId);
-        const filtered = allEvents.filter(event => eventIds.includes(event.EventId));
-        setFilteredEvents(filtered);
+        try {
+          const allTickets = await fetchTickets();
+  
+          const userTickets = allTickets.filter(
+            (ticket: TicketRequestDto) => ticket.userId === user?.id
+          );
+  
+          const allEvents = await fetchAllEvents();
+  
+          const eventIds = userTickets.map(ticket => ticket.eventId);
+          const userEvents = allEvents.filter((event: EventSearchToUserDto) =>
+            eventIds.includes(event.id)
+          );
+  
+          const ticketCounts = userTickets.reduce((acc, ticket) => {
+            acc[ticket.eventId] = (acc[ticket.eventId] || 0) + 1;
+            return acc;
+          }, {} as { [key: number]: number });
+            
+          const eventsWithTicketCount = userEvents.map(event => ({
+            ...event,
+            ticketCount: ticketCounts[event.id] || 0,
+          }));
+  
+          setFilteredEvents(eventsWithTicketCount);
+        } catch (error) {
+          console.error('Error fetching tickets or events:', error);
+        }
       }
     };
-
-    fetchEvents();
-  }, []);
+  
+    fetchUserTicketsAndEvents();
+  }, [session]);
+  
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -94,13 +101,13 @@ export default function MyTicketsPage() {
         </Box>
       ) : (
         <>
-          <Grid2 container spacing={3}>
+          <Grid container spacing={3}>
             {visibleEvents.map((event, index) => (
-              <Grid2 xs={12} sm={6} key={index}>
+              <Grid xs={12} sm={6} key={index}>
                 <TicketCard event={event} />
-              </Grid2>
+              </Grid>
             ))}
-          </Grid2>
+          </Grid>
 
           <Box display="flex" justifyContent="center" mt={3}>
             <Pagination
