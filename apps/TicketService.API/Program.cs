@@ -13,8 +13,12 @@ DotEnv.Load(new DotEnvOptions(
     probeLevelsToSearch: 6
 ));
 
-var builder = WebApplication.CreateBuilder(args);
 var connectionString = EnvReader.GetStringValue("CONNECTION_STRING");
+var serviceDiscoveryUrl = EnvReader.GetStringValue("SERVICE_DISCOVERY_URL");
+var serviceName = EnvReader.GetStringValue("SERVICE_NAME");
+var serviceAddress = EnvReader.GetStringValue("SERVICE_ADRESS");
+var servicePort = EnvReader.GetIntValue("SERVICE_PORT");
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -44,10 +48,24 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
+var logger = app.Services.GetRequiredService<ILogger<ServiceDiscoveryClient>>();
+
+using (var httpClient = new HttpClient())
+{
+    var serviceDiscoveryClient = new ServiceDiscoveryClient(logger, httpClient, serviceDiscoveryUrl, serviceName,
+        serviceAddress, servicePort);
+    await serviceDiscoveryClient.RegisterServiceAsync();
+}
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tickets API");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseCors("AllowAllOrigins");
