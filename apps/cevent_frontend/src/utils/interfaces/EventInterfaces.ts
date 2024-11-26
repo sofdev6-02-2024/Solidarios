@@ -54,6 +54,7 @@ export interface EventSearchToUserDto
   category: EventCategory;
   description: string;
   activities: number;
+  ticketCount?: number;
 }
 
 export enum SortOptions {
