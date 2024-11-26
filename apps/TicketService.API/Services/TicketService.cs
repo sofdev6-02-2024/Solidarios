@@ -35,7 +35,18 @@ namespace TicketService.API.Services
                 QRContent = createdTicket.QRContent,
             };
         }
-        
+
+        public async Task<IEnumerable<TicketRequestDto>> GetAllTicketsAsync()
+        {
+            var tickets = await _ticketRepository.GetAllTicketAsync();
+
+            return tickets.Select(ticket => new TicketRequestDto
+            {
+                EventId = ticket.EventId,
+                UserId = ticket.UserId
+            });
+        }
+
         public async Task<bool> ValidateTicketAsync(string qrContent)
         {
             var ticket = await _ticketRepository.GetTicketByQrContentAsync(qrContent);
@@ -50,7 +61,7 @@ namespace TicketService.API.Services
 
             return true;
         }
-        
+
         public async Task<TicketResponseDto?> GetTicketByIdAsync(string ticketId)
         {
             if (!Guid.TryParse(ticketId, out var ticketGuid))
@@ -72,7 +83,7 @@ namespace TicketService.API.Services
             };
         }
 
-        
+
         public async Task<TicketResponseDto?> GetTicketByQrCodeAsync(string qrContent)
         {
             if (string.IsNullOrEmpty(qrContent))

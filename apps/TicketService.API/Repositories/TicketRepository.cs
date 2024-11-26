@@ -20,6 +20,11 @@ namespace TicketService.API.Repositories
             return ticket;
         }
 
+        public async Task<IEnumerable<Ticket>> GetAllTicketAsync()
+        {
+            return await _context.Tickets.ToListAsync();
+        }
+
         public async Task<Ticket?> GetTicketByIdAsync(Guid ticketId)
         {
             return await _context.Tickets.FindAsync(ticketId);
