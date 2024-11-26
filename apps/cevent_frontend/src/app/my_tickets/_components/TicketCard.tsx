@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Card,
   CardContent,
@@ -11,19 +9,13 @@ import {
 } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
 import PlaceIcon from '@mui/icons-material/Place';
+import { EventSearchToUserDto } from '@/utils/interfaces/EventInterfaces';
 
-interface Ticket {
-  image: string;
-  category: string;
-  date: string;
-  location: string;
-  title: string;
-  description: string;
-  attendees: number;
-  price: string;
+interface TicketCardProps {
+  event: EventSearchToUserDto;
 }
 
-export default function TicketCard({ ticket }: { ticket: Ticket }) {
+export default function TicketCard({ event }: TicketCardProps) {
   return (
     <Card
       sx={{
@@ -36,30 +28,30 @@ export default function TicketCard({ ticket }: { ticket: Ticket }) {
       <CardMedia
         component="img"
         height="140"
-        image={ticket.image}
-        alt={ticket.title}
+        image={event.coverPhotoUrl}
+        alt={event.name} 
       />
       <CardContent>
         <Stack direction="row" spacing={1} mb={1}>
-          <Chip label={ticket.category} color="primary" size="small" />
+          <Chip label={event.capacity} color="primary" size="small" /> 
           <Typography variant="body2" color="text.secondary">
             <EventIcon
               sx={{ fontSize: 16, verticalAlign: 'middle', mr: 0.5 }}
             />
-            {ticket.date}
+            {new Date(event.eventDate).toLocaleDateString()}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             <PlaceIcon
               sx={{ fontSize: 16, verticalAlign: 'middle', mr: 0.5 }}
             />
-            {ticket.location}
+            {event.venue} 
           </Typography>
         </Stack>
         <Typography variant="h6" component="div" gutterBottom>
-          {ticket.title}
+          {event.name} 
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {ticket.description}
+          {event.shortDescription} 
         </Typography>
         <Box
           mt={2}
@@ -68,10 +60,10 @@ export default function TicketCard({ ticket }: { ticket: Ticket }) {
           alignItems="center"
         >
           <Typography variant="body2" color="text.secondary">
-            {ticket.attendees} Attendees
+            {event.attendeeCount} Attendees 
           </Typography>
           <Typography variant="body1" fontWeight="bold">
-            {ticket.price}
+            ${event.ticketPrice.toFixed(2)} 
           </Typography>
         </Box>
       </CardContent>
