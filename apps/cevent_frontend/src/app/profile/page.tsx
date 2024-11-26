@@ -13,14 +13,14 @@ export default function ProfilePage() {
   const user = useSelector((state: RootState) => state.user.userInfo);
 
   return (
-    <Box    sx={{ height: '70vh' }}>
+    <Box sx={{ height: '70vh' }}>
       <Layout>
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
-          height={"100%"}
+          height={'100%'}
         >
           <Avatar
             alt={user?.name}

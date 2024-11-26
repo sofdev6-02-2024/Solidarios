@@ -1,5 +1,5 @@
 export interface EventsStadistic {
-    totalEvents: number;
-    eventsCanceled?: number;
-    eventsPromoted?: number;
+  totalEvents: number;
+  eventsCanceled?: number;
+  eventsPromoted?: number;
 }

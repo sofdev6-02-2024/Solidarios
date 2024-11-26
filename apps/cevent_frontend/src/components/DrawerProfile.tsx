@@ -17,7 +17,7 @@ const DrawerProfile = ({
 }: DrawerProfileProps) => {
   const user = useSelector((state: RootState) => state.user.userInfo);
   const router = useRouter();
-  const { hasRole} = useRoles();
+  const { hasRole } = useRoles();
 
   const handleClickProfile = () => {
     setIsDrawerOpen(false);

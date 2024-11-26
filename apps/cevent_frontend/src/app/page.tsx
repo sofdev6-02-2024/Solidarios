@@ -17,20 +17,20 @@ export default function Home() {
   return (
     <>
       <BannerSection />
-      <Box sx={{ minHeight: "76vh" }}>
-      <Layout>
-        <CategoryEventSection category={ALL_CATEGORY_VALUE} />
-        {categories &&
-          categories.map((category) => {
-            if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
-            return (
-              <CategoryEventSection
-                key={category.keyWord}
-                category={category as EventCategory}
-              />
-            );
-          })}
-      </Layout>
+      <Box sx={{ minHeight: '76vh' }}>
+        <Layout>
+          <CategoryEventSection category={ALL_CATEGORY_VALUE} />
+          {categories &&
+            categories.map((category) => {
+              if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
+              return (
+                <CategoryEventSection
+                  key={category.keyWord}
+                  category={category as EventCategory}
+                />
+              );
+            })}
+        </Layout>
       </Box>
     </>
   );

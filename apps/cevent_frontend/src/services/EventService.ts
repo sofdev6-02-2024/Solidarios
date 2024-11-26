@@ -158,12 +158,14 @@ export const updatePromoteStatusEvent = async (
 
 /**
  *  Fetches the stadistics of the events
- * 
+ *
  * @returns event stadistics object
  */
 export const getEventStadistics = async (): Promise<EventsStadistic | null> => {
   try {
-    const response = await axios.get<EventsStadistic>('/api/events/audit/eventsStadistics');
+    const response = await axios.get<EventsStadistic>(
+      '/api/events/audit/eventsStadistics',
+    );
     return response.data;
   } catch (error) {
     return null;

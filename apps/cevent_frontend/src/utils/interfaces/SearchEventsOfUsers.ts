@@ -3,7 +3,6 @@ export interface Location {
   latitude: number;
 }
 
-
 export interface EventDTO {
   id: number;
   name: string;
