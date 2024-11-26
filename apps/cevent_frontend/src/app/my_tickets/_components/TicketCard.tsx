@@ -10,7 +10,18 @@ import {
 import EventIcon from '@mui/icons-material/Event';
 import PlaceIcon from '@mui/icons-material/Place';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import { EventSearchToUserDto } from '@/utils/interfaces/EventInterfaces';
+
+export interface EventSearchToUserDto {
+  id: number;
+  name: string;
+  coverPhotoUrl: string;
+  eventDate: Date;
+  venue: string;
+  shortDescription: string;
+  capacity: number;
+  ticketPrice: number;
+  ticketCount?: number;
+}
 
 interface TicketCardProps {
   event: EventSearchToUserDto;
@@ -41,12 +52,19 @@ export default function TicketCard({ event }: TicketCardProps) {
           position: 'absolute',
           bottom: 155,
           right: 8,
-          zIndex: 1,          
+          zIndex: 1,
         }}
       >
-        {event.ticketCount > 1 && (
+        {(event.ticketCount ?? 0) > 1 && (
           <Chip
-            label={<><ConfirmationNumberIcon sx={{ fontSize: 14, mr: 0.5 }} />{event.ticketCount}</>}
+            label={
+              <>
+                <ConfirmationNumberIcon
+                  sx={{ fontSize: 14, mr: 0.5, verticalAlign: 'middle' }}
+                />
+                {event.ticketCount}
+              </>
+            }
             color="secondary"
             sx={{ ml: 1 }}
           />
@@ -82,8 +100,7 @@ export default function TicketCard({ event }: TicketCardProps) {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-        >
-        </Box>
+        ></Box>
       </CardContent>
     </Card>
   );

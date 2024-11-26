@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5242';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 /**
  * Fetches all tickets from the database
@@ -9,7 +9,7 @@ const BASE_URL = 'http://localhost:5242';
  * @returns list of all tickets or an error message
  */
 export async function GET(request: Request) {
-    const fullUrl = `${BASE_URL}/api/ticket`;
+    const fullUrl = `${BASE_URL}/ticket-service/api/Ticket`;
   
     try {
       const response = await axios.get(fullUrl);
