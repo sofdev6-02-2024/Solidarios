@@ -38,7 +38,6 @@ export default function Checkout() {
             const platform = event.ticketPrice * 0.03;
             setPlatformFee(platform);
             const totalPrice = event.ticketPrice * parseInt(quantity, 10);
-            console.log('totalPrice', totalPrice);
             setFinalTotalPrice(totalPrice + platform);
           } else {
             router.push('/not_found');

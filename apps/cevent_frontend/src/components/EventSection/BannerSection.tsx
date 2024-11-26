@@ -18,7 +18,6 @@ const BannerSection = () => {
     };
     fetchHomePageEvents(filter)
       .then((events) => {
-        console.log('promoted events :: ', events);
         setEvents(events);
       })
       .finally(() => {
