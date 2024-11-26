@@ -1,4 +1,4 @@
 export interface TicketRequestDto {
-    eventId: number;
-    userId: string;
+  eventId: number;
+  userId: string;
 }

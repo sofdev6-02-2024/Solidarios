@@ -42,7 +42,7 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   coOrganizers: string[];
 }
 
-export interface  EventSearchToUserDto
+export interface EventSearchToUserDto
   extends Omit<EventHomePageDto, 'category'> {
   location: Location;
   venue: string;
@@ -55,7 +55,6 @@ export interface  EventSearchToUserDto
   description: string;
   activities: number;
   ticketCount?: number;
-
 }
 
 export enum SortOptions {
