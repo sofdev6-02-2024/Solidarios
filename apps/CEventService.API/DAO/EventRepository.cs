@@ -45,6 +45,9 @@ public class EventRepository : BaseRepository<Event, int>, IEventRepository
         if (filters.EndDate.HasValue)
             query = query.Where(e => e.EventDate <= filters.EndDate.Value);
 
+        if (filters.OrganizerUserId.HasValue)
+            query = query.Where(e => e.OrganizerUserId == filters.OrganizerUserId.Value);
+
         if (filters.MinPrice.HasValue)
             query = query.Where(e => e.TicketPrice >= filters.MinPrice.Value);
 
@@ -53,6 +56,9 @@ public class EventRepository : BaseRepository<Event, int>, IEventRepository
 
         if (filters.Status != -1 && filters.Status < 6)
             query = query.Where(e => (int)e.Status == filters.Status);
+
+        if (filters.IsPromoted.HasValue)
+            query = query.Where(e => e.IsPromoted == filters.IsPromoted.Value);
 
         if (!string.IsNullOrEmpty(filters.SortBy))
             query = filters.IsDescending

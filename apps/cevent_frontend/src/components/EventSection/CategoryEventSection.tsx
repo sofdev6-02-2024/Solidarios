@@ -6,7 +6,10 @@ import {
   EventHomePageDto,
   SortOptions,
 } from '@/utils/interfaces/EventInterfaces';
-import { fetchHomePageEvents } from '@/services/EventService';
+import {
+  fetchHomePageEvents,
+  fetchBannerEvents,
+} from '@/services/EventService';
 import EventsBox from './EventsBox';
 import SkeletonEventsBox from './SkeletonEventsBox';
 import EmptyEventSection from './EmptyEventSection';
@@ -20,8 +23,10 @@ interface EventSectionProps {
 
 const CategoryEventSection = ({ category }: EventSectionProps) => {
   const [events, setEvents] = useState<EventHomePageDto[]>([]);
+  const [bannerEvents, setBannerEvents] = useState<EventHomePageDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const route = useRouter();
+
   useEffect(() => {
     const filters: EventFilter = {
       page: 1,
@@ -33,9 +38,16 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
       SortBy: SortOptions.EventDate,
       IsDescending: true,
     };
-    fetchHomePageEvents(filters)
-      .then((data) => {
-        setEvents(data);
+
+    setLoading(true);
+
+    Promise.all([
+      fetchHomePageEvents(filters),
+      fetchBannerEvents(category.keyWord),
+    ])
+      .then(([homePageData, bannerData]) => {
+        setEvents(homePageData);
+        setBannerEvents(bannerData);
       })
       .finally(() => {
         setLoading(false);
@@ -53,7 +65,7 @@ const CategoryEventSection = ({ category }: EventSectionProps) => {
         </Typography>
       </Box>
       {category.keyWord !== ALL_CATEGORY_VALUE.keyWord && (
-        <SliderEvents events={events.slice(0, 3)} />
+        <SliderEvents events={bannerEvents} />
       )}
       {events.length < 1 ? (
         loading ? (

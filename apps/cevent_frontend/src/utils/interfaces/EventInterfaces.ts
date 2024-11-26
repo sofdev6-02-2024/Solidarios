@@ -73,6 +73,8 @@ export interface EventFilter {
   IsDescending?: boolean;
   page?: number;
   pageSize?: number;
+  IsPromoted?: boolean;
+  OrganizerUserId?: string;
 }
 
 export interface EventInputDto {
@@ -110,3 +112,8 @@ export const sizeBannerObj: Record<SizeBanner, Size> = {
   Medium: { width: 960, height: 540 },
   Large: { width: 1920, height: 1080 },
 };
+
+export interface EventClickDto {
+  eventId: number;
+  userId: string;
+}

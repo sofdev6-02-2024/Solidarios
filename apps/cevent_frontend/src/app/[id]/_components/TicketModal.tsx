@@ -11,11 +11,12 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import styles from '@/styles/components/EventModalStyles';
+import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 
 interface EventModalProps {
   open: boolean;
   onClose: () => void;
-  name: string;
+  eventData: EventDetailDto;
   pricePerTicket: number;
   capacity: number;
 }
@@ -23,7 +24,7 @@ interface EventModalProps {
 const TicketModal = ({
   open,
   onClose,
-  name,
+  eventData,
   pricePerTicket,
   capacity,
 }: EventModalProps) => {
@@ -54,9 +55,7 @@ const TicketModal = ({
   const handleConfirmPurchase = () => {
     const qty = parseInt(quantity, 10);
     if (qty > 0 && qty <= capacity) {
-      router.push(
-        `/checkout?eventName=${encodeURIComponent(name)}&quantity=${qty}&pricePerTicket=${pricePerTicket}&totalPrice=${calculateTotal()}`,
-      );
+      router.push(`/checkout?eventId=${eventData.id}&quantity=${qty}`);
     }
   };
 
@@ -91,7 +90,7 @@ const TicketModal = ({
 
         <Box sx={styles.ticketsInfoContainer}>
           <Typography variant="body2">
-            {name} (x{quantity || 0})
+            {eventData.name} (x{quantity || 0})
           </Typography>
           <Typography variant="body2">{pricePerTicket} USD</Typography>
         </Box>

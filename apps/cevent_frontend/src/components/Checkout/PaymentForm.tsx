@@ -1,6 +1,12 @@
 import { getAccessPayment } from '@/services/PaymentService';
 import { PaymentInterface } from '@/utils/interfaces/Payment';
-import { Box, LinearProgress, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  LinearProgress,
+  Snackbar,
+  Typography,
+} from '@mui/material';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
@@ -14,11 +20,13 @@ const stripePromise = loadStripe(
 interface PaymentFormProps {
   callBackFunction: () => Promise<boolean>;
   linkToRedirect: string;
+  paymentInterface: PaymentInterface;
 }
 
 const PaymentForm = ({
   callBackFunction,
   linkToRedirect,
+  paymentInterface,
 }: PaymentFormProps) => {
   const [secretKey, setSecretKey] = useState('');
   const [loading, setLoading] = useState(true);
@@ -27,13 +35,17 @@ const PaymentForm = ({
     clientSecret: secretKey,
   };
 
+  const [snackBarMessage, setSnackBarMessage] = useState<string>('');
+  const [openSnackBar, setOpenSnackBar] = useState<boolean>(false);
+  const [statusOperation, setStatusOperation] = useState<boolean>(false);
+
   useEffect(() => {
-    console.log('PaymentFormProps', linkToRedirect);
-    console.log('current url', window.location.href.replace(DOMAIN, ''));
     const paymentOpion: PaymentInterface = {
-      amount: PRICE_PROMOTION,
+      amount: parseFloat((paymentInterface.amount * 100).toFixed(0)),
       currency: CURRENCY_PROMOTION,
     };
+
+    console.log('paymentOpion by form: ', paymentOpion);
     getAccessPayment(paymentOpion)
       .then((clientSecret) => {
         if (clientSecret) {
@@ -51,12 +63,12 @@ const PaymentForm = ({
 
     while (attempts < 3) {
       response = await callBackFunction();
-      console.log('response operation :: ', response);
       if (response) {
         const currentUrl = window.location.href.replace(DOMAIN, '');
         if (linkToRedirect === currentUrl) {
           window.location.reload();
         } else {
+          console.log('linkToRedirect >>>', linkToRedirect);
           router.push(linkToRedirect);
         }
         return true;
@@ -87,9 +99,30 @@ const PaymentForm = ({
       </Box>
     </Box>
   ) : (
-    <Elements stripe={stripePromise} options={options}>
-      <PaymentField callBackFunction={handlePayment} />
-    </Elements>
+    <>
+      <Elements stripe={stripePromise} options={options}>
+        <PaymentField
+          callBackFunction={handlePayment}
+          setSnackBarMessage={setSnackBarMessage}
+          setOpenSnackBar={setOpenSnackBar}
+          setStatusOperation={setStatusOperation}
+        />
+      </Elements>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={() => setOpenSnackBar(false)}
+      >
+        <Alert
+          onClose={() => setOpenSnackBar(false)}
+          severity={statusOperation ? 'success' : 'error'}
+          sx={{ width: '100%' }}
+          variant="filled"
+        >
+          {snackBarMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

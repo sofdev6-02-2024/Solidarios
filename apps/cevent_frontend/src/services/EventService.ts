@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  EventClickDto,
   EventDetailDto,
   EventFilter,
   EventHomePageDto,
@@ -7,6 +8,7 @@ import {
   EventSearchToUserDto,
 } from '@/utils/interfaces/EventInterfaces';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
+import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
 
 /**
  * Fetches the events for the home page
@@ -29,6 +31,8 @@ export const fetchHomePageEvents = async (
       Status: filter.Status,
       SortBy: filter.SortBy,
       IsDescending: filter.IsDescending,
+      IsPromoted: filter.IsPromoted,
+      OrganizerUserId: filter.OrganizerUserId,
     };
 
     const response = await axios.get<EventHomePageDto[]>(
@@ -63,6 +67,36 @@ export const fetchAllEvents = async (): Promise<EventSearchToUserDto[]> => {
     return response.data;
   } catch (error) {
     return [];
+  }
+};
+
+export const fetchBannerEvents = async (
+  category: string,
+): Promise<EventHomePageDto[]> => {
+  try {
+    const params = {
+      page: 1,
+      pageSize: 10,
+    };
+    const response = await axios.get<EventHomePageDto[]>(
+      `/api/events/banner/${category}`,
+      { params },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const createClickedEvent = async (
+  data: EventClickDto,
+): Promise<void> => {
+  try {
+    const response = await axios.post('api/events/clicks', data);
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -119,5 +153,21 @@ export const updatePromoteStatusEvent = async (
     return response.status === 201;
   } catch (error) {
     return false;
+  }
+};
+
+/**
+ *  Fetches the stadistics of the events
+ *
+ * @returns event stadistics object
+ */
+export const getEventStadistics = async (): Promise<EventsStadistic | null> => {
+  try {
+    const response = await axios.get<EventsStadistic>(
+      '/api/events/audit/eventsStadistics',
+    );
+    return response.data;
+  } catch (error) {
+    return null;
   }
 };

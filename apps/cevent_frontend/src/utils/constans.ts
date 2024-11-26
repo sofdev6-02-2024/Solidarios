@@ -7,5 +7,5 @@ export const ALL_CATEGORY_VALUE: EventCategory = {
 };
 
 export const DOMAIN = 'http://localhost:3000';
-export const PRICE_PROMOTION = 50;
+export const PRICE_PROMOTION = 15;
 export const CURRENCY_PROMOTION = 'usd';

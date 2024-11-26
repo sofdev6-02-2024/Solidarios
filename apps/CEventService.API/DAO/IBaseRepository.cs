@@ -12,6 +12,5 @@ public interface IBaseRepository<T, TId> where T : BaseEntity<TId>
     Task<T> CreateAsync(T entity);
     Task<T> UpdateAsync(TId id, T entity);
     Task<int> SoftDeleteAsync(TId id);
-
     Task<ICollection<T>> GetFilteredPagedAsync(Expression<Func<T, bool>> filter, int page, int pageSize);
 }

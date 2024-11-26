@@ -2,8 +2,10 @@
 using CEventService.API.DTOs.Event;
 using CEventService.API.Models;
 using CEventService.API.Services;
+using DTOs.Audit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CEventService.API.Controllers;
 
@@ -88,25 +90,58 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
     public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEvents(int page = 1, int pageSize = 10)
     {
         var response = await GetPromotedEventsAsync(page, pageSize);
+        if (response.IsNullOrEmpty())
+        {
+            var filters = new EventFilterDto()
+            {   
+                SortBy = "EventDate",
+                IsDescending = true
+            };
+            response = await _eventService.GetSummaryEvents(page, pageSize, filters);
+        }
         return Ok(response);
     }
 
-    [HttpGet("banner/category")]
-    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEventsByCategory([FromQuery] string category, int page = 1, int pageSize = 10)
+    [HttpGet("banner/{category}")]
+    public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEventsByCategory(string category, int page = 1, int pageSize = 10)
     {
         var response = await GetPromotedEventsAsync(page, pageSize, category);
+        if (response.IsNullOrEmpty())
+        {
+            var filters = new EventFilterDto()
+            {   
+                SortBy = "EventDate",
+                IsDescending = true,
+                Category = category
+            };
+            response = await _eventService.GetSummaryEvents(page, pageSize, filters);
+        }
+            
+        return Ok(response);
+    }
+
+    [HttpGet("audit/eventStadistics")]
+    public async Task<ActionResult<BasicDataCounterDto>> GetBasicCounterData ()
+    {
+        var response = await _eventService.GetBasicDataCounter();
+        if (response is null)
+        {
+            return NotFound("No statistics found.");
+        }
         return Ok(response);
     }
 
     private async Task<IEnumerable<EventHomePageDto>> GetPromotedEventsAsync(int page, int pageSize, string category = null)
     {
         var promotedEvents = category == null
-            ? (await _eventService.GetPromotedEvents(page, pageSize)).ToList()
-            : (await _eventService.GetPromotedEvents(page, pageSize, category)).ToList();
+            ? (await _eventClickService.MostClickedPromoted(page, pageSize)).ToList()
+            : (await _eventClickService.MostClickedPromoted(page, pageSize, category)).ToList();
 
         if (promotedEvents.Count < pageSize)
         {
-            var mostClicked = await _eventClickService.MostClicked(page, pageSize - promotedEvents.Count);
+            var mostClicked = category == null
+                ? (await _eventClickService.MostClicked(page, pageSize)).ToList()
+                : (await _eventClickService.MostClicked(page, pageSize, category)).ToList();
             var mostClickedWithoutDuplicates = mostClicked.Where(mc => promotedEvents.All(pe => pe.Id != mc.Id));
             promotedEvents.AddRange(mostClickedWithoutDuplicates);
         }

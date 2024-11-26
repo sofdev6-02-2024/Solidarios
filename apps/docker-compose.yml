@@ -116,6 +116,47 @@ services:
       - "8080:8080"
     command:
       - start-dev
+        
+  # Ticket Service API
+  ticketservice:
+    build:
+      context: ./TicketService.API
+      dockerfile: Dockerfile
+    container_name: ticketservice
+    ports:
+      - "5200:5200"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - CONNECTION_STRING="Server=ticket_sqlserver,1433;Database=TicketDB;User Id=sa;Password=tickeT@2024;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
+      - Consul__Address=http://consul:8500
+    depends_on:
+      - ticket_sqlserver
+      - servicediscovery
+      - consul
+    networks:
+      - shared-network
+    volumes:
+      - ./TicketService.API:/app
+      - ./TicketService.API/.env:/app/.env
+
+  # Base de datos para TicketService
+  ticket_sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ticket_sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=tickeT@2024
+      - MSSQL_PID=Developer
+      - MSSQL_DB=TicketDB
+    ports:
+      - "1435:1433"
+    healthcheck:
+      test: [ "CMD-SHELL", "echo 'SELECT 1' | /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P $MSSQL_SA_PASSWORD" ]
+      interval: 10s
+      retries: 10
+    networks:
+      - shared-network
+
 
 networks:
   shared-network:

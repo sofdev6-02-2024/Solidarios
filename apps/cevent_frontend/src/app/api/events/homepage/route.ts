@@ -22,6 +22,8 @@ export async function GET(request: Request) {
     Status: searchParams.get('Status') || undefined,
     SortBy: (searchParams.get('SortBy') as SortOptions) || undefined,
     IsDescending: searchParams.get('IsDescending') === 'true',
+    IsPromoted: searchParams.get('IsPromoted') === 'true' || undefined,
+    OrganizerUserId: searchParams.get('OrganizerUserId') || undefined,
   };
   const queryParams = Object.fromEntries(
     Object.entries(filters).filter(([, value]) => value !== undefined),

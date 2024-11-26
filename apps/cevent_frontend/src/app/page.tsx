@@ -6,7 +6,8 @@ import CategoryEventSection from '@/components/EventSection/CategoryEventSection
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { ALL_CATEGORY_VALUE } from '@/utils/constans';
-import { useEffect } from 'react';
+import BannerSection from '@/components/EventSection/BannerSection';
+import { Box } from '@mui/material';
 
 export default function Home() {
   const categories: EventCategory[] = useSelector(
@@ -14,18 +15,23 @@ export default function Home() {
   );
 
   return (
-    <Layout>
-      <CategoryEventSection category={ALL_CATEGORY_VALUE} />
-      {categories &&
-        categories.map((category) => {
-          if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
-          return (
-            <CategoryEventSection
-              key={category.keyWord}
-              category={category as EventCategory}
-            />
-          );
-        })}
-    </Layout>
+    <>
+      <BannerSection />
+      <Box sx={{ minHeight: '76vh' }}>
+        <Layout>
+          <CategoryEventSection category={ALL_CATEGORY_VALUE} />
+          {categories &&
+            categories.map((category) => {
+              if (category.keyWord === ALL_CATEGORY_VALUE.keyWord) return null;
+              return (
+                <CategoryEventSection
+                  key={category.keyWord}
+                  category={category as EventCategory}
+                />
+              );
+            })}
+        </Layout>
+      </Box>
+    </>
   );
 }
