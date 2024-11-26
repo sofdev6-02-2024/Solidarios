@@ -5,21 +5,22 @@ import { useRoles } from '@/hooks/use-roles';
 import { RootState } from '@/redux/store';
 import { UserInterface } from '@/utils/interfaces/UserInterfaces';
 import { Box, Typography, Avatar, Paper, Button } from '@mui/material';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 export default function ProfilePage() {
-  const { hasRole } = useRoles();
+  const { hasRole, roles } = useRoles();
   const user = useSelector((state: RootState) => state.user.userInfo);
 
   return (
-    <Box>
+    <Box    sx={{ height: '70vh' }}>
       <Layout>
         <Box
           display="flex"
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
-          mt={4}
+          height={"100%"}
         >
           <Avatar
             alt={user?.name}

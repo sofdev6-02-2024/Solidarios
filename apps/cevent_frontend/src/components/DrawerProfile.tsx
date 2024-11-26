@@ -1,3 +1,4 @@
+import { useRoles } from '@/hooks/use-roles';
 import { RootState } from '@/redux/store';
 import { keycloakSessionLogOut } from '@/services/AuthService';
 import { Avatar, Box, ButtonBase, Drawer, Typography } from '@mui/material';
@@ -16,6 +17,7 @@ const DrawerProfile = ({
 }: DrawerProfileProps) => {
   const user = useSelector((state: RootState) => state.user.userInfo);
   const router = useRouter();
+  const { hasRole} = useRoles();
 
   const handleClickProfile = () => {
     setIsDrawerOpen(false);
@@ -58,6 +60,14 @@ const DrawerProfile = ({
           >
             <Typography variant="body">Profile</Typography>
           </ButtonBase>
+          {hasRole('admin') && (
+            <ButtonBase
+              sx={{ width: '100%', paddingTop: 1, paddingBottom: 1 }}
+              onClick={() => router.push('/admin')}
+            >
+              <Typography variant="body">Admin page</Typography>
+            </ButtonBase>
+          )}
           <ButtonBase
             sx={{ width: '100%', paddingTop: 1, paddingBottom: 1 }}
             onClick={handleLogout}

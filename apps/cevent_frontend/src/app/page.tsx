@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { ALL_CATEGORY_VALUE } from '@/utils/constans';
 import BannerSection from '@/components/EventSection/BannerSection';
+import { Box } from '@mui/material';
 
 export default function Home() {
   const categories: EventCategory[] = useSelector(
@@ -16,6 +17,7 @@ export default function Home() {
   return (
     <>
       <BannerSection />
+      <Box sx={{ minHeight: "76vh" }}>
       <Layout>
         <CategoryEventSection category={ALL_CATEGORY_VALUE} />
         {categories &&
@@ -29,6 +31,7 @@ export default function Home() {
             );
           })}
       </Layout>
+      </Box>
     </>
   );
 }

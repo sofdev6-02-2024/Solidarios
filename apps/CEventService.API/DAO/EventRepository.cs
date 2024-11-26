@@ -45,6 +45,9 @@ public class EventRepository : BaseRepository<Event, int>, IEventRepository
         if (filters.EndDate.HasValue)
             query = query.Where(e => e.EventDate <= filters.EndDate.Value);
 
+        if (filters.OrganizerUserId.HasValue)
+            query = query.Where(e => e.OrganizerUserId == filters.OrganizerUserId.Value);
+
         if (filters.MinPrice.HasValue)
             query = query.Where(e => e.TicketPrice >= filters.MinPrice.Value);
 

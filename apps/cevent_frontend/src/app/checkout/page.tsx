@@ -38,6 +38,7 @@ export default function Checkout() {
             const platform = event.ticketPrice * 0.03;
             setPlatformFee(platform);
             const totalPrice = event.ticketPrice * parseInt(quantity, 10);
+            console.log('totalPrice', totalPrice);
             setFinalTotalPrice(totalPrice + platform);
           } else {
             router.push('/not_found');
@@ -74,7 +75,7 @@ export default function Checkout() {
               elevation={3}
               sx={{ ...checkoutStyles.formContainer, maxWidth: '800px' }}
             >
-              {finalTotalPrice > 0 ? (
+              {finalTotalPrice > 0 && eventData? (
                 <PaymentForm
                   callBackFunction={getATicket}
                   linkToRedirect={'/my_tickets'}

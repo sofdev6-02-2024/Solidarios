@@ -1,93 +1,90 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {
-  Box,
-  Typography,
-  Button,
-  CircularProgress,
-  Pagination,
-} from '@mui/material';
+import { Box, Typography, Button, Pagination } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import EventCard from './_components/EventCard';
 import EmptyEventSection from './_components/EmptyEventSection';
 import LoginPromptSection from './_components/LoginPromptSection';
 import { useSelector } from 'react-redux';
-import { fetchAllEvents } from '@/services/EventService';
+import {
+  fetchHomePageEvents,
+  getEventStadistics,
+} from '@/services/EventService';
 import { RootState } from '@/redux/store';
-import { EventDTO } from '@/utils/interfaces/SearchEventsOfUsers';
+import {
+  EventHomePageDto,
+  EventFilter,
+} from '@/utils/interfaces/EventInterfaces';
 import Layout from '@/components/Layout';
+import LinearLoading from '@/components/Loaders/LinearLoading';
+import EventCardPage from './_components/EventCardPage';
 
 export default function MyEventsPage() {
-  const [events, setEvents] = useState<EventDTO[]>([]);
+  const [events, setEvents] = useState<EventHomePageDto[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 3;
   const user = useSelector((state: RootState) => state.user.userInfo);
-
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 10;
+
+  const fetchEvents = (page: number) => {
+    const filter: EventFilter = {
+      page: page,
+      pageSize: PAGE_SIZE,
+      OrganizerUserId: user?.id,
+    };
+    setIsLoading(true);
+
+    fetchHomePageEvents(filter)
+      .then((data) => {
+        if (data) {
+          setEvents(data);
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const fetchTotalEvents = async () => {
+    let totalEvents = 0;
+    let currentResponse = 0;
+    const pageSize = 100;
+    let page = 0;
+    do {
+      page++;
+      const filter: EventFilter = {
+        page: page,
+        pageSize: pageSize,
+        OrganizerUserId: user?.id,
+      };
+      const response = await fetchHomePageEvents(filter);
+      currentResponse = response.length;
+      totalEvents += response.length;
+    } while (currentResponse % pageSize === 0);
+
+    setTotalPages(Math.ceil(totalEvents / PAGE_SIZE));
+  };
 
   useEffect(() => {
-    const fetchEventsForUser = async () => {
-      if (!user?.id) {
-        console.log('No user ID available.');
-        return;
-      }
-
-      try {
-        const allEvents = await fetchAllEvents();
-        const userEvents = allEvents.filter(
-          (event) => event.organizerUserId === user?.id,
-        );
-
-        const mappedEvents = userEvents.map((event) => ({
-          id: event.id,
-          name: event.name ?? '',
-          location: event.location,
-          venue: event.venue ?? '',
-          attendees: event.attendeeCount ?? 0,
-          activities: event.activities ?? 0,
-          description: event.description ?? '',
-          price: event.ticketPrice ?? 0,
-          organizerUserId: event.organizerUserId ?? '',
-          createdAt: event.createdAt ?? new Date(),
-          coverPhotoUrl: event.coverPhotoUrl ?? '',
-        }));
-
-        setEvents(mappedEvents);
-      } catch (error) {
-        console.error('Error fetching user events:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchEventsForUser();
-  }, [user?.id]);
+    if (user) {
+      fetchEvents(page);
+      fetchTotalEvents();
+    }
+  }, [user, page]);
 
   const handleCreateEvent = () => {
     router.push('/create_event');
   };
 
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    value: number,
-  ) => {
-    setCurrentPage(value);
-  };
-
-  const displayedEvents = events.slice(
-    (currentPage - 1) * eventsPerPage,
-    currentPage * eventsPerPage,
-  );
-
   if (status === 'loading') {
     return (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
+      <Box display="flex" justifyContent="center" sx={{ height: '80vh' }}>
+        <LinearLoading text="Loading your events..." />
       </Box>
     );
   }
@@ -106,48 +103,62 @@ export default function MyEventsPage() {
   }
 
   return (
-    <Box sx={{ padding: '2rem' }}>
-      <Layout>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h4" fontWeight="bold">
-            My Events
-          </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={handleCreateEvent}
-            sx={{ borderRadius: '10px' }}
+    <>
+      <Box sx={{ padding: '2rem', minHeight: '65vh' }}>
+        <Layout>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
           >
-            Create Event
-          </Button>
-        </Box>
-      </Layout>
+            <Typography variant="h4" fontWeight="bold">
+              My Events
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddIcon />}
+              onClick={handleCreateEvent}
+              sx={{ borderRadius: '10px' }}
+            >
+              Create Event
+            </Button>
+          </Box>
+        </Layout>
 
-      {isLoading ? (
+        {isLoading && events.length === 0 ? (
+          <Box display="flex" justifyContent="center" sx={{ height: '80vh' }}>
+            <LinearLoading text="Please wait..." />
+          </Box>
+        ) : events.length === 0 ? (
+          <Box
+            mt={4}
+            sx={{
+              height: '50vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <EmptyEventSection />
+          </Box>
+        ) : (
+          <Box mt={3} sx={{ width: '100%' }}>
+            <Layout>
+              {events.map((event) => (
+                <EventCardPage event={event} />
+              ))}
+            </Layout>
+          </Box>
+        )}
         <Box display="flex" justifyContent="center" mt={4}>
-          <CircularProgress />
-        </Box>
-      ) : events.length === 0 ? (
-        <Box mt={4}>
-          <EmptyEventSection />
-        </Box>
-      ) : (
-        <Box mt={3} display="flex" flexDirection="column" alignItems="center">
-          {displayedEvents.map((event) => (
-            <Box key={event.id} sx={{ width: '60%', mb: 3 }}>
-              <EventCard event={event} />
-            </Box>
-          ))}
           <Pagination
-            count={Math.ceil(events.length / eventsPerPage)}
-            page={currentPage}
-            onChange={handlePageChange}
+            count={totalPages}
             color="primary"
-            sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}
+            onChange={(e, p) => setPage(p)}
           />
         </Box>
-      )}
-    </Box>
+      </Box>
+    </>
   );
 }

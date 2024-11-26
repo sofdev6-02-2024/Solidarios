@@ -2,6 +2,7 @@
 using CEventService.API.DTOs.Event;
 using CEventService.API.Models;
 using CEventService.API.Services;
+using DTOs.Audit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -116,6 +117,17 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
             response = await _eventService.GetSummaryEvents(page, pageSize, filters);
         }
             
+        return Ok(response);
+    }
+
+    [HttpGet("audit/eventStadistics")]
+    public async Task<ActionResult<BasicDataCounterDto>> GetBasicCounterData ()
+    {
+        var response = await _eventService.GetBasicDataCounter();
+        if (response is null)
+        {
+            return NotFound("No statistics found.");
+        }
         return Ok(response);
     }
 
