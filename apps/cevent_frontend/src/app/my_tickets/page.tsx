@@ -30,9 +30,7 @@ export default function MyTicketsPage() {
           const userTickets = allTickets.filter(
             (ticket: TicketRequestDto) => ticket.userId === user?.id,
           );
-          console.log('userTickets:', userTickets);
           const allEvents = await fetchAllEvents();
-          console.log('allEvents:', allEvents);
           const eventIds = userTickets.map((ticket) => ticket.eventId);
           const userEvents = allEvents.filter((event: EventSearchToUserDto) =>
             eventIds.includes(event.id),
