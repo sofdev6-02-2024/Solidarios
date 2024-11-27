@@ -88,5 +88,12 @@ namespace TicketService.API.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<ICollection<TicketInfoDto>>> GetTicketByUserId(string userId)
+        {
+            var tickets = await _ticketService.GetTicketsByUserId(userId);
+            return tickets is null ? NotFound() : Ok(tickets);
+        }
     }
 }

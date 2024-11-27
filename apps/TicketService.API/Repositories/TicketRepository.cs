@@ -45,5 +45,12 @@ namespace TicketService.API.Repositories
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task<ICollection<Ticket>> GetTicketsByUser(string userId)
+        {
+            return await _context.Set<Ticket>()
+                .Where(t => t.UserId.Equals(userId))
+                .ToListAsync();
+        }
     }
 }

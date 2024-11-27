@@ -104,5 +104,20 @@ namespace TicketService.API.Services
                 QRContent = ticket.QRContent
             };
         }
+
+        public async Task<ICollection<TicketInfoDto>> GetTicketsByUserId(string userId)
+        {
+            var tickets = await _ticketRepository.GetTicketsByUser(userId);
+
+            var response = tickets.Select(ticket => new TicketInfoDto
+            {
+                TicketId = ticket.TicketId,
+                EventId = ticket.EventId,
+                UserId = ticket.UserId,
+                QRContent = ticket.QRContent,
+                IsUsed = ticket.IsUsed
+            }).ToList();
+            return response;
+        }
     }
 }
