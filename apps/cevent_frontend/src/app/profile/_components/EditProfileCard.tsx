@@ -44,6 +44,7 @@ const EditProfileCard = ({ user, setOpenEdit }: EditProfileCardProps) => {
       setSnackbarMessage('Error updating user');
       setSeverity('error');
     }
+    setOpenEdit(false);
     setOpenSnackbar(true);
     setLoading(false);
   };
@@ -88,14 +89,31 @@ const EditProfileCard = ({ user, setOpenEdit }: EditProfileCardProps) => {
         {loading ? (
           <LinearLoading text="Saving..." />
         ) : (
-          <Button
-            onClick={handleSave}
-            variant="contained"
-            color="primary"
-            disabled={!nameIsValid || !emailIsValid || !phoneNumberIsValid}
+          <Box
+            display={'flex'}
+            width={'100%'}
+            flexDirection={'row'}
+            justifyContent={'space-between'}
+            gap={2}
           >
-            Save
-          </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              onClick={() => setOpenEdit(false)}
+              variant="outlined"
+              color="primary"
+            >
+              Cancel
+            </Button>
+            <Button
+              sx={{ flexGrow: 1 }}
+              onClick={handleSave}
+              variant="contained"
+              color="primary"
+              disabled={!nameIsValid || !emailIsValid || !phoneNumberIsValid}
+            >
+              Save
+            </Button>
+          </Box>
         )}
       </Paper>
       <Snackbar

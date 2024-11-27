@@ -10,7 +10,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
  */
 export async function GET(request: Request) {
   const fullUrl = `${BASE_URL}/ticket-service/api/Ticket`;
-
+  console.log(fullUrl);
   try {
     const response = await axios.get(fullUrl);
     return NextResponse.json(response.data, { status: 200 });

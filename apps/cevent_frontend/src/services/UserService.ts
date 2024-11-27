@@ -32,4 +32,4 @@ export const updateUser = async (
   } catch (error) {
     return null;
   }
-}
+};

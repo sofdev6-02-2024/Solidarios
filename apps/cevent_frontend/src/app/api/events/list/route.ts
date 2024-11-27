@@ -11,7 +11,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = searchParams.get('page') || '1';
-  const pageSize = searchParams.get('pageSize') || '10';
+  const pageSize = searchParams.get('pageSize') || '100';
   const fullUrl = `${BASE_URL}/events/api/event`;
   try {
     const response = await axios.get(fullUrl, {
