@@ -2,7 +2,6 @@
 
 public class Activity : BaseEntity<int>
 {
-    public int Id { get; set; }
     public int EventId { get; set; }
     public required string Name { get; set; }
     public required string Description { get; set; }

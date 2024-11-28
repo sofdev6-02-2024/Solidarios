@@ -8,11 +8,11 @@ namespace CEventService.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 
-public class ActivitiesController: ControllerBase
+public class EventActivitiesController: ControllerBase
 {
     private IMapper _mapper;
     private IActivityService _activityService;
-    public ActivitiesController(IMapper mapper, IActivityService activityService)
+    public EventActivitiesController(IMapper mapper, IActivityService activityService)
     {
         _mapper = mapper;
         _activityService = activityService;
@@ -25,4 +25,5 @@ public class ActivitiesController: ControllerBase
         var activitiesDtoOuput = _mapper.Map<IEnumerable<ActivityOutputDto>>(activities);
         return Ok(activitiesDtoOuput);
     }
+    
 }
