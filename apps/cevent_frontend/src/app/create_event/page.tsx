@@ -29,8 +29,11 @@ interface PriceCapacityData {
   ticketPrice: number;
 }
 
+interface ImageData {
+  coverPhotoUrl: string;
+}
+
 const CreateEvent = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [generalInfo, setGeneralInfo] = useState<GeneralInfoData>({
     title: '',
     shortDescription: '',
@@ -45,14 +48,12 @@ const CreateEvent = () => {
     capacity: 0,
     ticketPrice: 0,
   });
+  const [imageData, setImageData] = useState<ImageData>({
+    coverPhotoUrl: '',
+  });
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setSelectedImage(reader.result as string);
-      reader.readAsDataURL(file);
-    }
+  const handleImageChange = (data: ImageData) => {
+    setImageData(data);
   };
 
   const handleGeneralInfoComplete = (data: GeneralInfoData) => {
@@ -77,16 +78,12 @@ const CreateEvent = () => {
           </Typography>
         </Box>
 
-        <ImageUpload
-          selectedImage={selectedImage}
-          onImageChange={handleImageChange}
-        />
+        <ImageUpload onComplete={handleImageChange} />
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
         <Activities
           onAddActivity={(newActivity) =>
-            //TODO: Add implementation
             console.log('Nueva actividad agregada:', newActivity)
           }
         />
@@ -98,7 +95,7 @@ const CreateEvent = () => {
           generalInfo={generalInfo}
           dateLocation={dateLocation}
           priceCapacity={priceCapacity}
-          selectedImage={selectedImage}
+          selectedImage={imageData.coverPhotoUrl}
         />
       </Box>
     </Box>

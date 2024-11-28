@@ -1,38 +1,46 @@
-import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
-import { ImageUploadProps } from '@/utils/interfaces/CreateEvent';
-import '../_styles/ImageUpload.css';
+import React, { useState } from 'react';
+import { Box, Typography } from '@mui/material';
+import UploadImageButton from '@/components/UploadImageButton';
 
-const DEFAULT_IMAGE =
-  'https://i.postimg.cc/XvfZ2cSP/47b39a54d7fa589dd5cf851ee1d2fb61.jpg';
+interface ImageUploadProps {
+  onComplete: (imageData: { coverPhotoUrl: string }) => void;
+}
 
-const ImageUpload: React.FC<ImageUploadProps> = ({
-  selectedImage,
-  onImageChange,
-}) => {
-  const imageToShow = selectedImage || DEFAULT_IMAGE;
+const ImageUpload: React.FC<ImageUploadProps> = ({ onComplete }) => {
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+
+  const handleImageUpload = (fileUrl: string) => {
+    setUploadedImage(fileUrl);
+    console.log('Image uploaded. URL:', fileUrl);
+    onComplete({ coverPhotoUrl: fileUrl });
+  };
 
   return (
     <Box className="image-upload" sx={{ textAlign: 'center', padding: '16px' }}>
       <Typography variant="h6">Upload Image</Typography>
 
-      <Button
+      <UploadImageButton
+        onComplete={handleImageUpload}
         variant="contained"
-        color="primary"
-        component="label"
-        sx={{ marginBottom: '16px' }}
-      >
-        Select Image
-        <input type="file" hidden onChange={onImageChange} />
-      </Button>
+        textButton="Select Image"
+      />
 
-      <Box>
-        <img
-          src={imageToShow}
-          alt="Selected"
-          className="selected-image"
-          style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px' }}
-        />
+      <Box mt={2}>
+        {uploadedImage ? (
+          <img
+            src={uploadedImage}
+            alt="Uploaded"
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+              borderRadius: '8px',
+            }}
+          />
+        ) : (
+          <Typography variant="body2" color="textSecondary">
+            No image uploaded yet.
+          </Typography>
+        )}
       </Box>
     </Box>
   );

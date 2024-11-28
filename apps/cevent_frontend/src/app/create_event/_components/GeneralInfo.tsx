@@ -87,6 +87,10 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         aria-label="Title"
         InputProps={{
           className: 'text-field-outline',
+          style: { color: '#000000' },
+        }}
+        InputLabelProps={{
+          style: { color: '#555555' },
         }}
       />
 
@@ -107,6 +111,10 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         aria-label="Short Description"
         InputProps={{
           className: 'text-field-outline',
+          style: { color: '#000000' },
+        }}
+        InputLabelProps={{
+          style: { color: '#555555' },
         }}
       />
 
@@ -129,6 +137,10 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         aria-label="Description"
         InputProps={{
           className: 'text-field-outline',
+          style: { color: '#000000' },
+        }}
+        InputLabelProps={{
+          style: { color: '#555555' },
         }}
       />
 
@@ -149,12 +161,16 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         aria-label="Category"
         InputProps={{
           className: 'text-field-outline',
+          style: { color: '#000000' },
+        }}
+        InputLabelProps={{
+          style: { color: '#555555' },
         }}
         SelectProps={{
           native: true,
         }}
       >
-        <option value="" disabled></option>
+        <option value={0} disabled></option>
         {categories.map((category) => (
           <option key={category.id} value={category.id}>
             {category.keyWord}
