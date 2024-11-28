@@ -21,7 +21,7 @@ import PaymentForm from '@/components/Checkout/PaymentForm';
 import { PaymentInterface } from '@/utils/interfaces/Payment';
 import LinearLoading from '@/components/Loaders/LinearLoading';
 import Layout from '@/components/Layout';
-import { generateTicket } from '@/services/TicketService';
+import { generateTickets } from '@/services/TicketService';
 import { TicketPostInterface } from '@/utils/interfaces/TIcketsInterfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
@@ -63,14 +63,17 @@ export default function Checkout() {
     }
   }, [eventId, quantity, router]);
 
-  const getATicket = async (): Promise<boolean> => {
+  const getTickets = async (): Promise<boolean> => {
     if (eventId) {
       const ticketPost: TicketPostInterface = {
         eventId: eventData?.id || 0,
         userId: user?.id || '',
       };
       const dataUpdated = await getEventById(eventId);
-      const response = await generateTicket(ticketPost);
+      const response = await generateTickets(
+        ticketPost,
+        parseInt(quantity, 10),
+      );
       const eventStatus: EventStatus = {
         attendeeCount: (dataUpdated?.attendeeCount ?? 0) + parseInt(quantity),
       };
@@ -95,7 +98,7 @@ export default function Checkout() {
             >
               {finalTotalPrice > 0 && eventData ? (
                 <PaymentForm
-                  callBackFunction={getATicket}
+                  callBackFunction={getTickets}
                   linkToRedirect={'/my_tickets'}
                   paymentInterface={
                     {
