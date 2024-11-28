@@ -15,8 +15,9 @@ public class ActivityService : BaseService<Event, int>, IActivityService
     public async Task<Activity> DeleteActivity(int eventId, int id)
     {
         var eventActivity = await _repository.GetByIdAsync(eventId);
-        var activity = eventActivity.Activities.First( act => act.Id == id);
+        var activity = eventActivity.Activities.FirstOrDefault(act => act.Id == id);
         eventActivity.Activities.Remove(activity);
+        await _repository.UpdateAsync(eventId, eventActivity);
         return activity;
     }
 
@@ -26,18 +27,30 @@ public class ActivityService : BaseService<Event, int>, IActivityService
         return eventActivity.Activities;
     }
 
-    public Task<IEnumerable<Activity>> GetActivitiesByStatus(int eventId, int status)
+    public async Task<IEnumerable<Activity>> GetActivitiesByStatus(int eventId, int status)
     {
-        throw new NotImplementedException();
+        var eventActivity = await _repository.GetByIdAsync(eventId);
+        return eventActivity.Activities.Where(act => (int)act.Status == status);
     }
 
-    public Task<Activity> GetActivity(int eventId, int id)
+    public async Task<Activity> UpdateActivity(int eventId, Activity activity)
     {
-        throw new NotImplementedException();
+        var eventActivity = await _repository.GetByIdAsync(eventId);
+        var existingActivity = eventActivity.Activities.FirstOrDefault(act => act.Id == activity.Id);
+        existingActivity.Name = activity.Name;
+        existingActivity.Description = activity.Description;
+        existingActivity.StartTime = activity.StartTime;
+        existingActivity.EndTime = activity.EndTime;
+        existingActivity.Capacity = activity.Capacity;
+        existingActivity.Status = activity.Status;
+        await _repository.UpdateAsync(eventId, eventActivity);
+        return existingActivity;
     }
 
-    public Task<IEnumerable<Activity>> UpdateActivity(int eventId, Activity activity)
+    public async Task<Activity> GetActivity(int eventId, int id)
     {
-        throw new NotImplementedException();
+        var eventActivity = await _repository.GetByIdAsync(eventId);
+        var activity = eventActivity.Activities.FirstOrDefault(act => act.Id == id);
+        return activity;
     }
 }
