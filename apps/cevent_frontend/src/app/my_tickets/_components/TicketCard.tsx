@@ -8,8 +8,10 @@ import {
   Box,
 } from '@mui/material';
 import EventIcon from '@mui/icons-material/Event';
-import PlaceIcon from '@mui/icons-material/Place';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import ConfirmationNumberOutlinedIcon from '@mui/icons-material/ConfirmationNumberOutlined';
+import { extractWordByComma, formatDate } from '@/utils/methods/stringMethods';
+import styles from '@/styles/components/CardEventStyles';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 export interface EventSearchToUserDto {
   id: number;
@@ -21,6 +23,8 @@ export interface EventSearchToUserDto {
   capacity: number;
   ticketPrice: number;
   ticketCount?: number;
+  address: string;
+  category: string;
 }
 
 interface TicketCardProps {
@@ -50,47 +54,64 @@ export default function TicketCard({ event }: TicketCardProps) {
       <Box
         sx={{
           position: 'absolute',
-          bottom: 155,
+          bottom: 144,
           right: 8,
           zIndex: 1,
+          height: 'auto',
+          padding: '5px',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 1,
         }}
       >
         {(event.ticketCount ?? 0) > 1 && (
           <Chip
             label={
               <>
-                <ConfirmationNumberIcon
-                  sx={{ fontSize: 14, mr: 0.5, verticalAlign: 'middle' }}
+                <ConfirmationNumberOutlinedIcon
+                  sx={{
+                    fontSize: 14,
+                    mr: 0.5,
+                    verticalAlign: 'middle',
+                  }}
+                  color="primary"
                 />
                 {event.ticketCount}
               </>
             }
-            color="secondary"
-            sx={{ ml: 1 }}
+            sx={{
+              ml: 1,
+              backgroundColor: 'white',
+              height: '24px',
+            }}
           />
         )}
 
-        <Chip label={`$${event.ticketPrice}`} color="primary" />
+        <Chip
+          label={`$${event.ticketPrice}`}
+          color="primary"
+          sx={{
+            height: '24px',
+          }}
+        />
       </Box>
 
       <CardContent>
-        <Typography variant="h6" component="div" gutterBottom>
+        <Typography variant="bodyLarge" sx={{ fontWeight: 'bold' }}>
           {event.name}
         </Typography>
         <Stack direction="row" spacing={1} mb={1}>
-          <Chip label={event.capacity} color="primary" size="small" />
-          <Typography variant="body2" color="text.secondary">
-            <EventIcon
-              sx={{ fontSize: 16, verticalAlign: 'middle', mr: 0.5 }}
-            />
-            {new Date(event.eventDate).toLocaleDateString()}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <PlaceIcon
-              sx={{ fontSize: 16, verticalAlign: 'middle', mr: 0.5 }}
-            />
-            {event.venue}
-          </Typography>
+          <Chip label={event.category} color="primary" size="small" />
+          <Chip
+            icon={<EventIcon color="primary" sx={{ fontSize: 16 }} />}
+            label={formatDate(event.eventDate)}
+            sx={styles.chipEventDateStyles}
+          />
+          <Chip
+            icon={<LocationOnIcon color="primary" sx={{ fontSize: 16 }} />}
+            label={extractWordByComma(event.address, 2)}
+            sx={styles.chipLocationStyles}
+          />
         </Stack>
         <Typography variant="body2" color="text.secondary">
           {event.shortDescription}
