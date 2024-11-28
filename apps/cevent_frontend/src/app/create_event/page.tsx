@@ -11,6 +11,7 @@ import {
   Steps,
 } from './_components/imports';
 import styles from './_styles/CreateEvent.module.css';
+import { Activity} from '@/utils/interfaces/CreateEvent';
 
 interface GeneralInfoData {
   title: string;
@@ -29,8 +30,18 @@ interface PriceCapacityData {
   ticketPrice: number;
 }
 
+
 const CreateEvent = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [activitiesS, setActivitiesS] = useState<Activity[]>([{
+      name: "",
+      description: "",
+      startTime: new Date().toISOString(),
+      endTime: new Date().toISOString(),
+      capacity: 1,
+      createdAt: "",
+  },]);
+
   const [generalInfo, setGeneralInfo] = useState<GeneralInfoData>({
     title: '',
     shortDescription: '',
@@ -45,6 +56,10 @@ const CreateEvent = () => {
     capacity: 0,
     ticketPrice: 0,
   });
+
+  const handleActivitiesComplete = (data: Activity[]) => {
+    setActivitiesS(data);
+  }
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -85,16 +100,14 @@ const CreateEvent = () => {
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
         <Activities
-          onAddActivity={(newActivity) =>
-            //TODO: Add implementation
-            console.log('Nueva actividad agregada:', newActivity)
-          }
+          onComplete = {handleActivitiesComplete}
         />
         <AditionalSettings />
       </Box>
 
       <Box flex={1} pl={2}>
         <Steps
+          activities= {activitiesS}
           generalInfo={generalInfo}
           dateLocation={dateLocation}
           priceCapacity={priceCapacity}

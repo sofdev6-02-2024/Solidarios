@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import { routes } from '@/utils/navigation/Routes';
+import { Activity} from '@/utils/interfaces/CreateEvent';
 
 export interface GeneralInfoProps {
   title: string;
@@ -38,11 +39,13 @@ export interface PriceCapacityProps {
 }
 
 const Steps = ({
+  activities,
   generalInfo,
   dateLocation,
   priceCapacity,
   selectedImage,
 }: {
+  activities: Activity[];
   generalInfo: GeneralInfoProps;
   dateLocation: DateLocationProps;
   priceCapacity: PriceCapacityProps;
@@ -80,6 +83,7 @@ const Steps = ({
   const user = useSelector((state: RootState) => state.user.userInfo);
 
   const handleSubmit = async () => {
+    console.log(activities)
     if (
       isGeneralInfoComplete &&
       isDateLocationComplete &&
@@ -107,6 +111,7 @@ const Steps = ({
         createdAt: new Date(),
         address: dateLocation.location || '',
         attendeeCount: 0,
+        activities: activities || [],
       };
 
       try {
