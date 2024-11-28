@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, Typography, TextField, Button } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
-import { Activity} from '@/utils/interfaces/CreateEvent';
+import { Activity, ActivitiesProps } from '@/utils/interfaces/CreateEvent';
 import '../_styles/Activities.css';
 
-interface ActivitiesProps{
-  onComplete: (activities: Activity[]) => void;
-}
-const Activities: React.FC<ActivitiesProps> = ({ onComplete }) => {
+const Activities: React.FC<ActivitiesProps> = ({ onAddActivity }) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [activityTitle, setActivityTitle] = useState<string>('');
   const [activityDescription, setActivityDescription] = useState<string>('');
@@ -34,12 +31,10 @@ const Activities: React.FC<ActivitiesProps> = ({ onComplete }) => {
       setEndTime('');
       setCapacity('');
       setShowActivityInputs(false);
+
+      onAddActivity(newActivity);
     }
   };
-
-  useEffect(() => {
-    onComplete(activities);
-  }, [activities, onComplete]);
 
   return (
     <Box className="info-box">

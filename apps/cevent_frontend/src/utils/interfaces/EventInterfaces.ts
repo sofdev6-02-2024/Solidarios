@@ -6,12 +6,12 @@ export interface Location {
 }
 
 export interface Activity {
+  eventId: number;
   name: string;
   description: string;
-  startTime: string;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   capacity: number;
-  createdAt: string;
 }
 
 export interface EventHomePageDto {
@@ -95,7 +95,6 @@ export interface EventInputDto {
   createdAt: Date;
   address: string;
   attendeeCount: number;
-  activities: Activity[];
 }
 
 export enum SizeBanner {
