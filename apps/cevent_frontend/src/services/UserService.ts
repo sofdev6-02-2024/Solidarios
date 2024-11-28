@@ -22,3 +22,14 @@ export const registerUser = async (
     return null;
   }
 };
+
+export const updateUser = async (
+  user: UserInterface,
+): Promise<UserInterface | null> => {
+  try {
+    const response = await axios.put(`/api/users/${user.id}`, user);
+    return response.data;
+  } catch (error) {
+    return null;
+  }
+};

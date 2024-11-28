@@ -24,7 +24,6 @@ export async function GET(request: Request) {
   }
 
   const fullUrl = `${BASE_URL}/events/api/event/banner/${category}`;
-  console.log(fullUrl);
 
   try {
     const response = await axios.get(fullUrl, {
