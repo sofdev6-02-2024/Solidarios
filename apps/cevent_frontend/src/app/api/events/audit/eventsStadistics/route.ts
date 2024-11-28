@@ -5,7 +5,6 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 export async function GET(request: Request) {
   try {
     const fullUrl = `${BASE_URL}/events/api/event/audit/eventStadistics`;
-    console.log(fullUrl);
     const response = await axios.get(fullUrl);
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {

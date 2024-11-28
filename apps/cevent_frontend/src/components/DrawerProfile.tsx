@@ -1,26 +1,35 @@
 import { useRoles } from '@/hooks/use-roles';
 import { RootState } from '@/redux/store';
 import { keycloakSessionLogOut } from '@/services/AuthService';
-import { Avatar, Box, ButtonBase, Drawer, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Menu,
+  MenuItem,
+  Typography,
+  IconButton,
+} from '@mui/material';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import React, { useState } from 'react';
 
 interface DrawerProfileProps {
-  isDrawerOpen: boolean;
-  setIsDrawerOpen: (value: boolean) => void;
+  setAnchorEl: (value: null | HTMLElement) => void;
+  anchorEl: null | HTMLElement;
 }
 
-const DrawerProfile = ({
-  isDrawerOpen,
-  setIsDrawerOpen,
-}: DrawerProfileProps) => {
+const DrawerProfile = ({ setAnchorEl, anchorEl }: DrawerProfileProps) => {
   const user = useSelector((state: RootState) => state.user.userInfo);
   const router = useRouter();
   const { hasRole } = useRoles();
 
   const handleClickProfile = () => {
-    setIsDrawerOpen(false);
+    setAnchorEl(null);
     router.push('/profile');
   };
 
@@ -29,15 +38,19 @@ const DrawerProfile = ({
       signOut({ callbackUrl: '/' });
     });
   };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <Drawer
-      anchor="right"
-      open={isDrawerOpen}
-      onClose={() => setIsDrawerOpen(false)}
+    <Menu
+      anchorEl={anchorEl}
+      open={Boolean(anchorEl)}
+      onClose={handleMenuClose}
     >
       <Box
         sx={{
-          width: 250,
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
@@ -45,38 +58,45 @@ const DrawerProfile = ({
           gap: 2,
         }}
       >
-        <Avatar
-          sx={{ width: 80, height: 80 }}
-          alt={user?.name}
-          src={user?.photoUrl}
-        />
-        <Typography textAlign={'center'} variant="body">
-          {user?.name}
-        </Typography>
-        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-          <ButtonBase
-            sx={{ width: '100%', paddingTop: 1, paddingBottom: 1 }}
-            onClick={handleClickProfile}
-          >
-            <Typography variant="body">Profile</Typography>
-          </ButtonBase>
+        <Box display="flex" flexDirection="row" gap={2}>
+          <Avatar
+            sx={{ width: 60, height: 60 }}
+            alt={user?.name}
+            src={user?.photoUrl}
+          />
+          <Box display="flex" flexDirection="column" maxWidth={200}>
+            <Typography fontWeight={'bold'} textAlign={'left'} variant="body">
+              {user?.name}
+            </Typography>
+            <Typography textAlign={'left'} variant="body">
+              {user?.email}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          width={'100%'}
+          display="flex"
+          justifyContent="flex-start"
+          flexDirection="column"
+        >
+          <MenuItem onClick={handleClickProfile}>
+            <PersonOutlineIcon sx={{ marginRight: 1 }} color="primary" />
+            <Typography fontWeight={300} variant="body">
+              Profile
+            </Typography>
+          </MenuItem>
           {hasRole('admin') && (
-            <ButtonBase
-              sx={{ width: '100%', paddingTop: 1, paddingBottom: 1 }}
-              onClick={() => router.push('/admin')}
-            >
+            <MenuItem onClick={() => router.push('/admin')}>
               <Typography variant="body">Admin page</Typography>
-            </ButtonBase>
+            </MenuItem>
           )}
-          <ButtonBase
-            sx={{ width: '100%', paddingTop: 1, paddingBottom: 1 }}
-            onClick={handleLogout}
-          >
+          <MenuItem onClick={handleLogout}>
+            <LogoutIcon sx={{ marginRight: 1, color: '#dd5b5b' }} />
             <Typography variant="body">Log Out</Typography>
-          </ButtonBase>
+          </MenuItem>
         </Box>
       </Box>
-    </Drawer>
+    </Menu>
   );
 };
 
