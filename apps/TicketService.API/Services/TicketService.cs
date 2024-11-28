@@ -35,6 +35,34 @@ namespace TicketService.API.Services
                 QRContent = createdTicket.QRContent,
             };
         }
+        
+        public async Task<IEnumerable<TicketResponseDto>> GenerateTicketsAsync(TicketRequestDto ticketRequest, int quantity)
+        {
+            var tickets = new List<Ticket>();
+
+            for (int i = 0; i < quantity; i++)
+            {
+                var ticket = new Ticket
+                {
+                    EventId = ticketRequest.EventId,
+                    UserId = ticketRequest.UserId,
+                    QRContent = _generatorUtility.GenerateQrContent()
+                };
+
+                ticket.QRContent = _generatorUtility.GenerateQrCode(ticket.QRContent);
+
+                tickets.Add(ticket);
+            }
+
+            var createdTickets = await _ticketRepository.CreateTicketsAsync(tickets);
+
+            return createdTickets.Select(ticket => new TicketResponseDto
+            {
+                TicketId = ticket.TicketId.ToString(),
+                QRContent = ticket.QRContent
+            }).ToList();
+        }
+
 
         public async Task<IEnumerable<TicketRequestDto>> GetAllTicketsAsync()
         {

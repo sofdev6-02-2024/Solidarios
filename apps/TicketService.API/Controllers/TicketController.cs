@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Mvc;
 using TicketService.API.DTOs;
+using TicketService.API.Models;
 using TicketService.API.Services;
 
 namespace TicketService.API.Controllers
@@ -94,6 +96,14 @@ namespace TicketService.API.Controllers
         {
             var tickets = await _ticketService.GetTicketsByUserId(userId);
             return tickets is null ? NotFound() : Ok(tickets);
+        }
+
+        [HttpPost("generate/{quantity}")]
+        public async Task<ActionResult<IEnumerable<TicketInfoDto>>> CreateTickets(int quantity, [FromBody] TicketRequestDto ticketRequest)
+        {
+            var tickets = await _ticketService.GenerateTicketsAsync(ticketRequest, quantity);
+            return tickets is null ? NotFound() : Ok(tickets);
+
         }
     }
 }
