@@ -9,7 +9,7 @@ import {
   Activities,
   AditionalSettings,
   Steps,
-}from './_components/imports';
+} from './_components/imports';
 import styles from './_styles/CreateEvent.module.css';
 
 interface GeneralInfoData {

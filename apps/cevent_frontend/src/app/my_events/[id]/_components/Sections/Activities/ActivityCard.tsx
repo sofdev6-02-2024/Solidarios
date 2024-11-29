@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography, Card, CardContent } from '@mui/material';
 import StatusDropdown from './ActivityStatusDropdown';
 
-
 interface ActivityCardProps {
   title: string;
   description: string;
@@ -21,7 +20,9 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   onStatusChange,
 }) => {
   return (
-    <Card sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 2 }}>
+    <Card
+      sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 2 }}
+    >
       <CardContent>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box>

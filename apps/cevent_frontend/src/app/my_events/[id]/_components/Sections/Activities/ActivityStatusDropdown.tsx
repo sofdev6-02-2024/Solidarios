@@ -16,7 +16,10 @@ interface StatusDropdownProps {
   onChange: (newStatus: string) => void;
 }
 
-export const StatusDropdown: React.FC<StatusDropdownProps> = ({ currentStatus, onChange }) => {
+export const StatusDropdown: React.FC<StatusDropdownProps> = ({
+  currentStatus,
+  onChange,
+}) => {
   const [status, setStatus] = useState<string>(currentStatus);
 
   const handleChange = (event: SelectChangeEvent<string>) => {

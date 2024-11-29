@@ -53,7 +53,9 @@ const EventManagementPage = () => {
       ) : event ? (
         <>
           {section === ManagementSections.Home && <HomeSection event={event} />}
-          {section === ManagementSections.Activities && <ActivitiesSection id={id.toString()} />}
+          {section === ManagementSections.Activities && (
+            <ActivitiesSection id={id.toString()} />
+          )}
           {section === ManagementSections.AttendanceList && (
             <AttendanceListSection />
           )}

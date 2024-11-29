@@ -177,8 +177,6 @@ export const getEventStadistics = async (): Promise<EventsStadistic | null> => {
   }
 };
 
-
-
 export const updateStatusEvent = async (
   eventState: EventStatus,
   eventId: number,
@@ -193,18 +191,21 @@ export const updateStatusEvent = async (
   } catch (error) {
     return false;
   }
-}
+};
 
 /**
  *  Fetches the activities of the events
  *
  * @returns Event activities object
  */
-export const getEventActivities = async (id: string, status: string): Promise<EventActivity[] | null> => {
+export const getEventActivities = async (
+  id: string,
+  status: string,
+): Promise<EventActivity[] | null> => {
   try {
-    console.log("first")
+    console.log('first');
     const apiUrl = `${BASE_URL}/api/events/${id}/activities?status=${status}`;
-    console.log(apiUrl)
+    console.log(apiUrl);
     const response = await axios.get<EventActivity[]>(apiUrl);
     console.log(response.data);
     return response.data || [];

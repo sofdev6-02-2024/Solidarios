@@ -1,5 +1,11 @@
 import React from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from '@mui/material';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+} from '@mui/material';
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -7,7 +13,11 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
 }
 
-const ConfirmDialog: React.FC<ConfirmDialogProps> = ({ open, onClose, onConfirm }) => {
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
+  open,
+  onClose,
+  onConfirm,
+}) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Confirm Status Change</DialogTitle>
