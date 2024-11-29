@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, CircularProgress } from '@mui/material';
 import { ActivityCard } from './ActivityCard';
-import { getEventActivities } from '@/services/EventService';
-import { EventActivity } from '@/utils/interfaces/EventActivities';
+import {
+  getEventActivities,
+  updateEventActivity,
+} from '@/services/EventService';
+import {
+  EventActivity,
+  EventActivityDto,
+} from '@/utils/interfaces/EventActivities';
 import ConfirmDialog from './EditStatusDialog';
 
 const EventStatus = {
@@ -33,6 +39,25 @@ const getStatusString = (status: number): string => {
   }
 };
 
+const getStatusNumber = (status: string): number => {
+  switch (status) {
+    case 'Pending':
+      return 1;
+    case 'Cancelled':
+      return 2;
+    case 'Postponed':
+      return 3;
+    case 'In Progress':
+      return 4;
+    case 'Completed':
+      return 5;
+    case 'On Hold':
+      return 6;
+    default:
+      return 0;
+  }
+};
+
 interface ActivitiesSectionProps {
   id: string;
 }
@@ -43,7 +68,12 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
   >({});
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [newStatus, setNewStatus] = useState<string>('');
+  const [selectedActivity, setSelectedActivity] =
+    useState<EventActivity | null>(null);
+  const [newStatus, setNewStatus] = useState<number>(0);
+  const [lastStatusChangeMap, setLastStatusChangeMap] = useState<
+    Record<number, string>
+  >({});
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -76,14 +106,66 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
     fetchActivities();
   }, [id]);
 
-  const handleStatusChange = (newStatus: string) => {
-    setNewStatus(newStatus);
+  const getCurrentTime = () => {
+    const now = new Date();
+    let hours = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const period = hours >= 12 ? 'PM' : 'AM';
+
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes} ${period}`;
+  };
+
+  const handleStatusChange = (activity: EventActivity, status: number) => {
+    setLastStatusChangeMap((prevMap) => ({
+      ...prevMap,
+      [activity.id]: getCurrentTime(),
+    }));
+    setSelectedActivity(activity);
+    setNewStatus(status);
     setOpenDialog(true);
   };
 
-  const handleStatusChangeIfPressedYes = () => {
-    console.log(`Status Changed to ${newStatus}`);
-    setOpenDialog(false);
+  const handleStatusChangeIfPressedYes = async () => {
+    if (!selectedActivity) return;
+
+    const updatedActivity: EventActivityDto = {
+      name: selectedActivity.name,
+      description: selectedActivity.description,
+      startTime: selectedActivity.startTime,
+      endTime: selectedActivity.endTime,
+      status: newStatus,
+      capacity: selectedActivity.capacity,
+    };
+
+    try {
+      const updated = await updateEventActivity(
+        id,
+        selectedActivity.id.toString(),
+        updatedActivity,
+      );
+      if (updated) {
+        console.log(
+          `Activity status updated to: ${getStatusString(newStatus)}`,
+        );
+        setActivitiesByStatus((prev) => {
+          const updatedStatusActivities = prev[selectedActivity.status].filter(
+            (a) => a.id !== selectedActivity.id,
+          );
+          const newStatusActivities = [...(prev[newStatus] || []), updated];
+          return {
+            ...prev,
+            [selectedActivity.status]: updatedStatusActivities,
+            [newStatus]: newStatusActivities,
+          };
+        });
+      }
+    } catch (error) {
+      console.error('Failed to update activity status:', error);
+    } finally {
+      setOpenDialog(false);
+    }
   };
 
   const handleDialogClose = () => {
@@ -107,7 +189,10 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         status={getStatusString(activity.status)}
         startTime={new Date(activity.startTime).toLocaleString()}
         endTime={new Date(activity.endTime).toLocaleString()}
-        onStatusChange={handleStatusChange}
+        onStatusChange={(status) =>
+          handleStatusChange(activity, getStatusNumber(status))
+        }
+        lastStatusChange={lastStatusChangeMap[activity.id] || ''}
       />
     ));
   };

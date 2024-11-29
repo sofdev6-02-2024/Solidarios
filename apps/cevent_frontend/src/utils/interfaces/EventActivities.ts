@@ -8,3 +8,12 @@ export interface EventActivity {
   status: number;
   capacity: number;
 }
+
+export interface EventActivityDto {
+  name: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  status: number;
+  capacity: number;
+}
