@@ -51,10 +51,11 @@ export interface EventSearchToUserDto
   capacity: number;
   organizerUserId: string;
   createdAt: Date;
-  category: EventCategory;
+  category: string;
   description: string;
   activities: number;
   ticketCount?: number;
+  address: string;
 }
 
 export enum SortOptions {

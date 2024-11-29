@@ -34,6 +34,7 @@ export default function Header() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const user = useSelector((state: RootState) => state.user.userInfo);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const { session } = useLoginUser();
 
@@ -158,7 +159,7 @@ export default function Header() {
                 <IconButton
                   size="large"
                   color="inherit"
-                  onClick={() => setDrawerOpen(true)}
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
                 >
                   <Avatar alt={user?.name} src={user?.photoUrl} />
                 </IconButton>
@@ -182,12 +183,8 @@ export default function Header() {
           </>
         )}
       </Toolbar>
-      {drawerOpen && (
-        <DrawerProfile
-          isDrawerOpen={drawerOpen}
-          setIsDrawerOpen={setDrawerOpen}
-        />
-      )}
+
+      <DrawerProfile setAnchorEl={setAnchorEl} anchorEl={anchorEl} />
     </AppBar>
   );
 }

@@ -8,10 +8,9 @@ import { RootState } from '@/redux/store';
 import TicketCard from './_components/TicketCard';
 import LoginPromptSection from './_components/LoginPromptSection';
 import EmptyTicketSection from './_components/EmptyTicketSection';
-import { fetchTickets } from '@/services/TicketService';
-import { fetchAllEvents } from '@/services/EventService';
+import { fetchTicketsByUserId } from '@/services/TicketService';
+import { getEventsByIds } from '@/services/EventService';
 import { EventSearchToUserDto } from '@/utils/interfaces/EventInterfaces';
-import { TicketRequestDto } from '@/utils/interfaces/TicketInterfaces';
 
 export default function MyTicketsPage() {
   const [filteredEvents, setFilteredEvents] = useState<EventSearchToUserDto[]>(
@@ -24,17 +23,11 @@ export default function MyTicketsPage() {
 
   useEffect(() => {
     const fetchUserTicketsAndEvents = async () => {
-      if (session) {
+      if (session && user?.id) {
         try {
-          const allTickets = await fetchTickets();
-          const userTickets = allTickets.filter(
-            (ticket: TicketRequestDto) => ticket.userId === user?.id,
-          );
-          const allEvents = await fetchAllEvents();
+          const userTickets = await fetchTicketsByUserId(user?.id);
           const eventIds = userTickets.map((ticket) => ticket.eventId);
-          const userEvents = allEvents.filter((event: EventSearchToUserDto) =>
-            eventIds.includes(event.id),
-          );
+          const userEvents = await getEventsByIds(eventIds);
           const ticketCounts = userTickets.reduce(
             (acc, ticket) => {
               acc[ticket.eventId] = (acc[ticket.eventId] || 0) + 1;
@@ -54,7 +47,7 @@ export default function MyTicketsPage() {
     };
 
     fetchUserTicketsAndEvents();
-  }, [session]);
+  }, [session, user?.id]);
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -89,15 +82,31 @@ export default function MyTicketsPage() {
   }
 
   return (
-    <Box sx={{ padding: 3, display: 'flex', justifyContent: 'center' }}>
+    <Box
+      sx={{
+        padding: 3,
+        display: 'flex',
+        justifyContent: 'center',
+        minHeight: '70vh',
+      }}
+    >
       <Box sx={{ maxWidth: '60%', width: '100%' }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          <span style={{ color: 'black' }}>My </span>
-          <span style={{ color: '#1e88e5' }}>Tickets</span>
-        </Typography>
+        <Box display={'flex'} flexDirection={'row'} gap={1}>
+          <Typography variant="h1" fontWeight={'bold'}>
+            My
+          </Typography>
+          <Typography variant="h1" color="primary" fontWeight={'bold'}>
+            Tickets
+          </Typography>
+        </Box>
 
         {filteredEvents.length === 0 ? (
-          <Box mt={4}>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height={'100%'}
+          >
             <EmptyTicketSection />
           </Box>
         ) : (
