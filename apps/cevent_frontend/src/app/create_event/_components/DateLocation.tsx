@@ -5,11 +5,17 @@ import {
   TextField,
   InputAdornment,
   Modal,
+  FormHelperText,
 } from '@mui/material';
 import { CalendarToday, AccessTime, LocationOn } from '@mui/icons-material';
 import Calendar from 'react-calendar';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import '../_styles/DateLocation.css';
+import {
+  validateEventDate,
+  validateEventHour,
+  validateLocation,
+} from '@/utils/Validations';
 
 type DateLocationData = {
   date: Date;
@@ -32,6 +38,12 @@ const DateLocation = ({
     longitude: null,
   });
 
+  const [errors, setErrors] = useState({
+    date: '',
+    time: '',
+    location: '',
+  });
+
   const [mapState, setMapState] = useState({
     openDateModal: false,
     openTimeModal: false,
@@ -44,16 +56,18 @@ const DateLocation = ({
     libraries: ['places'],
   });
 
-  useEffect(() => {
-    const isDateValid =
-      fields.date instanceof Date && !isNaN(fields.date.getTime());
-    const isTimeValid =
-      typeof fields.time === 'string' &&
-      /^[0-9]{2}:[0-9]{2}$/.test(fields.time);
-    const isLocationValid =
-      typeof fields.location === 'string' && fields.location.trim() !== '';
+  const validateFields = () => {
+    const newErrors = {
+      date: validateEventDate(fields.date) || '',
+      time: validateEventHour(fields.time) || '',
+      location: validateLocation(fields.location) || '',
+    };
+    setErrors(newErrors);
+    return Object.values(newErrors).every((error) => !error);
+  };
 
-    const isComplete = isDateValid && isTimeValid && isLocationValid;
+  useEffect(() => {
+    const isComplete = validateFields();
     onComplete(fields, isComplete);
   }, [fields, onComplete]);
 
@@ -71,7 +85,7 @@ const DateLocation = ({
 
         try {
           const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
           );
           const data = await response.json();
 
@@ -89,19 +103,19 @@ const DateLocation = ({
         } catch (error) {
           console.error(
             'An error occurred while fetching location data:',
-            error,
+            error
           );
         }
       } else {
         console.error('LatLng is null');
       }
     },
-    [],
+    []
   );
 
   const handleChange = (
     field: string,
-    value: string | Date | number | null,
+    value: string | Date | number | null
   ) => {
     setFields((prev) => ({
       ...prev,
@@ -150,13 +164,15 @@ const DateLocation = ({
               </InputAdornment>
             ),
             readOnly: true,
-            className: 'text-field-input',
-            classes: {
-              notchedOutline: 'text-field-outline',
-              root: 'text-field-outline-focused',
-            },
           }}
+          error={!!errors.date}
         />
+        {errors.date && (
+          <FormHelperText sx={{ color: 'red', fontSize: '0.75rem' }}>
+            {errors.date}
+          </FormHelperText>
+        )}
+
         <Modal
           open={mapState.openDateModal}
           onClose={() => handleMapStateChange('openDateModal', false)}
@@ -190,13 +206,15 @@ const DateLocation = ({
               </InputAdornment>
             ),
             readOnly: true,
-            className: 'text-field-input',
-            classes: {
-              notchedOutline: 'text-field-outline',
-              root: 'text-field-outline-focused',
-            },
           }}
+          error={!!errors.time}
         />
+        {errors.time && (
+          <FormHelperText sx={{ color: 'red', fontSize: '0.75rem' }}>
+            {errors.time}
+          </FormHelperText>
+        )}
+
         <Modal
           open={mapState.openTimeModal}
           onClose={() => handleMapStateChange('openTimeModal', false)}
@@ -216,7 +234,6 @@ const DateLocation = ({
                 handleMapStateChange('openTimeModal', false);
               }}
               inputProps={{ step: 300 }}
-              className="text-field-input"
             />
           </Box>
         </Modal>
@@ -234,13 +251,14 @@ const DateLocation = ({
             </InputAdornment>
           ),
           readOnly: true,
-          className: 'text-field-input',
-          classes: {
-            notchedOutline: 'text-field-outline',
-            root: 'text-field-outline-focused',
-          },
         }}
+        error={!!errors.location}
       />
+      {errors.location && (
+        <FormHelperText sx={{ color: 'red', fontSize: '0.75rem' }}>
+          {errors.location}
+        </FormHelperText>
+      )}
 
       {isLoaded && (
         <GoogleMap

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, FormHelperText, Typography, Box } from '@mui/material';
-import {
-  OnCompleteCallback,
-  FieldsGeneralInfo,
-} from '@/utils/interfaces/CreateEvent';
+import { OnCompleteCallback, FieldsGeneralInfo } from '@/utils/interfaces/CreateEvent';
 import { fetchCategories } from '@/services/CategoryService';
+import { 
+  validateName,
+  validateShortDescription,
+  validateDescription 
+} from '@/utils/Validations';
 import '../_styles/GeneralInfo.css';
 
 const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
@@ -18,6 +20,12 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
   const [categories, setCategories] = useState<
     { keyWord: string; phrase: string; color: string; id: number }[]
   >([]);
+
+  const [errors, setErrors] = useState({
+    title: '',
+    shortDescription: '',
+    description: '',
+  });
 
   const handleFieldChange =
     (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,9 +43,21 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
     }));
   };
 
+  const validateFields = () => {
+    const newErrors: any = {};
+    
+    newErrors.title = validateName(fields.title) || '';
+    newErrors.shortDescription = validateShortDescription(fields.shortDescription) || '';
+    newErrors.description = validateDescription(fields.description) || '';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).every((key) => newErrors[key] === '');
+  };
+
   const checkCompletion = () => {
+    const isValid = validateFields();
     const { title, shortDescription, description, categoryId } = fields;
-    return !!(title && shortDescription && description && categoryId);
+    onComplete(fields, isValid && title && shortDescription && description && categoryId);
   };
 
   useEffect(() => {
@@ -60,8 +80,7 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
   }, []);
 
   useEffect(() => {
-    const isComplete = checkCompletion();
-    onComplete(fields, isComplete);
+    checkCompletion();
   }, [fields, onComplete]);
 
   return (
@@ -92,7 +111,13 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         InputLabelProps={{
           style: { color: '#555555' },
         }}
+        error={!!errors.title}
       />
+      {errors.title && (
+        <FormHelperText sx={{ color: 'red', fontSize: '0.75rem' }}>
+          {errors.title}
+        </FormHelperText>
+      )}
 
       <FormHelperText
         sx={{ color: 'gray', fontSize: '0.875rem' }}
@@ -116,7 +141,13 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         InputLabelProps={{
           style: { color: '#555555' },
         }}
+        error={!!errors.shortDescription}
       />
+      {errors.shortDescription && (
+        <FormHelperText sx={{ color: 'red', fontSize: '0.75rem' }}>
+          {errors.shortDescription}
+        </FormHelperText>
+      )}
 
       <FormHelperText
         sx={{ color: 'gray', fontSize: '0.875rem' }}
@@ -142,7 +173,13 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
         InputLabelProps={{
           style: { color: '#555555' },
         }}
+        error={!!errors.description}
       />
+      {errors.description && (
+        <FormHelperText sx={{ color: 'red', fontSize: '0.75rem' }}>
+          {errors.description}
+        </FormHelperText>
+      )}
 
       <FormHelperText
         sx={{ color: 'gray', fontSize: '0.875rem' }}

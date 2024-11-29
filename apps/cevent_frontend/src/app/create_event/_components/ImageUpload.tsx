@@ -11,7 +11,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onComplete }) => {
 
   const handleImageUpload = (fileUrl: string) => {
     setUploadedImage(fileUrl);
-    console.log('Image uploaded. URL:', fileUrl);
     onComplete({ coverPhotoUrl: fileUrl });
   };
 
@@ -37,8 +36,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onComplete }) => {
             }}
           />
         ) : (
-          <Typography variant="body2" color="textSecondary">
-            No image uploaded yet.
+          <Typography variant="body2" color="red">
+            You must upload an image to create your event.
           </Typography>
         )}
       </Box>
