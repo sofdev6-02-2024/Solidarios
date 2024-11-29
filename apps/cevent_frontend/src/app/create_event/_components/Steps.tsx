@@ -9,9 +9,13 @@ import {
   Button,
 } from '@mui/material';
 import { AddCircleOutline } from '@mui/icons-material';
-import { createEvent } from '@/utils/../services/EventService';
+import { 
+  createEvent,
+  updateEvent,
+} from '@/utils/../services/EventService';
 import '../_styles/Steps.css';
 import { EventInputDto } from '@/utils/interfaces/EventInterfaces';
+import { ActivityInputDto } from '@/utils/interfaces/ActivitiesInterfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
@@ -42,11 +46,13 @@ const Steps = ({
   dateLocation,
   priceCapacity,
   selectedImage,
+  activities,
 }: {
   generalInfo: GeneralInfoProps;
   dateLocation: DateLocationProps;
   priceCapacity: PriceCapacityProps;
   selectedImage: string | null;
+  activities: ActivityInputDto[];
 }) => {
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
@@ -107,22 +113,23 @@ const Steps = ({
         createdAt: new Date(),
         address: dateLocation.location || '',
         attendeeCount: 0,
+        activities,
       };
-
+  
       try {
         const response = await createEvent(eventData);
         if (response === null) {
-          console.error('Error creating event:', response);
+          console.error('Error creating the event:', response);
         } else {
-          router.push(routes.myEvents);
+          console.log('Event created successfully:', response);            
         }
       } catch (error) {
-        console.error('Unexpected error creating event:', error);
+        console.error('Unexpected error creating the event:', error);
       }
     } else {
       console.log('Please complete all fields before submitting');
     }
-  };
+  };  
 
   return (
     <Box mb={4} p={3}>

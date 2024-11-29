@@ -15,8 +15,8 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
   });
 
   const [errors, setErrors] = useState<Partial<FieldsPriceCapacity>>({
-    capacity: '',
-    ticketPrice: '',
+    capacity: 0,
+    ticketPrice: 0,
   });
 
   useEffect(() => {

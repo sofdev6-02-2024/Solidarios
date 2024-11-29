@@ -1,12 +1,7 @@
-export interface ActivityInputDto {
-  eventId: number;
+export interface ActivityInputDto {  
   name: string;
   description: string;
   startTime: Date;
   endTime: Date;
   capacity: number;
-}
-
-export interface ActivityCreateInputDto extends Omit<ActivityInputDto, 'eventId'> {
-
 }
