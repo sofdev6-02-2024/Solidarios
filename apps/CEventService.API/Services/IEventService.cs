@@ -11,4 +11,5 @@ public interface IEventService : IBaseService<Event, int>
     Task<ICollection<Event>> GetPromotedEvents(int page, int pageSize);
     Task<ICollection<Event>> GetPromotedEvents(int page, int pageSize, string category);
     Task<Event> UpdateStatus(int eventId, UpdateStatusEventDto updateStatusEventDto);
+    Task<ICollection<Event>> GetEventsByIds(ICollection<int> eventsIds);
 }

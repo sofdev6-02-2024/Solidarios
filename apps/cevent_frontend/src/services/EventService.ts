@@ -208,3 +208,19 @@ export const updateStatusEvent = async (
     return false;
   }
 };
+
+export const getEventsByIds = async (
+  eventsIds: number[],
+): Promise<EventSearchToUserDto[]> => {
+  try {
+    const response = await axios.post<EventSearchToUserDto[]>(
+      '/api/events/list/ids',
+      { ids: eventsIds },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};

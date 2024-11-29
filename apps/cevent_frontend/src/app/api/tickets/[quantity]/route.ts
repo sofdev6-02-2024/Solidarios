@@ -7,8 +7,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 export async function POST(request: Request) {
   const ticketPost = await request.json();
   try {
+    const { pathname } = new URL(request.url);
+
+    const quantity = pathname.split('/').pop();
     const response = await axios.post<TicketViewInterface>(
-      `${BASE_URL}/ticket-service/api/ticket/generate`,
+      `${BASE_URL}/ticket-service/api/ticket/generate/${quantity}`,
       ticketPost,
     );
 

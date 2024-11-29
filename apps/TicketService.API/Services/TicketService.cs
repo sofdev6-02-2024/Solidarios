@@ -35,6 +35,34 @@ namespace TicketService.API.Services
                 QRContent = createdTicket.QRContent,
             };
         }
+        
+        public async Task<IEnumerable<TicketResponseDto>> GenerateTicketsAsync(TicketRequestDto ticketRequest, int quantity)
+        {
+            var tickets = new List<Ticket>();
+
+            for (int i = 0; i < quantity; i++)
+            {
+                var ticket = new Ticket
+                {
+                    EventId = ticketRequest.EventId,
+                    UserId = ticketRequest.UserId,
+                    QRContent = _generatorUtility.GenerateQrContent()
+                };
+
+                ticket.QRContent = _generatorUtility.GenerateQrCode(ticket.QRContent);
+
+                tickets.Add(ticket);
+            }
+
+            var createdTickets = await _ticketRepository.CreateTicketsAsync(tickets);
+
+            return createdTickets.Select(ticket => new TicketResponseDto
+            {
+                TicketId = ticket.TicketId.ToString(),
+                QRContent = ticket.QRContent
+            }).ToList();
+        }
+
 
         public async Task<IEnumerable<TicketRequestDto>> GetAllTicketsAsync()
         {
@@ -103,6 +131,21 @@ namespace TicketService.API.Services
                 TicketId = ticket.TicketId.ToString(),
                 QRContent = ticket.QRContent
             };
+        }
+
+        public async Task<ICollection<TicketInfoDto>> GetTicketsByUserId(string userId)
+        {
+            var tickets = await _ticketRepository.GetTicketsByUser(userId);
+
+            var response = tickets.Select(ticket => new TicketInfoDto
+            {
+                TicketId = ticket.TicketId,
+                EventId = ticket.EventId,
+                UserId = ticket.UserId,
+                QRContent = ticket.QRContent,
+                IsUsed = ticket.IsUsed
+            }).ToList();
+            return response;
         }
     }
 }

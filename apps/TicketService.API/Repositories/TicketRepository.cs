@@ -20,6 +20,13 @@ namespace TicketService.API.Repositories
             return ticket;
         }
 
+        public async Task<ICollection<Ticket>> CreateTicketsAsync(ICollection<Ticket> tickets)
+        {
+            _context.Tickets.AddRange(tickets);
+            await _context.SaveChangesAsync();
+            return tickets;
+        }
+
         public async Task<IEnumerable<Ticket>> GetAllTicketAsync()
         {
             return await _context.Tickets.ToListAsync();
@@ -44,6 +51,13 @@ namespace TicketService.API.Repositories
                 ticket.IsUsed = isUsed;
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<ICollection<Ticket>> GetTicketsByUser(string userId)
+        {
+            return await _context.Set<Ticket>()
+                .Where(t => t.UserId.Equals(userId))
+                .ToListAsync();
         }
     }
 }

@@ -87,4 +87,9 @@ public class EventService : BaseService<Event, int>, IEventService
 
         return eventEntity;
     }
+
+    public async Task<ICollection<Event>> GetEventsByIds(ICollection<int> eventsIds)
+    {
+        return await _eventRepository.GetFilteredPagedAsync(e => eventsIds.Contains(e.Id), 1, eventsIds.Count);
+    }
 }

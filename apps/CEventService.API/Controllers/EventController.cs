@@ -158,5 +158,12 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         return _mapper.Map<IEnumerable<EventHomePageDto>>(promotedEvents);
     }
 
+    [HttpPost("by-ids")]
+    public async Task<ActionResult<ICollection<EventHomePageDto>>> GetEventsByIds([FromBody] int[] ids)
+    {
+        var response = await _eventService.GetEventsByIds(ids);
+        return response is not null ? Ok(_mapper.Map<ICollection<EventHomePageDto>>(response)) : BadRequest();
+    }
+
 
 }
