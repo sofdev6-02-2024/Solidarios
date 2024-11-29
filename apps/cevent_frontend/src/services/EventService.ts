@@ -10,6 +10,7 @@ import {
 } from '@/utils/interfaces/EventInterfaces';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
+import { EventActivity } from '@/utils/interfaces/EventActivities';
 
 /**
  * Fetches the events for the home page
@@ -173,6 +174,8 @@ export const getEventStadistics = async (): Promise<EventsStadistic | null> => {
   }
 };
 
+
+
 export const updateStatusEvent = async (
   eventState: EventStatus,
   eventId: number,
@@ -186,5 +189,23 @@ export const updateStatusEvent = async (
     return response.status === 201;
   } catch (error) {
     return false;
+  }
+}
+
+/**
+ *  Fetches the activities of the events
+ *
+ * @returns Event activities object
+ */
+export const getEventActivities = async (id: string, status: string): Promise<EventActivity[] | null> => {
+  try {
+    const response = await axios.get<EventActivity[]>(
+      `/api/events/activities/${id}?status=${status}`
+    );
+    console.log(response);
+    return response.data || [];
+  } catch (error) {
+    console.error('Failed to fetch event activities:', error);
+    return [];
   }
 };

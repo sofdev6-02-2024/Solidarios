@@ -2,55 +2,10 @@ import React from 'react';
 import { Box, Typography, Chip } from '@mui/material';
 
 
-export const activities: ActivityCardProps[] = [
-    {
-    title: 'Title Activity',
-    description: 'Activity',
-    status: 'Ongoing',
-    lastStatusUpdate: '10:30pm',
-    },
-    {
-    title: 'Title Activity',
-    description: 'Activity',
-    status: 'Delayed',
-    lastStatusUpdate: '10:30pm',
-    },
-    {
-    title: 'Title Activity',
-    description: 'Activity',
-    status: 'Delayed',
-    lastStatusUpdate: '10:30pm',
-    },
-    {
-    title: 'Title Activity',
-    description: 'Activity',
-    status: 'Delayed',
-    lastStatusUpdate: '10:30pm',
-    },
-    {
-    title: 'Title Activity',
-    description: 'Activity',
-    status: 'Pending',
-    lastStatusUpdate: '10:30pm',
-    },
-    {
-    title: 'Title Activity',
-    description: 'Activity',
-    status: 'Pending',
-    lastStatusUpdate: '10:30pm',
-    },
-    {
-    title: 'Title Activity',
-    description: 'Activity',
-    status: 'Pending',
-    lastStatusUpdate: '10:30pm',
-    },
-];
-
 interface ActivityCardProps {
     title: string;
     description: string;
-    status: 'Ongoing' | 'Delayed' | 'Pending';
+    status: string;
     lastStatusUpdate: string;
   }
   
