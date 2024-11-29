@@ -51,6 +51,7 @@ const CreateEvent = () => {
   const [imageData, setImageData] = useState<ImageData>({
     coverPhotoUrl: '',
   });
+  const [activities, setActivities] = useState<ActivityCreateInputDto[]>([]);
 
   const handleImageChange = (data: ImageData) => {
     setImageData(data);
@@ -68,6 +69,10 @@ const CreateEvent = () => {
     setPriceCapacity(data);
   };
 
+  const handleAddActivity = (newActivity: ActivityCreateInputDto) => {
+    setActivities((prevActivities) => [...prevActivities, newActivity]);
+  };
+
   return (
     <Box className={styles.container} display="flex">
       <Box flex={4} pr={2}>
@@ -82,11 +87,7 @@ const CreateEvent = () => {
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
-        <Activities
-          onAddActivity={(newActivity) =>
-            console.log('Nueva actividad agregada:', newActivity)
-          }
-        />
+        <Activities onAddActivity={handleAddActivity} />
         <AditionalSettings />
       </Box>
 
@@ -96,6 +97,7 @@ const CreateEvent = () => {
           dateLocation={dateLocation}
           priceCapacity={priceCapacity}
           selectedImage={imageData.coverPhotoUrl}
+          activities={activities}
         />
       </Box>
     </Box>

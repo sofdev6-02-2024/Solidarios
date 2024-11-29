@@ -42,6 +42,23 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   coOrganizers: string[];
 }
 
+export interface EventEditlDto extends Omit<EventHomePageDto, 'category'> {
+  location: Location;
+  venue: string;
+  attendanceTrackingEnabled: boolean;
+  status: number;
+  capacity: number;
+  organizerUserId: string;
+  createdAt: Date;
+  category: EventCategory;
+  description: string;
+  isPromoted?: boolean;
+  address: string;
+  activities: Activity[];
+  coOrganizers: string[];
+}
+
+
 export interface EventSearchToUserDto
   extends Omit<EventHomePageDto, 'category'> {
   location: Location;

@@ -7,6 +7,7 @@ import {
   EventInputDto,
   EventSearchToUserDto,
   EventStatus,
+  EventEditlDto,
 } from '@/utils/interfaces/EventInterfaces';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
@@ -58,6 +59,25 @@ export const getEventById = async (
     return null;
   } catch (error) {
     return null;
+  }
+};
+
+export const updateEvent = async (
+  id: string,
+  data: Partial<EventEditlDto>,
+  userId: string,
+): Promise<boolean> => {
+  try {
+    const response = await axios.put<EventEditlDto>(`/api/events/${id}/${userId}`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.status === 200;
+  } catch (error) {
+    console.error('Error al actualizar el evento:', error);
+    return false;
   }
 };
 
