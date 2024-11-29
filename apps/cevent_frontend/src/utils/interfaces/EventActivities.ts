@@ -3,8 +3,8 @@ export interface EventActivity {
     eventId: number;
     name: string;
     description: string;
-    startTime: Date;
-    endTime: Date;
-    status: string;
+    startTime: string;
+    endTime: string;
+    status: number;
     capacity: number;
 }

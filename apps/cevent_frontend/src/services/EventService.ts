@@ -11,6 +11,9 @@ import {
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
 import { EventActivity } from '@/utils/interfaces/EventActivities';
+import { NextResponse } from 'next/server';
+
+const BASE_URL = process.env.NEXTAUTH_URL || '';
 
 /**
  * Fetches the events for the home page
@@ -199,10 +202,11 @@ export const updateStatusEvent = async (
  */
 export const getEventActivities = async (id: string, status: string): Promise<EventActivity[] | null> => {
   try {
-    const response = await axios.get<EventActivity[]>(
-      `/api/events/activities/${id}?status=${status}`
-    );
-    console.log(response);
+    console.log("first")
+    const apiUrl = `${BASE_URL}/api/events/${id}/activities?status=${status}`;
+    console.log(apiUrl)
+    const response = await axios.get<EventActivity[]>(apiUrl);
+    console.log(response.data);
     return response.data || [];
   } catch (error) {
     console.error('Failed to fetch event activities:', error);
