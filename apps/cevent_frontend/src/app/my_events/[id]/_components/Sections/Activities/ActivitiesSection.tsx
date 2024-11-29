@@ -1,179 +1,135 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, CircularProgress } from '@mui/material';
-import { ActivityCard } from './ActivityCard';
-import {
-  getEventActivities,
-  updateEventActivity,
+// src/components/ActivitiesSection/index.tsx
+import React, { useCallback, useEffect, useState } from 'react';
+import { 
+  Box, 
+  Typography, 
+  CircularProgress 
+} from '@mui/material';
+
+import { 
+  getEventActivities, 
+  updateEventActivity 
 } from '@/services/EventService';
-import {
-  EventActivity,
+
+import { 
+  EventStatus, 
+  getStatusString, 
+  getStatusNumber,
+  getCurrentTime 
+} from '@/utils/methods/eventStatusUtils';
+import { 
+  EventActivity, 
   EventActivityDto,
+  ActivitiesSectionProps,
+  ActivitiesState,
+  DialogState 
 } from '@/utils/interfaces/EventActivities';
+
+import { ActivityCard } from './ActivityCard';
 import ConfirmDialog from './EditStatusDialog';
-
-const EventStatus = {
-  Pending: 1,
-  Cancelled: 2,
-  Postponed: 3,
-  InProgress: 4,
-  Completed: 5,
-  OnHold: 6,
-};
-
-const getStatusString = (status: number): string => {
-  switch (status) {
-    case 1:
-      return 'Pending';
-    case 2:
-      return 'Cancelled';
-    case 3:
-      return 'Postponed';
-    case 4:
-      return 'In Progress';
-    case 5:
-      return 'Completed';
-    case 6:
-      return 'On Hold';
-    default:
-      return 'Unknown';
-  }
-};
-
-const getStatusNumber = (status: string): number => {
-  switch (status) {
-    case 'Pending':
-      return 1;
-    case 'Cancelled':
-      return 2;
-    case 'Postponed':
-      return 3;
-    case 'In Progress':
-      return 4;
-    case 'Completed':
-      return 5;
-    case 'On Hold':
-      return 6;
-    default:
-      return 0;
-  }
-};
-
-interface ActivitiesSectionProps {
-  id: string;
-}
+import { StatusSectionHeader } from './StatusSectionHeader';
 
 const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
-  const [activitiesByStatus, setActivitiesByStatus] = useState<
-    Record<number, EventActivity[]>
-  >({});
-  const [loading, setLoading] = useState(true);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedActivity, setSelectedActivity] =
-    useState<EventActivity | null>(null);
-  const [newStatus, setNewStatus] = useState<number>(0);
-  const [lastStatusChangeMap, setLastStatusChangeMap] = useState<
-    Record<number, string>
-  >({});
+  const [state, setState] = useState<ActivitiesState>({
+    activitiesByStatus: {},
+    loading: true,
+    lastStatusChangeMap: {},
+  });
 
-  useEffect(() => {
-    const fetchActivities = async () => {
-      try {
-        const statuses = Object.values(EventStatus);
+  const [dialogState, setDialogState] = useState<DialogState>({
+    open: false,
+    selectedActivity: null,
+    newStatus: 0,
+  });
 
-        const results = await Promise.all(
-          statuses.map(async (status) => {
-            const activities = await getEventActivities(id, status.toString());
-            return { status, activities };
-          }),
-        );
+  const fetchActivities = useCallback(async () => {
+    try {
+      const statuses = Object.values(EventStatus);
+      const results = await Promise.all(
+        statuses.map(status => 
+          getEventActivities(id, status.toString())
+            .then(activities => ({ status, activities }))
+        )
+      );
 
-        const groupedActivities = results.reduce(
-          (acc, { status, activities }) => {
-            acc[status] = activities || [];
-            return acc;
-          },
-          {} as Record<number, EventActivity[]>,
-        );
-
-        setActivitiesByStatus(groupedActivities);
-      } catch (error) {
-        console.error('Failed to fetch activities:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchActivities();
+      setState(prev => ({
+        ...prev,
+        activitiesByStatus: results.reduce((acc, { status, activities }) => {
+          acc[status] = activities || [];
+          return acc;
+        }, {} as Record<number, EventActivity[]>),
+        loading: false,
+      }));
+    } catch (error) {
+      console.error('Failed to fetch activities:', error);
+      setState(prev => ({ ...prev, loading: false }));
+    }
   }, [id]);
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const period = hours >= 12 ? 'PM' : 'AM';
+  useEffect(() => {
+    fetchActivities();
+  }, [fetchActivities]);
 
-    hours = hours % 12 || 12;
-
-    return `${hours}:${minutes} ${period}`;
-  };
-
-  const handleStatusChange = (activity: EventActivity, status: number) => {
-    setLastStatusChangeMap((prevMap) => ({
-      ...prevMap,
-      [activity.id]: getCurrentTime(),
+  const handleStatusChange = useCallback((activity: EventActivity, status: number) => {
+    const currentTime = getCurrentTime();
+    
+    setState(prev => ({
+      ...prev,
+      lastStatusChangeMap: {
+        ...prev.lastStatusChangeMap,
+        [activity.id]: currentTime,
+      },
     }));
-    setSelectedActivity(activity);
-    setNewStatus(status);
-    setOpenDialog(true);
-  };
 
-  const handleStatusChangeIfPressedYes = async () => {
+    setDialogState({
+      open: true,
+      selectedActivity: activity,
+      newStatus: status,
+    });
+  }, []);
+
+  const handleStatusChangeConfirm = useCallback(async () => {
+    const { selectedActivity, newStatus } = dialogState;
     if (!selectedActivity) return;
 
-    const updatedActivity: EventActivityDto = {
-      name: selectedActivity.name,
-      description: selectedActivity.description,
-      startTime: selectedActivity.startTime,
-      endTime: selectedActivity.endTime,
-      status: newStatus,
-      capacity: selectedActivity.capacity,
-    };
-
     try {
+      const updatedActivity: EventActivityDto = {
+        ...selectedActivity,
+        status: newStatus,
+      };
+
       const updated = await updateEventActivity(
-        id,
-        selectedActivity.id.toString(),
-        updatedActivity,
+        id, 
+        selectedActivity.id.toString(), 
+        updatedActivity
       );
+
       if (updated) {
-        console.log(
-          `Activity status updated to: ${getStatusString(newStatus)}`,
-        );
-        setActivitiesByStatus((prev) => {
-          const updatedStatusActivities = prev[selectedActivity.status].filter(
-            (a) => a.id !== selectedActivity.id,
-          );
-          const newStatusActivities = [...(prev[newStatus] || []), updated];
-          return {
-            ...prev,
-            [selectedActivity.status]: updatedStatusActivities,
-            [newStatus]: newStatusActivities,
-          };
+        setState(prev => {
+          const newActivitiesByStatus = { ...prev.activitiesByStatus };
+          
+          newActivitiesByStatus[selectedActivity.status] = 
+            newActivitiesByStatus[selectedActivity.status].filter(
+              a => a.id !== selectedActivity.id
+            );
+          
+          newActivitiesByStatus[newStatus] = [
+            ...(newActivitiesByStatus[newStatus] || []),
+            updated
+          ];
+
+          return { ...prev, activitiesByStatus: newActivitiesByStatus };
         });
       }
     } catch (error) {
       console.error('Failed to update activity status:', error);
     } finally {
-      setOpenDialog(false);
+      setDialogState(prev => ({ ...prev, open: false }));
     }
-  };
-
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
+  }, [id, dialogState]);
 
   const renderActivities = (status: number) => {
-    const activities = activitiesByStatus[status];
+    const activities = state.activitiesByStatus[status];
     if (!activities || activities.length === 0) {
       return (
         <Typography sx={{ color: 'rgba(0, 0, 0, 0.5)' }}>
@@ -192,12 +148,21 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         onStatusChange={(status) =>
           handleStatusChange(activity, getStatusNumber(status))
         }
-        lastStatusChange={lastStatusChangeMap[activity.id] || ''}
+        lastStatusChange={state.lastStatusChangeMap[activity.id] || ''}
       />
     ));
   };
 
-  if (loading) {
+  const renderActivitiesSection = () => {
+    return Object.entries(EventStatus).map(([key, status]) => (
+      <Box key={status} mt={4}>
+        <StatusSectionHeader status={status as number} />
+        <Box>{renderActivities(status as number)}</Box>
+      </Box>
+    ));
+  };
+
+  if (state.loading) {
     return (
       <Box
         display="flex"
@@ -232,36 +197,12 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         <Typography variant="display">Section</Typography>
       </Box>
 
-      {Object.entries(EventStatus).map(([key, status]) => (
-        <Box key={status} mt={4}>
-          <Box display="flex" alignItems="center" mb={2}>
-            <Typography
-              variant="h5"
-              sx={{
-                color: 'rgba(0, 0, 0, 0.6)',
-                textAlign: 'left',
-                mr: 2,
-              }}
-            >
-              {getStatusString(status as number)} Activities
-            </Typography>
-            <Box
-              sx={{
-                flexGrow: 1,
-                height: '2px',
-                backgroundColor: '#ddd',
-              }}
-            />
-          </Box>
-
-          <Box>{renderActivities(status as number)}</Box>
-        </Box>
-      ))}
+      {renderActivitiesSection()}
 
       <ConfirmDialog
-        open={openDialog}
-        onClose={handleDialogClose}
-        onConfirm={handleStatusChangeIfPressedYes}
+        open={dialogState.open}
+        onClose={() => setDialogState(prev => ({ ...prev, open: false }))}
+        onConfirm={handleStatusChangeConfirm}
       />
     </Box>
   );

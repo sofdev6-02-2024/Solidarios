@@ -17,3 +17,19 @@ export interface EventActivityDto {
   status: number;
   capacity: number;
 }
+
+export interface ActivitiesSectionProps {
+  id: string;
+}
+
+export interface ActivitiesState {
+  activitiesByStatus: Record<number, EventActivity[]>;
+  loading: boolean;
+  lastStatusChangeMap: Record<number, string>;
+}
+
+export interface DialogState {
+  open: boolean;
+  selectedActivity: EventActivity | null;
+  newStatus: number;
+}
