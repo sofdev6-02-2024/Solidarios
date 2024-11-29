@@ -30,7 +30,7 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   location: Location;
   venue: string;
   attendanceTrackingEnabled: boolean;
-  status: string;
+  status: number;
   capacity: number;
   organizerUserId: string;
   createdAt: Date;
@@ -125,3 +125,12 @@ export interface EventStatus {
   isPromoted?: boolean;
   attendeeCount?: number;
 }
+
+export const mapStatus: Record<number, string> = {
+  1: 'Pending',
+  2: 'Cancelled',
+  3: 'Postponed',
+  4: 'InProgress',
+  5: 'Completed',
+  6: 'OnHold',
+};
