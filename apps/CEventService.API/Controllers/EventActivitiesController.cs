@@ -27,6 +27,16 @@ namespace CEventService.API.Controllers
             return Ok(activitiesDtoOutput);
         }
 
+        [HttpGet("{eventId}/activities/{activityId}")]
+        public async Task<ActionResult<ActivityOutputDto>> GetActivityById(int eventId, int activityId)
+        {
+            var activity = await _activityService.GetActivity(eventId, activityId);
+            if (activity == null)return NotFound();
+            var activityDtoOutput = _mapper.Map<ActivityOutputDto>(activity);
+            return Ok(activityDtoOutput);
+        }
+
+
         [HttpGet("{eventId}/activities/status")]
         public async Task<ActionResult<IEnumerable<ActivityOutputDto>>> GetActivitiesByStatus(int eventId, [FromQuery] int status)
         {
@@ -51,6 +61,15 @@ namespace CEventService.API.Controllers
             var updatedActivity = await _activityService.UpdateActivity(eventId, activity);
             var updatedActivityDtoOutput = _mapper.Map<ActivityOutputDto>(updatedActivity);
             return Ok(updatedActivityDtoOutput);
+        }
+
+        [HttpPost("{eventId}/activities")]
+        public async Task<ActionResult<ActivityOutputDto>> PostActivity(int eventId, ActivityInputDto activityInputDto)
+        {
+            var activity = _mapper.Map<Activity>(activityInputDto);
+            var createdActivity = await _activityService.CreateNewActivity(eventId, activity);
+            if (createdActivity == null) return BadRequest();
+            return CreatedAtAction(nameof(GetActivityById), new { eventId = eventId, activityId = createdActivity.Id }, _mapper.Map<ActivityOutputDto>(createdActivity));
         }
     }
 }

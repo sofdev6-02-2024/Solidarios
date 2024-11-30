@@ -19,11 +19,6 @@ export async function GET(
   const { id } = params;
   const url = new URL(request.url);
   const status = url.searchParams.get('status');
-  console.log(id, request.json());
-  console.log('ID:', id);
-  console.log('URL:', url.toString());
-  console.log('Status:', status);
-
   if (!status) {
     return NextResponse.json(
       { error: 'Status parameter is required' },

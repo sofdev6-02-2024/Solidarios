@@ -9,4 +9,5 @@ public interface IActivityService : IBaseService<Event, int>
     Task<Activity> GetActivity(int eventId, int id);
     Task<Activity> UpdateActivity(int eventId, Activity activity);
     Task<Activity> DeleteActivity(int eventId, int id);
+    Task<Activity> CreateNewActivity(int eventId, Activity activity);
 }

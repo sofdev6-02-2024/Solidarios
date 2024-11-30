@@ -53,4 +53,12 @@ public class ActivityService : BaseService<Event, int>, IActivityService
         var activity = eventActivity.Activities.FirstOrDefault(act => act.Id == id);
         return activity;
     }
+
+    public async Task<Activity> CreateNewActivity(int eventId, Activity activity)
+    {
+        var eventActivity = await _repository.GetByIdAsync(eventId);
+        eventActivity.Activities.Add(activity);
+        await _repository.UpdateAsync(eventId,eventActivity);
+        return activity;
+    }    
 }
