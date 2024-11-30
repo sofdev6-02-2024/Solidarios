@@ -26,7 +26,7 @@ import {
 } from '@/utils/interfaces/EventActivities';
 
 import { ActivityCard } from './ActivityCard';
-import ConfirmDialog from './EditStatusDialog';
+import ConfirmDialog from './ConfirmationActivityDIalog';
 import { StatusSectionHeader } from './StatusSectionHeader';
 import CreateActivityButton from './CreateActivityButton';
 
@@ -250,6 +250,8 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         open={dialogState.open}
         onClose={() => setDialogState(prev => ({ ...prev, open: false }))}
         onConfirm={handleStatusChangeConfirm}
+        message='Are you sure you want to change the status of this activity?'
+        title='Confirm Status Change'
       />
     </Box>
   );

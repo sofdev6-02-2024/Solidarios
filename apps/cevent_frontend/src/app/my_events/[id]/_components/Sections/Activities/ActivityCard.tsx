@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Card, CardContent, IconButton } from '@mui/material';
 import StatusDropdown from './ActivityStatusDropdown';
 import DeleteIcon from '@mui/icons-material/Delete';
-import ConfirmDialog from './EditStatusDialog';
+import ConfirmDialog from './ConfirmationActivityDIalog';
 import { deleteEventActivity } from '@/services/EventService';
 
 
@@ -99,6 +99,8 @@ const handleConfirmDelete = async () => {
         open={isDialogOpen}
         onClose={handleCloseDialog}
         onConfirm={handleConfirmDelete}
+        message='Are you sure you want to delete this activity?'
+        title='Confirm Activity Deletion'
       />
 
     </Card>

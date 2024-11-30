@@ -11,18 +11,22 @@ interface ConfirmDialogProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
+  message: string;
+  title:string;
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   open,
   onClose,
   onConfirm,
+  message,
+  title,
 }) => {
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Confirm Status Change</DialogTitle>
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <p>Are you sure you want to change the status of this activity?</p>
+        <p>{message}</p>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="primary">
