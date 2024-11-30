@@ -49,6 +49,39 @@ export async function PUT(
     return NextResponse.json({ error: errorMessage }, { status: statusCode });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string; activityId: string } },
+) {
+  const { id, activityId } = params;
+
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `${BASE_URL}/events/api/EventActivities/${id}/activities/${activityId}`,
+      headers: { accept: 'text/plain' },
+    });
+
+    return NextResponse.json(response.data, { status: 200 });
+  } catch (error) {
+    let statusCode = 500;
+    let errorMessage = 'Failed to delete activity';
+
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        statusCode = error.response.status;
+        errorMessage = error.response.data || errorMessage;
+      }
+
+      console.error('Axios Error:', error.response?.data || error.message);
+    }
+
+    return NextResponse.json({ error: errorMessage }, { status: statusCode });
+  }
+}
+
+
 function isValidEventActivityDto(data: any): data is EventActivityDto {
   return (
     typeof data.name === 'string' &&

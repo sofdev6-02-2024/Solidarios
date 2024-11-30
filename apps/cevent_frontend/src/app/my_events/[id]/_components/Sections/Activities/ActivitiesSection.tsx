@@ -30,6 +30,7 @@ import ConfirmDialog from './EditStatusDialog';
 import { StatusSectionHeader } from './StatusSectionHeader';
 import CreateActivityButton from './CreateActivityButton';
 
+
 const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
   const [state, setState] = useState<ActivitiesState>({
     activitiesByStatus: {},
@@ -129,6 +130,20 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
     }
   }, [id, dialogState]);
 
+  const handleActivityDelete = useCallback((activityId: string) => {
+    setState(prev => {
+      const newActivitiesByStatus: Record<number, EventActivity[]> = { ...prev.activitiesByStatus };
+      Object.keys(newActivitiesByStatus).forEach((statusKey) => {
+        const status = Number(statusKey);
+        newActivitiesByStatus[status] = newActivitiesByStatus[status].filter(
+          (activity: EventActivity) => activity.id.toString() !== activityId
+        );
+      });
+  
+      return { ...prev, activitiesByStatus: newActivitiesByStatus };
+    });
+  }, []);
+
   const renderActivities = (status: number) => {
     const activities = state.activitiesByStatus[status];
     if (!activities || activities.length === 0) {
@@ -150,6 +165,9 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
           handleStatusChange(activity, getStatusNumber(status))
         }
         lastStatusChange={state.lastStatusChangeMap[activity.id] || ''}
+        id={activity.eventId.toString()}
+        activityId={activity.id.toString()}
+        onDelete={handleActivityDelete}
       />
     ));
   };

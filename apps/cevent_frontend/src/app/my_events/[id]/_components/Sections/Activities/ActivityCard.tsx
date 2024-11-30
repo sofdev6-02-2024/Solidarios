@@ -1,8 +1,14 @@
-import React from 'react';
-import { Box, Typography, Card, CardContent } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Card, CardContent, IconButton } from '@mui/material';
 import StatusDropdown from './ActivityStatusDropdown';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmDialog from './EditStatusDialog';
+import { deleteEventActivity } from '@/services/EventService';
+
 
 interface ActivityCardProps {
+  id: string;
+  activityId: string;
   title: string;
   description: string;
   status: string;
@@ -10,6 +16,8 @@ interface ActivityCardProps {
   endTime: string;
   onStatusChange: (newStatus: string) => void;
   lastStatusChange: string | null;
+  onDelete: (activityId: string) => void;
+
 }
 
 export const ActivityCard: React.FC<ActivityCardProps> = ({
@@ -20,7 +28,29 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
   endTime,
   onStatusChange,
   lastStatusChange,
+  id,
+  activityId,
+  onDelete,
 }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const handleOpenDialog = () => setIsDialogOpen(true);
+const handleCloseDialog = () => setIsDialogOpen(false);
+
+const handleConfirmDelete = async () => {
+  try {
+    const deletedActivity = await deleteEventActivity(id, activityId);
+    if (deletedActivity) {
+      onDelete(activityId)
+      console.log('Activity successfully deleted:', deletedActivity);
+    } else {
+      console.error('Failed to delete the activity.');
+    }
+  } catch (error) {
+    console.error('An error occurred while deleting the activity:', error);
+  } finally {
+    setIsDialogOpen(false);
+  }
+};
   return (
     <Card
       sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 2 }}
@@ -38,7 +68,12 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
             <Typography variant="body2" color="secondary" sx={{ mb: 1 }}>
               {description}
             </Typography>
+            <IconButton onClick={handleOpenDialog} aria-label="delete">
+              <DeleteIcon />
+            </IconButton>
+  
           </Box>
+          
           <Box
             display="flex"
             justifyContent="center"
@@ -60,6 +95,12 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
           </Box>
         </Box>
       </CardContent>
+      <ConfirmDialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmDelete}
+      />
+
     </Card>
   );
 };
