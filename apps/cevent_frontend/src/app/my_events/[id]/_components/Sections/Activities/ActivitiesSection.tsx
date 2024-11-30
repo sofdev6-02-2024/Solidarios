@@ -1,9 +1,9 @@
-// src/components/ActivitiesSection/index.tsx
 import React, { useCallback, useEffect, useState } from 'react';
 import { 
   Box, 
   Typography, 
-  CircularProgress 
+  CircularProgress, 
+  Button
 } from '@mui/material';
 
 import { 
@@ -28,6 +28,7 @@ import {
 import { ActivityCard } from './ActivityCard';
 import ConfirmDialog from './EditStatusDialog';
 import { StatusSectionHeader } from './StatusSectionHeader';
+import CreateActivityButton from './CreateActivityButton';
 
 const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
   const [state, setState] = useState<ActivitiesState>({
@@ -162,6 +163,28 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
     ));
   };
 
+  const addActivityToState = (
+    prevState: ActivitiesState,
+    activity: EventActivity,
+    status: number
+  ): ActivitiesState => {
+    return {
+      ...prevState,
+      activitiesByStatus: {
+        ...prevState.activitiesByStatus,
+        [status]: [
+          ...(prevState.activitiesByStatus[status] || []), 
+          activity
+        ]
+      }
+    };
+  };
+
+  const handleActivityCreated = (activity: EventActivity) => {
+    setState(prev => addActivityToState(prev, activity, EventStatus.Pending));
+  };
+  
+
   if (state.loading) {
     return (
       <Box
@@ -188,6 +211,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         backgroundColor: '#fafafa',
         borderRadius: 2,
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+        position: 'relative',
       }}
     >
       <Box mb={4} textAlign="left">
@@ -196,6 +220,10 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         </Typography>
         <Typography variant="display">Section</Typography>
       </Box>
+
+      <CreateActivityButton
+        onActivityCreated={handleActivityCreated}
+      />
 
       {renderActivitiesSection()}
 
