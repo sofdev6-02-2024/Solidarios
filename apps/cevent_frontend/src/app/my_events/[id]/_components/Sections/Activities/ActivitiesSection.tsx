@@ -86,7 +86,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
 
       setDialogState({
         open: true,
-        selectedActivity: activity,
+        selectedActivity: { ...activity },
         newStatus: status,
       });
     },
@@ -199,6 +199,30 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
     ));
   };
 
+  const handleOnCloseDialog = useCallback(() => {
+    const { selectedActivity } = dialogState;
+    if (!selectedActivity) return;
+
+    setState((prev) => {
+      const originalStatus = selectedActivity.status;
+      return {
+        ...prev,
+        activitiesByStatus: {
+          ...prev.activitiesByStatus,
+          [originalStatus]: [
+            ...(prev.activitiesByStatus[originalStatus] || []),
+            selectedActivity,
+          ],
+          [dialogState.newStatus]: prev.activitiesByStatus[
+            dialogState.newStatus
+          ].filter((a) => a.id !== selectedActivity.id),
+        },
+      };
+    });
+
+    setDialogState({ open: false, selectedActivity: null, newStatus: 0 });
+  }, [dialogState]);
+
   const addActivityToState = (
     prevState: ActivitiesState,
     activity: EventActivity,
@@ -262,7 +286,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
 
       <ConfirmDialog
         open={dialogState.open}
-        onClose={() => setDialogState((prev) => ({ ...prev, open: false }))}
+        onClose={handleOnCloseDialog}
         onConfirm={handleStatusChangeConfirm}
         message="Are you sure you want to change the status of this activity?"
         title="Confirm Status Change"

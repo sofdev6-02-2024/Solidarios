@@ -27,7 +27,7 @@ const eventActivitySchema = z
       message: 'Start time must be in the future.',
     }),
     endTime: z.string(),
-    lastStatusUpdate:z.string(),
+    lastStatusUpdate: z.string(),
     status: z.number().min(1).max(6),
     capacity: z
       .number()
@@ -59,7 +59,7 @@ const CreateActivityDialog: React.FC<CreateActivityDialogProps> = ({
     endTime: '',
     status: 1,
     capacity: 0,
-    lastStatusUpdate:''
+    lastStatusUpdate: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -79,7 +79,7 @@ const CreateActivityDialog: React.FC<CreateActivityDialogProps> = ({
   const handleSubmit = async () => {
     try {
       const validatedData = eventActivitySchema.parse(formData);
-      validatedData.lastStatusUpdate = getCurrentDateTimeForSystem()
+      validatedData.lastStatusUpdate = getCurrentDateTimeForSystem();
       const createdActivity = await createEventActivity(eventId, validatedData);
       if (createdActivity) {
         onActivityCreated(createdActivity);
@@ -90,7 +90,7 @@ const CreateActivityDialog: React.FC<CreateActivityDialogProps> = ({
           endTime: '',
           status: 1,
           capacity: 0,
-          lastStatusUpdate:getCurrentDateTimeForSystem()
+          lastStatusUpdate: getCurrentDateTimeForSystem(),
         });
         onClose();
       } else {

@@ -268,7 +268,10 @@ export const createEventActivity = async (
   try {
     const apiUrl = `${BASE_URL}/api/events/${id}/activities`;
     console.log('API URL:', apiUrl);
-    console.log('Payload---------------------------------------------------------------------------------------------:', newActivity);
+    console.log(
+      'Payload---------------------------------------------------------------------------------------------:',
+      newActivity,
+    );
 
     const response = await axios.post<EventActivity>(apiUrl, newActivity, {
       headers: {

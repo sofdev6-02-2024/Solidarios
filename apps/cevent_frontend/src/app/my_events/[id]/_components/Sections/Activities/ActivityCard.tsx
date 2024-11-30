@@ -32,10 +32,10 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleOpenDialog = () => setIsDialogOpen(true);
+  const [localStatus, setLocalStatus] = useState<string>(status);
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
-    onStatusChange(status)
-  }
+  };
   const isDefaultDate = () => {
     if (!lastStatusChange) return true;
     return lastStatusChange === '0001-01-01T00:00:00';
