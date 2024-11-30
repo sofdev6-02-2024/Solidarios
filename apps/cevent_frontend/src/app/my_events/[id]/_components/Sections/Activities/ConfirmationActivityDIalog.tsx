@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   Button,
+  DialogProps,
 } from '@mui/material';
 
 interface ConfirmDialogProps {
@@ -12,7 +13,7 @@ interface ConfirmDialogProps {
   onClose: () => void;
   onConfirm: () => void;
   message: string;
-  title:string;
+  title: string;
 }
 
 const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
@@ -22,8 +23,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   message,
   title,
 }) => {
+  const handleClose: DialogProps['onClose'] = (event, reason) => {
+    if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+      onClose();
+    }
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={handleClose}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <p>{message}</p>

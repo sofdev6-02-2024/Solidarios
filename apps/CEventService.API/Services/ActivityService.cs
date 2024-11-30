@@ -42,6 +42,7 @@ public class ActivityService : BaseService<Event, int>, IActivityService
         existingActivity.StartTime = activity.StartTime;
         existingActivity.EndTime = activity.EndTime;
         existingActivity.Capacity = activity.Capacity;
+        existingActivity.LastStatusUpdate = activity.LastStatusUpdate;
         existingActivity.Status = activity.Status;
         await _repository.UpdateAsync(eventId, eventActivity);
         return existingActivity;

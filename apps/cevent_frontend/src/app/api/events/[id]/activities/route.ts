@@ -41,10 +41,9 @@ export async function GET(
   }
 }
 
-
 /**
  * Handles the POST request to create an activity under a specific event.
- * 
+ *
  * @param request  The request object containing the activity data
  * @param context  The context object containing route parameters (eventId)
  * @returns The response object with the created activity data

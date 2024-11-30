@@ -8,7 +8,6 @@ const statusColors: Record<string, string> = {
   'In Progress': '#FACC15',
   Completed: '#16A34A',
   'On Hold': '#7C3AED',
-  Unknown: '#9CA3AF',
 };
 
 interface StatusDropdownProps {
@@ -33,7 +32,7 @@ export const StatusDropdown: React.FC<StatusDropdownProps> = ({
       sx={{
         display: 'inline-block',
         borderRadius: 1,
-        backgroundColor: statusColors[status] || statusColors.Unknown,
+        backgroundColor: statusColors[status] || statusColors.Pending,
         padding: '0',
       }}
     >

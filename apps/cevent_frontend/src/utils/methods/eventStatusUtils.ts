@@ -8,7 +8,7 @@ export const EventStatus = {
 } as const;
 
 export type EventStatusKey = keyof typeof EventStatus;
-export type EventStatusValue = typeof EventStatus[EventStatusKey];
+export type EventStatusValue = (typeof EventStatus)[EventStatusKey];
 
 export const getStatusString = (status: number): string => {
   const statusMap: Record<number, string> = {
@@ -24,11 +24,11 @@ export const getStatusString = (status: number): string => {
 
 export const getStatusNumber = (status: string): number => {
   const reverseStatusMap: Record<string, number> = {
-    'Pending': EventStatus.Pending,
-    'Cancelled': EventStatus.Cancelled,
-    'Postponed': EventStatus.Postponed,
+    Pending: EventStatus.Pending,
+    Cancelled: EventStatus.Cancelled,
+    Postponed: EventStatus.Postponed,
     'In Progress': EventStatus.InProgress,
-    'Completed': EventStatus.Completed,
+    Completed: EventStatus.Completed,
     'On Hold': EventStatus.OnHold,
   };
   return reverseStatusMap[status] || 0;
@@ -43,4 +43,8 @@ export const getCurrentTime = (): string => {
   hours = hours % 12 || 12;
 
   return `${hours}:${minutes} ${period}`;
+};
+
+export const getCurrentDateTimeForSystem = (): string => {
+  return new Date().toISOString();
 };

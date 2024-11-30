@@ -81,7 +81,6 @@ export async function DELETE(
   }
 }
 
-
 function isValidEventActivityDto(data: any): data is EventActivityDto {
   return (
     typeof data.name === 'string' &&

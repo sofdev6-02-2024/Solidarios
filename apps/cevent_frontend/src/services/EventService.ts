@@ -263,12 +263,12 @@ export const updateEventActivity = async (
 
 export const createEventActivity = async (
   id: string,
-  newActivity: EventActivityDto
+  newActivity: EventActivityDto,
 ): Promise<EventActivity | null> => {
   try {
     const apiUrl = `${BASE_URL}/api/events/${id}/activities`;
     console.log('API URL:', apiUrl);
-    console.log('Payload:', newActivity);
+    console.log('Payload---------------------------------------------------------------------------------------------:', newActivity);
 
     const response = await axios.post<EventActivity>(apiUrl, newActivity, {
       headers: {
@@ -282,7 +282,7 @@ export const createEventActivity = async (
     if (axios.isAxiosError(error)) {
       console.error(
         'Failed to create event activity:',
-        error.response?.data || error.message
+        error.response?.data || error.message,
       );
     } else {
       console.error('An unexpected error occurred:', error);
@@ -290,7 +290,6 @@ export const createEventActivity = async (
     return null;
   }
 };
-
 
 export const deleteEventActivity = async (
   id: string,

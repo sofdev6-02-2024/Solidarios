@@ -7,6 +7,7 @@ export interface EventActivity {
   endTime: string;
   status: number;
   capacity: number;
+  lastStatusUpdate: string;
 }
 
 export interface EventActivityDto {
@@ -16,6 +17,7 @@ export interface EventActivityDto {
   endTime: string;
   status: number;
   capacity: number;
+  lastStatusUpdate: string;
 }
 
 export interface ActivitiesSectionProps {

@@ -1,35 +1,30 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { 
-  Box, 
-  Typography, 
-  CircularProgress, 
-  Button
-} from '@mui/material';
+import { Box, Typography, CircularProgress, Button } from '@mui/material';
 
-import { 
-  getEventActivities, 
-  updateEventActivity 
+import {
+  getEventActivities,
+  updateEventActivity,
 } from '@/services/EventService';
 
-import { 
-  EventStatus, 
-  getStatusString, 
+import {
+  EventStatus,
+  getStatusString,
   getStatusNumber,
-  getCurrentTime 
+  getCurrentTime,
+  getCurrentDateTimeForSystem,
 } from '@/utils/methods/eventStatusUtils';
-import { 
-  EventActivity, 
+import {
+  EventActivity,
   EventActivityDto,
   ActivitiesSectionProps,
   ActivitiesState,
-  DialogState 
+  DialogState,
 } from '@/utils/interfaces/EventActivities';
 
 import { ActivityCard } from './ActivityCard';
 import ConfirmDialog from './ConfirmationActivityDIalog';
 import { StatusSectionHeader } from './StatusSectionHeader';
 import CreateActivityButton from './CreateActivityButton';
-
 
 const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
   const [state, setState] = useState<ActivitiesState>({
@@ -48,23 +43,28 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
     try {
       const statuses = Object.values(EventStatus);
       const results = await Promise.all(
-        statuses.map(status => 
-          getEventActivities(id, status.toString())
-            .then(activities => ({ status, activities }))
-        )
+        statuses.map((status) =>
+          getEventActivities(id, status.toString()).then((activities) => ({
+            status,
+            activities,
+          })),
+        ),
       );
 
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        activitiesByStatus: results.reduce((acc, { status, activities }) => {
-          acc[status] = activities || [];
-          return acc;
-        }, {} as Record<number, EventActivity[]>),
+        activitiesByStatus: results.reduce(
+          (acc, { status, activities }) => {
+            acc[status] = activities || [];
+            return acc;
+          },
+          {} as Record<number, EventActivity[]>,
+        ),
         loading: false,
       }));
     } catch (error) {
       console.error('Failed to fetch activities:', error);
-      setState(prev => ({ ...prev, loading: false }));
+      setState((prev) => ({ ...prev, loading: false }));
     }
   }, [id]);
 
@@ -72,74 +72,90 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
     fetchActivities();
   }, [fetchActivities]);
 
-  const handleStatusChange = useCallback((activity: EventActivity, status: number) => {
-    const currentTime = getCurrentTime();
-    
-    setState(prev => ({
-      ...prev,
-      lastStatusChangeMap: {
-        ...prev.lastStatusChangeMap,
-        [activity.id]: currentTime,
-      },
-    }));
+  const handleStatusChange = useCallback(
+    (activity: EventActivity, status: number) => {
+      const currentTime = getCurrentDateTimeForSystem();
 
-    setDialogState({
-      open: true,
-      selectedActivity: activity,
-      newStatus: status,
-    });
-  }, []);
+      setState((prev) => ({
+        ...prev,
+        lastStatusChangeMap: {
+          ...prev.lastStatusChangeMap,
+          [activity.id]: currentTime,
+        },
+      }));
+
+      setDialogState({
+        open: true,
+        selectedActivity: activity,
+        newStatus: status,
+      });
+    },
+    [],
+  );
 
   const handleStatusChangeConfirm = useCallback(async () => {
     const { selectedActivity, newStatus } = dialogState;
     if (!selectedActivity) return;
 
     try {
+      const currentTime = getCurrentDateTimeForSystem();
+
       const updatedActivity: EventActivityDto = {
         ...selectedActivity,
         status: newStatus,
+        lastStatusUpdate: currentTime,
       };
 
       const updated = await updateEventActivity(
-        id, 
-        selectedActivity.id.toString(), 
-        updatedActivity
+        id,
+        selectedActivity.id.toString(),
+        updatedActivity,
       );
 
       if (updated) {
-        setState(prev => {
+        setState((prev) => {
           const newActivitiesByStatus = { ...prev.activitiesByStatus };
-          
-          newActivitiesByStatus[selectedActivity.status] = 
+
+          newActivitiesByStatus[selectedActivity.status] =
             newActivitiesByStatus[selectedActivity.status].filter(
-              a => a.id !== selectedActivity.id
+              (a) => a.id !== selectedActivity.id,
             );
-          
+
           newActivitiesByStatus[newStatus] = [
             ...(newActivitiesByStatus[newStatus] || []),
-            updated
+            updated,
           ];
 
-          return { ...prev, activitiesByStatus: newActivitiesByStatus };
+          const newLastStatusChangeMap = {
+            ...prev.lastStatusChangeMap,
+            [selectedActivity.id]: updated.lastStatusUpdate,
+          };
+
+          return {
+            ...prev,
+            activitiesByStatus: newActivitiesByStatus,
+            lastStatusChangeMap: newLastStatusChangeMap,
+          };
         });
       }
     } catch (error) {
       console.error('Failed to update activity status:', error);
     } finally {
-      setDialogState(prev => ({ ...prev, open: false }));
+      setDialogState((prev) => ({ ...prev, open: false }));
     }
   }, [id, dialogState]);
-
   const handleActivityDelete = useCallback((activityId: string) => {
-    setState(prev => {
-      const newActivitiesByStatus: Record<number, EventActivity[]> = { ...prev.activitiesByStatus };
+    setState((prev) => {
+      const newActivitiesByStatus: Record<number, EventActivity[]> = {
+        ...prev.activitiesByStatus,
+      };
       Object.keys(newActivitiesByStatus).forEach((statusKey) => {
         const status = Number(statusKey);
         newActivitiesByStatus[status] = newActivitiesByStatus[status].filter(
-          (activity: EventActivity) => activity.id.toString() !== activityId
+          (activity: EventActivity) => activity.id.toString() !== activityId,
         );
       });
-  
+
       return { ...prev, activitiesByStatus: newActivitiesByStatus };
     });
   }, []);
@@ -164,7 +180,9 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         onStatusChange={(status) =>
           handleStatusChange(activity, getStatusNumber(status))
         }
-        lastStatusChange={state.lastStatusChangeMap[activity.id] || ''}
+        lastStatusChange={
+          state.lastStatusChangeMap[activity.id] || activity.lastStatusUpdate
+        }
         id={activity.eventId.toString()}
         activityId={activity.id.toString()}
         onDelete={handleActivityDelete}
@@ -184,24 +202,20 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
   const addActivityToState = (
     prevState: ActivitiesState,
     activity: EventActivity,
-    status: number
+    status: number,
   ): ActivitiesState => {
     return {
       ...prevState,
       activitiesByStatus: {
         ...prevState.activitiesByStatus,
-        [status]: [
-          ...(prevState.activitiesByStatus[status] || []), 
-          activity
-        ]
-      }
+        [status]: [...(prevState.activitiesByStatus[status] || []), activity],
+      },
     };
   };
 
   const handleActivityCreated = (activity: EventActivity) => {
-    setState(prev => addActivityToState(prev, activity, activity.status));
+    setState((prev) => addActivityToState(prev, activity, activity.status));
   };
-  
 
   if (state.loading) {
     return (
@@ -248,10 +262,10 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
 
       <ConfirmDialog
         open={dialogState.open}
-        onClose={() => setDialogState(prev => ({ ...prev, open: false }))}
+        onClose={() => setDialogState((prev) => ({ ...prev, open: false }))}
         onConfirm={handleStatusChangeConfirm}
-        message='Are you sure you want to change the status of this activity?'
-        title='Confirm Status Change'
+        message="Are you sure you want to change the status of this activity?"
+        title="Confirm Status Change"
       />
     </Box>
   );

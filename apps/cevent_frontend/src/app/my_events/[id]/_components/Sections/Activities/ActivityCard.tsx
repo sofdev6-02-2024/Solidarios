@@ -5,7 +5,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ConfirmDialog from './ConfirmationActivityDIalog';
 import { deleteEventActivity } from '@/services/EventService';
 
-
 interface ActivityCardProps {
   id: string;
   activityId: string;
@@ -17,7 +16,6 @@ interface ActivityCardProps {
   onStatusChange: (newStatus: string) => void;
   lastStatusChange: string | null;
   onDelete: (activityId: string) => void;
-
 }
 
 export const ActivityCard: React.FC<ActivityCardProps> = ({
@@ -34,23 +32,30 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleOpenDialog = () => setIsDialogOpen(true);
-const handleCloseDialog = () => setIsDialogOpen(false);
-
-const handleConfirmDelete = async () => {
-  try {
-    const deletedActivity = await deleteEventActivity(id, activityId);
-    if (deletedActivity) {
-      onDelete(activityId)
-      console.log('Activity successfully deleted:', deletedActivity);
-    } else {
-      console.error('Failed to delete the activity.');
-    }
-  } catch (error) {
-    console.error('An error occurred while deleting the activity:', error);
-  } finally {
+  const handleCloseDialog = () => {
     setIsDialogOpen(false);
+    onStatusChange(status)
   }
-};
+  const isDefaultDate = () => {
+    if (!lastStatusChange) return true;
+    return lastStatusChange === '0001-01-01T00:00:00';
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      const deletedActivity = await deleteEventActivity(id, activityId);
+      if (deletedActivity) {
+        onDelete(activityId);
+        console.log('Activity successfully deleted:', deletedActivity);
+      } else {
+        console.error('Failed to delete the activity.');
+      }
+    } catch (error) {
+      console.error('An error occurred while deleting the activity:', error);
+    } finally {
+      setIsDialogOpen(false);
+    }
+  };
   return (
     <Card
       sx={{ mb: 3, backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 2 }}
@@ -71,9 +76,8 @@ const handleConfirmDelete = async () => {
             <IconButton onClick={handleOpenDialog} aria-label="delete">
               <DeleteIcon />
             </IconButton>
-  
           </Box>
-          
+
           <Box
             display="flex"
             justifyContent="center"
@@ -87,9 +91,9 @@ const handleConfirmDelete = async () => {
             </Typography>
             <Typography variant="body2" color="primary">
               <strong>
-                {lastStatusChange
-                  ? lastStatusChange
-                  : 'Status not modified yet'}
+                {isDefaultDate()
+                  ? 'Status not modified yet'
+                  : new Date(lastStatusChange!).toLocaleString()}
               </strong>
             </Typography>
           </Box>
@@ -99,10 +103,9 @@ const handleConfirmDelete = async () => {
         open={isDialogOpen}
         onClose={handleCloseDialog}
         onConfirm={handleConfirmDelete}
-        message='Are you sure you want to delete this activity?'
-        title='Confirm Activity Deletion'
+        message="Are you sure you want to delete this activity?"
+        title="Confirm Activity Deletion"
       />
-
     </Card>
   );
 };
