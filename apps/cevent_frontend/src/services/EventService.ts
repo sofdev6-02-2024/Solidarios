@@ -260,3 +260,40 @@ export const updateEventActivity = async (
     return null;
   }
 };
+
+/**
+ * Creates a new event activity via the local Next.js API.
+ *
+ * @param id - The event ID to associate the activity with
+ * @param newActivity - The activity data to be sent in the request
+ * @returns The created event activity or null in case of failure
+ */
+export const createEventActivity = async (
+  id: string,
+  newActivity: EventActivityDto
+): Promise<EventActivity | null> => {
+  try {
+    const apiUrl = `${BASE_URL}/api/events/${id}/activities`;
+    console.log('API URL:', apiUrl);
+    console.log('Payload:', newActivity);
+
+    const response = await axios.post<EventActivity>(apiUrl, newActivity, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('Created Activity:', response.data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Failed to create event activity:',
+        error.response?.data || error.message
+      );
+    } else {
+      console.error('An unexpected error occurred:', error);
+    }
+    return null;
+  }
+};

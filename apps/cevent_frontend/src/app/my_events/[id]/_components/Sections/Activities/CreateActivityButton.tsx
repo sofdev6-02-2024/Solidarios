@@ -5,9 +5,10 @@ import CreateActivityDialog from './CreateActivityDialog';
 
 interface CreateActivityButtonProps {
   onActivityCreated: (activity: any) => void;
+  eventId:string;
 }
 
-const CreateActivityButton: React.FC<CreateActivityButtonProps> = ({ onActivityCreated }) => {
+const CreateActivityButton: React.FC<CreateActivityButtonProps> = ({ onActivityCreated, eventId }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpenDialog = () => {
@@ -33,6 +34,7 @@ const CreateActivityButton: React.FC<CreateActivityButtonProps> = ({ onActivityC
         open={open}
         onClose={handleCloseDialog}
         onActivityCreated={onActivityCreated}
+        eventId={eventId}
       />
     </>
   );

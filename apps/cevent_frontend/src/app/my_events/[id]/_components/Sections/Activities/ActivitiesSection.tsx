@@ -181,7 +181,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
   };
 
   const handleActivityCreated = (activity: EventActivity) => {
-    setState(prev => addActivityToState(prev, activity, EventStatus.Pending));
+    setState(prev => addActivityToState(prev, activity, activity.status));
   };
   
 
@@ -223,6 +223,7 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
 
       <CreateActivityButton
         onActivityCreated={handleActivityCreated}
+        eventId={id}
       />
 
       {renderActivitiesSection()}

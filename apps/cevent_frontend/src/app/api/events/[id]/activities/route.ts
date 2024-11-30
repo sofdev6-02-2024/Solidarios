@@ -40,3 +40,41 @@ export async function GET(
     );
   }
 }
+
+
+/**
+ * Handles the POST request to create an activity under a specific event.
+ * 
+ * @param request  The request object containing the activity data
+ * @param context  The context object containing route parameters (eventId)
+ * @returns The response object with the created activity data
+ */
+export async function POST(
+  request: Request,
+  { params }: { params: { id: string } },
+) {
+  console.log('Handling POST request to create activity');
+
+  const { id } = params;
+
+  try {
+    const activityData = await request.json();
+
+    const apiUrl = `${BASE_URL}/events/api/EventActivities/${id}/activities`;
+
+    const response = await axios.post(apiUrl, activityData, {
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'text/plain',
+      },
+    });
+
+    return NextResponse.json(response.data, { status: 201 });
+  } catch (error) {
+    console.error('Error creating activity:', error);
+    return NextResponse.json(
+      { error: 'Failed to create event activity' },
+      { status: 500 },
+    );
+  }
+}
