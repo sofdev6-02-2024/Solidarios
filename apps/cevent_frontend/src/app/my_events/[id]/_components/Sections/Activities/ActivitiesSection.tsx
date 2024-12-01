@@ -10,7 +10,6 @@ import {
   EventStatus,
   getStatusString,
   getStatusNumber,
-  getCurrentTime,
   getCurrentDateTimeForSystem,
 } from '@/utils/methods/eventStatusUtils';
 import {
@@ -25,6 +24,7 @@ import { ActivityCard } from './ActivityCard';
 import ConfirmDialog from './ConfirmationActivityDIalog';
 import { StatusSectionHeader } from './StatusSectionHeader';
 import CreateActivityButton from './CreateActivityButton';
+import BackToMyEvents from './BackToEvents';
 
 const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
   const [state, setState] = useState<ActivitiesState>({
@@ -270,13 +270,22 @@ const ActivitiesSection: React.FC<ActivitiesSectionProps> = ({ id }) => {
         position: 'relative',
       }}
     >
-      <Box mb={4} textAlign="left">
-        <Typography color="primary" variant="display">
-          Activities{' '}
-        </Typography>
-        <Typography variant="display">Section</Typography>
+      <Box
+        mb={4}
+        textAlign="left"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexWrap="nowrap"
+      >
+        <Box>
+          <Typography color="primary" variant="display">
+            Activities{' '}
+          </Typography>
+          <Typography variant="display">Section</Typography>
+        </Box>
+        <BackToMyEvents />
       </Box>
-
       <CreateActivityButton
         onActivityCreated={handleActivityCreated}
         eventId={id}

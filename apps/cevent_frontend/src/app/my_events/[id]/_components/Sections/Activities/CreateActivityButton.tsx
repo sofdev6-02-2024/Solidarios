@@ -29,7 +29,6 @@ const CreateActivityButton: React.FC<CreateActivityButtonProps> = ({
         color="primary"
         startIcon={<AddCircleOutlineIcon />}
         onClick={handleOpenDialog}
-        sx={{ position: 'absolute', top: 0, right: 0 }}
       >
         Create Activity
       </Button>

@@ -32,7 +32,6 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleOpenDialog = () => setIsDialogOpen(true);
-  const [localStatus, setLocalStatus] = useState<string>(status);
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
