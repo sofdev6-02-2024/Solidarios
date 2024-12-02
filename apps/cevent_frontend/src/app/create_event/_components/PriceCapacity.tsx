@@ -21,7 +21,11 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
 
   useEffect(() => {
     const { capacity, ticketPrice } = fields;
-    const isComplete = !errors.capacity && !errors.ticketPrice && capacity && ticketPrice;
+    const isComplete =
+      !errors.capacity &&
+      !errors.ticketPrice &&
+      fields.capacity > 0 &&
+      fields.ticketPrice > 0;
     onComplete(fields, isComplete);
   }, [fields, errors, onComplete]);
 
@@ -32,17 +36,41 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
       ...prevFields,
       [name]: parsedValue,
     }));
-    
+
+    let errorValue = 0;
     if (name === 'capacity') {
+      errorValue = validateCapacity(parsedValue);
       setErrors((prevErrors) => ({
         ...prevErrors,
-        capacity: validateCapacity(parsedValue),
+        capacity: errorValue,
       }));
-    } else if (name === 'ticketPrice') {
+    }
+
+    if (name === 'ticketPrice') {
+      errorValue = validateTicketPrice(parsedValue);
       setErrors((prevErrors) => ({
         ...prevErrors,
-        ticketPrice: validateTicketPrice(parsedValue),
+        ticketPrice: errorValue,
       }));
+    }
+  };
+
+  const getErrorMessage = (error: number) => {
+    switch (error) {
+      case 1:
+        return 'Enter the capacity of the event.';
+      case 2:
+        return 'Capacity cannot be zero';
+      case 3:
+        return 'Capacity must be zero or positive.';
+      case 4:
+        return 'Ticket price is required.';
+      case 5:
+        return 'Ticket price cannot be zero';
+      case 6:
+        return 'Ticket price must be zero or positive.';
+      default:
+        return '';
     }
   };
 
@@ -68,15 +96,16 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
               'aria-label': 'Capacity',
               'aria-required': 'true',
             }}
-            error={!!errors.capacity}
+            error={errors.capacity !== 0}
           />
-          {errors.capacity && (
+          {errors.capacity !== 0 && (
             <Typography
               variant="body2"
               color="error"
               style={{ fontSize: '8px', marginTop: '4px' }}
             >
-              {errors.capacity}
+              {getErrorMessage(errors.capacity || 0)}{' '}
+              {/* Asegura que se pasa un número */}
             </Typography>
           )}
         </Box>
@@ -101,15 +130,16 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
               'aria-label': 'Ticket Price',
               'aria-required': 'true',
             }}
-            error={!!errors.ticketPrice}
+            error={errors.ticketPrice !== 0}
           />
-          {errors.ticketPrice && (
+          {errors.ticketPrice !== 0 && (
             <Typography
               variant="body2"
               color="error"
               style={{ fontSize: '8px', marginTop: '4px' }}
             >
-              {errors.ticketPrice}
+              {getErrorMessage(errors.ticketPrice || 0)}{' '}
+              {/* Asegura que se pasa un número */}
             </Typography>
           )}
         </Box>

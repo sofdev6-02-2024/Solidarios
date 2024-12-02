@@ -10,6 +10,7 @@ import {
   AditionalSettings,
   Steps,
 } from '../../components/imports';
+import { Activity } from '@/utils/interfaces/EventInterfaces';
 import styles from './_styles/CreateEvent.module.css';
 
 interface GeneralInfoData {
@@ -51,7 +52,7 @@ const CreateEvent = () => {
   const [imageData, setImageData] = useState<ImageData>({
     coverPhotoUrl: '',
   });
-  const [activities, setActivities] = useState<ActivityCreateInputDto[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
 
   const handleImageChange = (data: ImageData) => {
     setImageData(data);
@@ -69,8 +70,19 @@ const CreateEvent = () => {
     setPriceCapacity(data);
   };
 
-  const handleAddActivity = (newActivity: ActivityCreateInputDto) => {
-    setActivities((prevActivities) => [...prevActivities, newActivity]);
+  const handleAddActivity = (newActivity: Activity) => {
+    setActivities([...activities, newActivity]);
+  };
+
+  const handleEditActivity = (index: number, updatedActivity: Activity) => {
+    const updatedActivities = [...activities];
+    updatedActivities[index] = updatedActivity;
+    setActivities(updatedActivities);
+  };
+
+  const handleDeleteActivity = (index: number) => {
+    const updatedActivities = activities.filter((_, idx) => idx !== index);
+    setActivities(updatedActivities);
   };
 
   return (
@@ -87,7 +99,11 @@ const CreateEvent = () => {
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
-        <Activities onAddActivity={handleAddActivity} />
+        <Activities
+          onAddActivity={handleAddActivity}
+          onEditActivity={handleEditActivity}
+          onDeleteActivity={handleDeleteActivity}
+        />
         <AditionalSettings />
       </Box>
 

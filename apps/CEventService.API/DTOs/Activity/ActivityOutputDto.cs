@@ -12,5 +12,4 @@ public class ActivityOutputDto : IMapFrom<Activity>
     public DateTime EndTime { get; set; }
     public required EventStatus Status { get; set; }
     public int Capacity { get; set; }
-    public DateTime CreatedAt { get; set; }
 }

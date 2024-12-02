@@ -85,7 +85,7 @@ const DateLocation = ({
 
         try {
           const response = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
+            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`,
           );
           const data = await response.json();
 
@@ -103,19 +103,19 @@ const DateLocation = ({
         } catch (error) {
           console.error(
             'An error occurred while fetching location data:',
-            error
+            error,
           );
         }
       } else {
         console.error('LatLng is null');
       }
     },
-    []
+    [],
   );
 
   const handleChange = (
     field: string,
-    value: string | Date | number | null
+    value: string | Date | number | null,
   ) => {
     setFields((prev) => ({
       ...prev,

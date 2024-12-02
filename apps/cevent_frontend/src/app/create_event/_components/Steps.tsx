@@ -9,13 +9,9 @@ import {
   Button,
 } from '@mui/material';
 import { AddCircleOutline } from '@mui/icons-material';
-import { 
-  createEvent,
-  updateEvent,
-} from '@/utils/../services/EventService';
+import { createEvent } from '@/utils/../services/EventService';
 import '../_styles/Steps.css';
-import { EventInputDto } from '@/utils/interfaces/EventInterfaces';
-import { ActivityInputDto } from '@/utils/interfaces/ActivitiesInterfaces';
+import { EventInputDto, Activity } from '@/utils/interfaces/EventInterfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
@@ -52,7 +48,7 @@ const Steps = ({
   dateLocation: DateLocationProps;
   priceCapacity: PriceCapacityProps;
   selectedImage: string | null;
-  activities: ActivityInputDto[];
+  activities: Activity[];
 }) => {
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
@@ -81,7 +77,9 @@ const Steps = ({
     setIsPriceCapacityComplete(
       !!(priceCapacity?.capacity && priceCapacity?.ticketPrice),
     );
-  }, [generalInfo, dateLocation, priceCapacity]);
+  }, [generalInfo, dateLocation, priceCapacity, activities]);
+
+  console.log('this are activities: ', activities);
 
   const user = useSelector((state: RootState) => state.user.userInfo);
 
@@ -115,13 +113,13 @@ const Steps = ({
         attendeeCount: 0,
         activities,
       };
-  
+
       try {
         const response = await createEvent(eventData);
         if (response === null) {
           console.error('Error creating the event:', response);
         } else {
-          console.log('Event created successfully:', response);            
+          console.log('Event created successfully:', response);
         }
       } catch (error) {
         console.error('Unexpected error creating the event:', error);
@@ -129,7 +127,7 @@ const Steps = ({
     } else {
       console.log('Please complete all fields before submitting');
     }
-  };  
+  };
 
   return (
     <Box mb={4} p={3}>
@@ -169,7 +167,7 @@ const Steps = ({
             Set Reminder
           </Typography>
           <TextField
-            label="Filter options"
+            label="Reminder message"
             fullWidth
             margin="normal"
             variant="outlined"

@@ -62,25 +62,6 @@ export const getEventById = async (
   }
 };
 
-export const updateEvent = async (
-  id: string,
-  data: Partial<EventEditlDto>,
-  userId: string,
-): Promise<boolean> => {
-  try {
-    const response = await axios.put<EventEditlDto>(`/api/events/${id}/${userId}`, data, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    return response.status === 200;
-  } catch (error) {
-    console.error('Error al actualizar el evento:', error);
-    return false;
-  }
-};
-
 export const fetchAllEvents = async (): Promise<EventSearchToUserDto[]> => {
   try {
     const response =
@@ -122,10 +103,10 @@ export const createClickedEvent = async (
 };
 
 /**
- * Crea un nuevo evento
+ * Creates a new event
  *
- * @param eventData objeto que contiene los datos del evento
- * @returns el evento creado o null en caso de error
+ * @param eventData object containing the event data
+ * @returns the created event or null in case of an error
  */
 export const createEvent = async (
   eventData: EventInputDto,

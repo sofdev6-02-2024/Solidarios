@@ -5,11 +5,12 @@ export interface Location {
   latitude: number;
 }
 
-export interface Activity {  
+export interface Activity {
   name: string;
   description: string;
   startTime: Date;
   endTime: Date;
+  status: number;
   capacity: number;
 }
 
@@ -56,7 +57,6 @@ export interface EventEditlDto extends Omit<EventHomePageDto, 'category'> {
   activities: Activity[];
   coOrganizers: string[];
 }
-
 
 export interface EventSearchToUserDto
   extends Omit<EventHomePageDto, 'category'> {
@@ -112,7 +112,7 @@ export interface EventInputDto {
   createdAt: Date;
   address: string;
   attendeeCount: number;
-  activities: Activity[]; 
+  activities: Activity[];
 }
 
 export enum SizeBanner {

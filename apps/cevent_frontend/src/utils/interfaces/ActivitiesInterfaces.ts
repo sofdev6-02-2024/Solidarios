@@ -1,4 +1,4 @@
-export interface ActivityInputDto {  
+export interface ActivityInputDto {
   name: string;
   description: string;
   startTime: Date;

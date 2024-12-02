@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, FormHelperText, Typography, Box } from '@mui/material';
-import { OnCompleteCallback, FieldsGeneralInfo } from '@/utils/interfaces/CreateEvent';
+import {
+  OnCompleteCallback,
+  FieldsGeneralInfo,
+} from '@/utils/interfaces/CreateEvent';
 import { fetchCategories } from '@/services/CategoryService';
-import { 
+import {
   validateName,
   validateShortDescription,
-  validateDescription 
+  validateDescription,
 } from '@/utils/Validations';
 import '../_styles/GeneralInfo.css';
 
@@ -45,9 +48,10 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
 
   const validateFields = () => {
     const newErrors: any = {};
-    
+
     newErrors.title = validateName(fields.title) || '';
-    newErrors.shortDescription = validateShortDescription(fields.shortDescription) || '';
+    newErrors.shortDescription =
+      validateShortDescription(fields.shortDescription) || '';
     newErrors.description = validateDescription(fields.description) || '';
 
     setErrors(newErrors);
@@ -57,7 +61,14 @@ const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
   const checkCompletion = () => {
     const isValid = validateFields();
     const { title, shortDescription, description, categoryId } = fields;
-    onComplete(fields, isValid && title && shortDescription && description && categoryId);
+    onComplete(
+      fields,
+      isValid &&
+        !!title &&
+        !!shortDescription &&
+        !!description &&
+        categoryId !== 0,
+    );
   };
 
   useEffect(() => {
