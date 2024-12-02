@@ -4,9 +4,14 @@ import { styleEventOrganizer } from '@/styles/components/EventPageStyles';
 interface OrganizerInfoProps {
   organizerType: 'Event Organizer' | 'Collaborator';
   user: UserInterface;
+  hideEmail?: boolean;
 }
 
-const OrganizerInfo = ({ organizerType, user }: OrganizerInfoProps) => {
+const OrganizerInfo = ({
+  organizerType,
+  user,
+  hideEmail,
+}: OrganizerInfoProps) => {
   return (
     <Box sx={styleEventOrganizer.container}>
       <Box sx={styleEventOrganizer.infoUser}>
@@ -36,22 +41,24 @@ const OrganizerInfo = ({ organizerType, user }: OrganizerInfoProps) => {
           </Typography>
         </Box>
       </Box>
-      <Box sx={styleEventOrganizer.containerName}>
-        <Typography sx={styleEventOrganizer.grayText} variant="caption">
-          Email
-        </Typography>
-        <Typography
-          sx={{
-            ...styleEventOrganizer.grayText,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-          variant="body"
-        >
-          {user.email}
-        </Typography>
-      </Box>
+      {!hideEmail && (
+        <Box sx={styleEventOrganizer.containerName}>
+          <Typography sx={styleEventOrganizer.grayText} variant="caption">
+            Email
+          </Typography>
+          <Typography
+            sx={{
+              ...styleEventOrganizer.grayText,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+            variant="body"
+          >
+            {user.email}
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };
