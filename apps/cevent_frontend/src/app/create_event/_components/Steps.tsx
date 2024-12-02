@@ -15,6 +15,7 @@ import { EventInputDto, Activity } from '@/utils/interfaces/EventInterfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
+import { messageOfRequest } from '@/utils/messageOfRequest';
 import { routes } from '@/utils/navigation/Routes';
 
 export interface GeneralInfoProps {
@@ -79,8 +80,6 @@ const Steps = ({
     );
   }, [generalInfo, dateLocation, priceCapacity, activities]);
 
-  console.log('this are activities: ', activities);
-
   const user = useSelector((state: RootState) => state.user.userInfo);
 
   const handleSubmit = async () => {
@@ -117,16 +116,16 @@ const Steps = ({
       try {
         const response = await createEvent(eventData);
         if (response === null) {
-          console.error('Error creating the event:', response);
+          messageOfRequest.logEventCreationError(response);
         } else {
-          console.log('Event created successfully:', response);
           router.push('/my_events');
         }
       } catch (error) {
-        console.error('Unexpected error creating the event:', error);
+        messageOfRequest.logUnexpectedError(error);
       }
     } else {
-      console.log('Please complete all fields before submitting');
+      messageOfRequest.logCompletionMessage();
+      1;
     }
   };
 

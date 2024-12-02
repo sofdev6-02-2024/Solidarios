@@ -13,6 +13,7 @@ import {
   validateEventDate,
   validateCapacity,
 } from '@/utils/Validations';
+import { ActivityErrors } from '@/utils/interfaces/ActivitiesInterfaces';
 import '../_styles/Activities.css';
 
 const Activities: React.FC<{
@@ -28,7 +29,7 @@ const Activities: React.FC<{
   const [capacity, setCapacity] = useState<number | string>('');
   const [showActivityInputs, setShowActivityInputs] = useState<boolean>(false);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [errors, setErrors] = useState<any>({
+  const [errors, setErrors] = useState<ActivityErrors>({
     title: '',
     description: '',
     capacity: '',
