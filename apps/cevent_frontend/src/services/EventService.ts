@@ -7,6 +7,7 @@ import {
   EventInputDto,
   EventSearchToUserDto,
   EventStatus,
+  EventEditlDto,
 } from '@/utils/interfaces/EventInterfaces';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
@@ -102,10 +103,10 @@ export const createClickedEvent = async (
 };
 
 /**
- * Crea un nuevo evento
+ * Creates a new event
  *
- * @param eventData objeto que contiene los datos del evento
- * @returns el evento creado o null en caso de error
+ * @param eventData object containing the event data
+ * @returns the created event or null in case of an error
  */
 export const createEvent = async (
   eventData: EventInputDto,
