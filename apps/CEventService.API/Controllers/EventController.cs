@@ -40,7 +40,6 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         return await base.Create(inputDto);
     }
 
-    [Authorize]
     [HttpPut("{id}")]
     public override async Task<ActionResult> Update(int id, [FromBody] EventInputDto inputDto, [FromHeader] Guid userId)
     {
@@ -50,7 +49,6 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         return await base.Update(id, inputDto, userId);
     }
 
-    [Authorize]
     [HttpDelete("{id}")]
     public override async Task<IActionResult> SoftDelete(int id, [FromHeader] Guid userId)
     {
@@ -85,7 +83,7 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
 
         return null;
     }
-    
+
     [HttpGet("banner")]
     public async Task<ActionResult<IEnumerable<EventHomePageDto>>> GetPromotedAndMostClickedEvents(int page = 1, int pageSize = 10)
     {
@@ -93,7 +91,7 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         if (response.IsNullOrEmpty())
         {
             var filters = new EventFilterDto()
-            {   
+            {
                 SortBy = "EventDate",
                 IsDescending = true
             };
@@ -109,19 +107,19 @@ public class EventController : BaseController<Event, EventOutputDto, EventInputD
         if (response.IsNullOrEmpty())
         {
             var filters = new EventFilterDto()
-            {   
+            {
                 SortBy = "EventDate",
                 IsDescending = true,
                 Category = category
             };
             response = await _eventService.GetSummaryEvents(page, pageSize, filters);
         }
-            
+
         return Ok(response);
     }
 
     [HttpGet("audit/eventStadistics")]
-    public async Task<ActionResult<BasicDataCounterDto>> GetBasicCounterData ()
+    public async Task<ActionResult<BasicDataCounterDto>> GetBasicCounterData()
     {
         var response = await _eventService.GetBasicDataCounter();
         if (response is null)

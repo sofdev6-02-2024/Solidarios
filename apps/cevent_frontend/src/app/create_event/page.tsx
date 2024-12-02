@@ -10,6 +10,7 @@ import {
   AditionalSettings,
   Steps,
 } from '../../components/imports';
+import { Activity } from '@/utils/interfaces/EventInterfaces';
 import styles from './_styles/CreateEvent.module.css';
 
 interface GeneralInfoData {
@@ -29,8 +30,11 @@ interface PriceCapacityData {
   ticketPrice: number;
 }
 
+interface ImageData {
+  coverPhotoUrl: string;
+}
+
 const CreateEvent = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [generalInfo, setGeneralInfo] = useState<GeneralInfoData>({
     title: '',
     shortDescription: '',
@@ -45,14 +49,13 @@ const CreateEvent = () => {
     capacity: 0,
     ticketPrice: 0,
   });
+  const [imageData, setImageData] = useState<ImageData>({
+    coverPhotoUrl: '',
+  });
+  const [activities, setActivities] = useState<Activity[]>([]);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setSelectedImage(reader.result as string);
-      reader.readAsDataURL(file);
-    }
+  const handleImageChange = (data: ImageData) => {
+    setImageData(data);
   };
 
   const handleGeneralInfoComplete = (data: GeneralInfoData) => {
@@ -67,6 +70,21 @@ const CreateEvent = () => {
     setPriceCapacity(data);
   };
 
+  const handleAddActivity = (newActivity: Activity) => {
+    setActivities([...activities, newActivity]);
+  };
+
+  const handleEditActivity = (index: number, updatedActivity: Activity) => {
+    const updatedActivities = [...activities];
+    updatedActivities[index] = updatedActivity;
+    setActivities(updatedActivities);
+  };
+
+  const handleDeleteActivity = (index: number) => {
+    const updatedActivities = activities.filter((_, idx) => idx !== index);
+    setActivities(updatedActivities);
+  };
+
   return (
     <Box className={styles.container} display="flex">
       <Box flex={4} pr={2}>
@@ -77,18 +95,14 @@ const CreateEvent = () => {
           </Typography>
         </Box>
 
-        <ImageUpload
-          selectedImage={selectedImage}
-          onImageChange={handleImageChange}
-        />
+        <ImageUpload onComplete={handleImageChange} />
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
         <DateLocation onComplete={handleDateLocationComplete} />
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
         <Activities
-          onAddActivity={(newActivity) =>
-            //TODO: Add implementation
-            console.log('Nueva actividad agregada:', newActivity)
-          }
+          onAddActivity={handleAddActivity}
+          onEditActivity={handleEditActivity}
+          onDeleteActivity={handleDeleteActivity}
         />
         <AditionalSettings />
       </Box>
@@ -98,7 +112,8 @@ const CreateEvent = () => {
           generalInfo={generalInfo}
           dateLocation={dateLocation}
           priceCapacity={priceCapacity}
-          selectedImage={selectedImage}
+          selectedImage={imageData.coverPhotoUrl}
+          activities={activities}
         />
       </Box>
     </Box>

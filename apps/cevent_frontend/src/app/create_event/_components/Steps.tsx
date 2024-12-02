@@ -11,10 +11,11 @@ import {
 import { AddCircleOutline } from '@mui/icons-material';
 import { createEvent } from '@/utils/../services/EventService';
 import '../_styles/Steps.css';
-import { EventInputDto } from '@/utils/interfaces/EventInterfaces';
+import { EventInputDto, Activity } from '@/utils/interfaces/EventInterfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
+import { messageOfRequest } from '@/utils/messageOfRequest';
 import { routes } from '@/utils/navigation/Routes';
 
 export interface GeneralInfoProps {
@@ -42,11 +43,13 @@ const Steps = ({
   dateLocation,
   priceCapacity,
   selectedImage,
+  activities,
 }: {
   generalInfo: GeneralInfoProps;
   dateLocation: DateLocationProps;
   priceCapacity: PriceCapacityProps;
   selectedImage: string | null;
+  activities: Activity[];
 }) => {
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
@@ -75,7 +78,7 @@ const Steps = ({
     setIsPriceCapacityComplete(
       !!(priceCapacity?.capacity && priceCapacity?.ticketPrice),
     );
-  }, [generalInfo, dateLocation, priceCapacity]);
+  }, [generalInfo, dateLocation, priceCapacity, activities]);
 
   const user = useSelector((state: RootState) => state.user.userInfo);
 
@@ -107,20 +110,22 @@ const Steps = ({
         createdAt: new Date(),
         address: dateLocation.location || '',
         attendeeCount: 0,
+        activities,
       };
 
       try {
         const response = await createEvent(eventData);
         if (response === null) {
-          console.error('Error creating event:', response);
+          messageOfRequest.logEventCreationError(response);
         } else {
-          router.push(routes.myEvents);
+          router.push('/my_events');
         }
       } catch (error) {
-        console.error('Unexpected error creating event:', error);
+        messageOfRequest.logUnexpectedError(error);
       }
     } else {
-      console.log('Please complete all fields before submitting');
+      messageOfRequest.logCompletionMessage();
+      1;
     }
   };
 
@@ -162,7 +167,7 @@ const Steps = ({
             Set Reminder
           </Typography>
           <TextField
-            label="Filter options"
+            label="Reminder message"
             fullWidth
             margin="normal"
             variant="outlined"
