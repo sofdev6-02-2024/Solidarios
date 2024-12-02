@@ -120,6 +120,7 @@ const Steps = ({
           console.error('Error creating the event:', response);
         } else {
           console.log('Event created successfully:', response);
+          router.push('/my_events');
         }
       } catch (error) {
         console.error('Unexpected error creating the event:', error);
