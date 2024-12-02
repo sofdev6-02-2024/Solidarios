@@ -142,8 +142,11 @@ const HomeSection = ({ event }: SectionProps) => {
                 sx={{ width: '150px' }}
               >
                 <MenuItem value="Pending">Pending</MenuItem>
-                <MenuItem value="In Progress">In Progress</MenuItem>
-                <MenuItem value="Finished">Finished</MenuItem>
+                <MenuItem value="Cancelled">Cancelled</MenuItem>
+                <MenuItem value="Postponed">Postponed</MenuItem>
+                <MenuItem value="InProgress">InProgress</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="OnHold">OnHold</MenuItem>
               </Select>
             </Card>
           </Box>
