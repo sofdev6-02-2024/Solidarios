@@ -3,6 +3,8 @@ import { Box, Typography, TextField, Button } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import Remove from '@mui/icons-material/Remove';
 import Delete from '@mui/icons-material/Delete';
+import { InputAdornment } from '@mui/material';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import Edit from '@mui/icons-material/Edit';
 import { Activity } from '@/utils/interfaces/EventInterfaces';
 import {
@@ -233,6 +235,11 @@ const Activities: React.FC<{
               fullWidth
               InputProps={{
                 style: { color: 'black' },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CalendarTodayIcon style={{ color: 'black' }} />
+                  </InputAdornment>
+                ),
               }}
               sx={{ flex: 1 }}
             />
@@ -252,6 +259,11 @@ const Activities: React.FC<{
               fullWidth
               InputProps={{
                 style: { color: 'black' },
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CalendarTodayIcon style={{ color: 'black' }} />
+                  </InputAdornment>
+                ),
               }}
               sx={{ flex: 1 }}
             />
