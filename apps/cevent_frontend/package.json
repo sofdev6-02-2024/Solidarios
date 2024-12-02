@@ -14,20 +14,21 @@
     "format": "prettier --write 'src/**/*.{ts,tsx,js,json}'"
   },
   "dependencies": {
-    "@bytescale/upload-widget-react": "^4.19.0",    
+    "@bytescale/upload-widget-react": "^4.19.0",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@fontsource/inter": "^5.1.0",
     "@mui/icons-material": "^6.1.5",
     "@mui/lab": "^6.0.0-beta.17",
-    "@mui/material": "^6.1.8",    
+    "@mui/material": "^6.1.8",
     "@react-google-maps/api": "^2.20.3",
     "@reduxjs/toolkit": "^2.3.0",
     "@stripe/react-stripe-js": "^3.0.0",
     "@stripe/stripe-js": "^5.2.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
-    "cryptr": "^6.3.0",    
+    "cryptr": "^6.3.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "globals": "^15.11.0",
     "jwt-decode": "^4.0.0",
@@ -45,7 +46,7 @@
     "stripe": "^17.4.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",    
+    "@eslint/js": "^9.13.0",
     "@types/node": "^20",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18",
