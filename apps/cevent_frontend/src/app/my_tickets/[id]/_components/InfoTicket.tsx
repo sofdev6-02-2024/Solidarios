@@ -103,15 +103,13 @@ const InfoTicket = ({
         </Box>
       </Box>
       <Box>
-        <ButtonBase
-          onClick={() => setOpenTicketModal(true)}
-        >
+        <ButtonBase onClick={() => setOpenTicketModal(true)}>
           <QRCodeSVG value={ticketData.qrContent} size={100} />
         </ButtonBase>
       </Box>
-      <TicketModal 
-        ticketData={ticketData} 
-        openModal={openTicketModal} 
+      <TicketModal
+        ticketData={ticketData}
+        openModal={openTicketModal}
         setOpenModal={setOpenTicketModal}
         eventData={eventData}
       />

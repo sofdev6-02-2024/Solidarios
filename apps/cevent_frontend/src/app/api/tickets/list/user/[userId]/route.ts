@@ -13,7 +13,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 export async function GET(
   request: Request,
   { params }: { params: { userId: string } },
-)  {
+) {
   const { userId } = params;
   const { searchParams } = new URL(request.url);
 
@@ -29,7 +29,7 @@ export async function GET(
   }
 
   const fullUrl = `${BASE_URL}/ticket-service/api/Ticket/user/${userId}`;
-  
+
   try {
     const response = await axios.get(fullUrl, { params: filters });
     return NextResponse.json(response.data, { status: 200 });
