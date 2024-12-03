@@ -88,12 +88,23 @@ const HomeSection = ({ event }: SectionProps) => {
                       <Typography variant="body2" sx={stylesPage.labelStyles}>
                         Address
                       </Typography>
-                      <ButtonBase onClick={handleOpenMap}></ButtonBase>
                     </Box>
-                    <Typography variant="body1" sx={stylesPage.linkStyles}>
-                      {event.address}
-                    </Typography>
+                    <ButtonBase
+                      onClick={handleOpenMap}
+                      sx={{
+                        textAlign: 'left',
+                        padding: 0,
+                        marginLeft: '-4px',
+                        width: 'fit-content',
+                        display: 'inline-flex',
+                      }}
+                    >
+                      <Typography variant="body1" sx={stylesPage.linkStyles}>
+                        {event.address}
+                      </Typography>
+                    </ButtonBase>
                   </Box>
+
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Box sx={stylesPage.infoRow}>
                       <Typography variant="body2">
