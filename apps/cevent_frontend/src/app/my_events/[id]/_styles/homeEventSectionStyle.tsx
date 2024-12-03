@@ -18,13 +18,18 @@ export const stylesPage: Record<string, SxProps<Theme>> = {
     fontSize: '1.5rem',
   },
   chipCategoryStyles: {
-    display: 'inline-block',
     padding: '4px 8px',
     backgroundColor: '#035AE1',
     color: '#ffffff',
     borderRadius: '16px',
     fontSize: '0.85rem',
-    marginTop: 1,
+  },
+  ongoingStatusChip: {
+    padding: '4px 8px',
+    backgroundColor: '#F6B835',
+    color: '#fff',
+    borderRadius: '16px',
+    fontSize: '0.85rem',
   },
   infoRow: {
     display: 'flex',
@@ -89,13 +94,6 @@ export const stylesPage: Record<string, SxProps<Theme>> = {
     fontSize: '1rem',
     fontWeight: 'bold',
     borderRadius: 4,
-  },
-  ongoingStatusChip: {
-    backgroundColor: '#F6B835',
-    color: '#fff',
-    fontWeight: 'bold',
-    borderRadius: '16px',
-    fontSize: '0.85rem',
   },
 
   inProgressStatusChip: {

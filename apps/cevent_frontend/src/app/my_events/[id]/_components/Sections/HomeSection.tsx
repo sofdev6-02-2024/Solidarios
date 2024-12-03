@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -27,7 +27,14 @@ interface SectionProps {
 }
 
 const HomeSection = ({ event }: SectionProps) => {
-  const [eventStatus, setEventStatus] = useState('Ongoing');
+  const [eventStatus, setEventStatus] = useState('Pending');
+  const [displayedStatus, setDisplayedStatus] = useState(
+    `Status: ${mapStatus[event.status]}`,
+  );
+
+  useEffect(() => {
+    setDisplayedStatus(`Status: ${eventStatus}`);
+  }, [eventStatus]);
 
   const handleStatusChange = (e: SelectChangeEvent) => {
     setEventStatus(e.target.value);
@@ -62,13 +69,15 @@ const HomeSection = ({ event }: SectionProps) => {
                 <Typography variant="h5" sx={stylesPage.titleStyles}>
                   {event.name}
                 </Typography>
-                <Box sx={stylesPage.chipCategoryStyles}>
-                  {event.category.keyWord}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={stylesPage.chipCategoryStyles}>
+                    {event.category.keyWord}
+                  </Box>
+                  <Chip
+                    sx={stylesPage.ongoingStatusChip}
+                    label={displayedStatus}
+                  />
                 </Box>
-                <Chip
-                  sx={stylesPage.ongoingStatusChip}
-                  label={`Status: ${mapStatus[event.status]}`}
-                />
                 <Box
                   mt={2}
                   sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
@@ -120,7 +129,6 @@ const HomeSection = ({ event }: SectionProps) => {
                   </Box>
                 </Box>
               </Grid>
-
               <Grid
                 size={4}
                 display="flex"
@@ -131,7 +139,7 @@ const HomeSection = ({ event }: SectionProps) => {
                   component="img"
                   src={event.coverPhotoUrl}
                   alt="Event cover"
-                  sx={{ width: '100%', borderRadius: 4 }}
+                  sx={{ width: '100%', height: 'auto', borderRadius: 4 }}
                 />
               </Grid>
             </Grid>
@@ -155,9 +163,9 @@ const HomeSection = ({ event }: SectionProps) => {
                 <MenuItem value="Pending">Pending</MenuItem>
                 <MenuItem value="Cancelled">Cancelled</MenuItem>
                 <MenuItem value="Postponed">Postponed</MenuItem>
-                <MenuItem value="InProgress">InProgress</MenuItem>
+                <MenuItem value="InProgress">In Progress</MenuItem>
                 <MenuItem value="Completed">Completed</MenuItem>
-                <MenuItem value="OnHold">OnHold</MenuItem>
+                <MenuItem value="OnHold">On Hold</MenuItem>
               </Select>
             </Card>
           </Box>
