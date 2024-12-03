@@ -16,12 +16,20 @@ import {
 import { ActivityErrors } from '@/utils/interfaces/ActivitiesInterfaces';
 import '../_styles/Activities.css';
 
-const Activities: React.FC<{
+type ActivitiesProps = {
+  initialActivities?: Activity[];
   onAddActivity: (activity: Activity) => void;
   onEditActivity: (index: number, updatedActivity: Activity) => void;
   onDeleteActivity: (index: number) => void;
-}> = ({ onAddActivity, onEditActivity, onDeleteActivity }) => {
-  const [activities, setActivities] = useState<Activity[]>([]);
+};
+
+const Activities: React.FC<ActivitiesProps> = ({
+                                                 initialActivities = [],
+                                                 onAddActivity,
+                                                 onEditActivity,
+                                                 onDeleteActivity,
+                                               }) => {
+  const [activities, setActivities] = useState<Activity[]>(initialActivities);
   const [activityTitle, setActivityTitle] = useState<string>('');
   const [activityDescription, setActivityDescription] = useState<string>('');
   const [startTime, setStartTime] = useState<Date | null>(null);

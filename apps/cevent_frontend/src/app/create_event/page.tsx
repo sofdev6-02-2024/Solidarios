@@ -95,11 +95,59 @@ const CreateEvent = () => {
           </Typography>
         </Box>
 
-        <ImageUpload onComplete={handleImageChange} />
-        <GeneralInfo onComplete={handleGeneralInfoComplete} />
-        <DateLocation onComplete={handleDateLocationComplete} />
-        <PriceCapacity onComplete={handlePriceCapacityComplete} />
+        <ImageUpload
+          onComplete={handleImageChange}
+          //initialImage="https://upcdn.io/W142it7/raw/uploads/2024/12/03/4k9xqXFT7Y-guardabarros-delantero-honda-1.jpg"
+        />
+
+        <GeneralInfo
+          onComplete={handleGeneralInfoComplete}
+          /*initialData={{
+            title: 'Tech Conference 2024',
+            shortDescription: 'An event about the latest in tech.',
+            description: 'Join us for a deep dive into the future of technology.',
+            categoryId: 1,
+          }}*/
+        />
+
+        <DateLocation
+          onComplete={handleDateLocationComplete}
+          /*initialData={{
+            date: new Date('2024-12-25'),
+            time: '14:30',
+            location: 'Central Park, New York',
+            latitude: 40.785091,
+            longitude: -73.968285,
+          }}*/
+        />
+
+        <PriceCapacity
+          onComplete={handlePriceCapacityComplete}
+          /*initialData={{
+            capacity: 100,
+            ticketPrice: 50,
+          }}*/
+        />
+
         <Activities
+          /*initialActivities={[
+            {
+              name: 'Opening Ceremony',
+              description: 'The grand opening of the event.',
+              startTime: new Date('2024-12-01T10:00:00'),
+              endTime: new Date('2024-12-01T11:00:00'),
+              status: 1,
+              capacity: 100,
+            },
+            {
+              name: 'Opening Ceremony',
+              description: 'The grand opening of the event.',
+              startTime: new Date('2024-12-01T10:00:00'),
+              endTime: new Date('2024-12-01T11:00:00'),
+              status: 1,
+              capacity: 100,
+            },
+          ]}*/
           onAddActivity={handleAddActivity}
           onEditActivity={handleEditActivity}
           onDeleteActivity={handleDeleteActivity}

@@ -25,17 +25,18 @@ type DateLocationData = {
   longitude: number | null;
 };
 
-const DateLocation = ({
-  onComplete,
-}: {
+interface DateLocationProps {
   onComplete: (data: DateLocationData, isComplete: boolean) => void;
-}) => {
+  initialData?: Partial<DateLocationData>;
+}
+
+const DateLocation = ({ onComplete, initialData = {} }: DateLocationProps) => {
   const [fields, setFields] = useState<DateLocationData>({
-    date: new Date(),
-    time: '',
-    location: '',
-    latitude: null,
-    longitude: null,
+    date: initialData.date || new Date(),
+    time: initialData.time || '',
+    location: initialData.location || '',
+    latitude: initialData.latitude || null,
+    longitude: initialData.longitude || null,
   });
 
   const [errors, setErrors] = useState({
@@ -47,8 +48,14 @@ const DateLocation = ({
   const [mapState, setMapState] = useState({
     openDateModal: false,
     openTimeModal: false,
-    mapCenter: { lat: -17.366198, lng: -66.175489 },
-    markerPosition: { lat: -17.366198, lng: -66.175489 },
+    mapCenter: {
+      lat: initialData.latitude || -17.366198,
+      lng: initialData.longitude || -66.175489,
+    },
+    markerPosition: {
+      lat: initialData.latitude || -17.366198,
+      lng: initialData.longitude || -66.175489,
+    },
   });
 
   const { isLoaded } = useJsApiLoader({
