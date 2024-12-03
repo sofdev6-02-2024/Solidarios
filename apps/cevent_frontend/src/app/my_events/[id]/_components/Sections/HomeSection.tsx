@@ -19,7 +19,7 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import QRCodeIcon from '@mui/icons-material/QrCodeScanner';
 
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
-import { EventDetailDto, mapStatus } from '@/utils/interfaces/EventInterfaces';
+import { EventDetailDto, statusData } from '@/utils/interfaces/EventInterfaces';
 import { fullFormatDate } from '@/utils/methods/stringMethods';
 
 interface SectionProps {
@@ -29,7 +29,7 @@ interface SectionProps {
 const HomeSection = ({ event }: SectionProps) => {
   const [eventStatus, setEventStatus] = useState('Pending');
   const [displayedStatus, setDisplayedStatus] = useState(
-    `Status: ${mapStatus[event.status]}`,
+    `Status: ${statusData[event.status]}`,
   );
 
   useEffect(() => {
