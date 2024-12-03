@@ -6,11 +6,11 @@ export interface Location {
 }
 
 export interface Activity {
-  eventId: number;
   name: string;
   description: string;
   startTime: Date;
   endTime: Date;
+  status: number;
   capacity: number;
 }
 
@@ -31,6 +31,22 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   venue: string;
   attendanceTrackingEnabled: boolean;
   status: string;
+  capacity: number;
+  organizerUserId: string;
+  createdAt: Date;
+  category: EventCategory;
+  description: string;
+  isPromoted?: boolean;
+  address: string;
+  activities: Activity[];
+  coOrganizers: string[];
+}
+
+export interface EventEditlDto extends Omit<EventHomePageDto, 'category'> {
+  location: Location;
+  venue: string;
+  attendanceTrackingEnabled: boolean;
+  status: number;
   capacity: number;
   organizerUserId: string;
   createdAt: Date;
@@ -96,6 +112,7 @@ export interface EventInputDto {
   createdAt: Date;
   address: string;
   attendeeCount: number;
+  activities: Activity[];
 }
 
 export enum SizeBanner {
