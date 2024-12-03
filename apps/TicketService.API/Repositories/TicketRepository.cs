@@ -1,6 +1,7 @@
 ﻿using TicketService.API.Models;
 using Microsoft.EntityFrameworkCore;
 using TicketService.API.Database;
+using TicketService.API.DTOs;
 
 namespace TicketService.API.Repositories
 {
@@ -18,6 +19,13 @@ namespace TicketService.API.Repositories
             _context.Tickets.Add(ticket);
             await _context.SaveChangesAsync();
             return ticket;
+        }
+
+        public async Task<ICollection<Ticket>> CreateTicketsAsync(ICollection<Ticket> tickets)
+        {
+            _context.Tickets.AddRange(tickets);
+            await _context.SaveChangesAsync();
+            return tickets;
         }
 
         public async Task<IEnumerable<Ticket>> GetAllTicketAsync()
@@ -44,6 +52,20 @@ namespace TicketService.API.Repositories
                 ticket.IsUsed = isUsed;
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<ICollection<Ticket>> GetTicketsByUser(string userId, TicketFilterDto filter)
+        {
+            var query = _context.Tickets
+                .Where(t => t.UserId == userId);
+
+            if (filter.EventId != -1 && filter.EventId != null)
+                query = query.Where(t => t.EventId == filter.EventId);
+
+            if (filter.IsUsed.HasValue)
+                query = query.Where(t => t.IsUsed == filter.IsUsed);
+        
+            return await query.ToListAsync();
         }
     }
 }

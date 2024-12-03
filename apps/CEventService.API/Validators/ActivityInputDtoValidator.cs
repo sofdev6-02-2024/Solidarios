@@ -7,20 +7,12 @@ public class ActivityInputDtoValidator : AbstractValidator<ActivityInputDto>
 {
     public ActivityInputDtoValidator()
     {
-        RuleForEventId();
         RuleForName();
         RuleForDescription();
         RuleForStartTime();
         RuleForEndTime();
         RuleForCapacity();
     }
-
-    private void RuleForEventId()
-    {
-        RuleFor(x => x.EventId)
-            .GreaterThan(0).WithMessage("EventId must be greater than 0.");
-    }
-
     private void RuleForName()
     {
         RuleFor(x => x.Name)

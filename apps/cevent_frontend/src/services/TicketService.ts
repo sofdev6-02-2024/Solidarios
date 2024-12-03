@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { TicketRequestDto } from '@/utils/interfaces/TicketInterfaces';
 import {
+  Ticket,
+  TicketFilter,
   TicketPostInterface,
   TicketViewInterface,
 } from '@/utils/interfaces/TIcketsInterfaces';
@@ -36,12 +38,42 @@ export const fetchTickets = async (
   }
 };
 
-export const generateTicket = async (
+/**
+ * Fetches tickets based on the given parameters
+ *
+ * @returns Array of tickets or an empty array if an error occurs
+ */
+export const fetchTicketsByUserId = async (
+  userId: string | undefined,
+  filterTicket?: TicketFilter,
+): Promise<Ticket[]> => {
+  try {
+    const response = await axios.get<any[]>(
+      `/api/tickets/list/user/${userId}`,
+      {
+        params: filterTicket,
+      },
+    );
+
+    if (Array.isArray(response.data)) {
+      return response.data;
+    } else {
+      console.error('Invalid response format');
+      return [];
+    }
+  } catch (error: any) {
+    console.error('Error fetching tickets:', error.message || error);
+    return [];
+  }
+};
+
+export const generateTickets = async (
   ticketPost: TicketPostInterface,
+  quantity: number,
 ): Promise<TicketViewInterface | null> => {
   try {
     const response = await axios.post<TicketViewInterface>(
-      '/api/tickets',
+      `/api/tickets/${quantity}`,
       ticketPost,
     );
 

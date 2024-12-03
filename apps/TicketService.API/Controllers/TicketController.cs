@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Mvc;
 using TicketService.API.DTOs;
+using TicketService.API.Models;
 using TicketService.API.Services;
 
 namespace TicketService.API.Controllers
@@ -87,6 +89,24 @@ namespace TicketService.API.Controllers
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
+        }
+
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<ICollection<TicketInfoDto>>> GetTicketByUserId(
+            string userId,
+            [FromQuery] TicketFilterDto filterDto
+            )
+        {
+            var tickets = await _ticketService.GetTicketsByUserId(userId, filterDto);
+            return tickets is null ? NotFound() : Ok(tickets);
+        }
+
+        [HttpPost("generate/{quantity}")]
+        public async Task<ActionResult<IEnumerable<TicketInfoDto>>> CreateTickets(int quantity, [FromBody] TicketRequestDto ticketRequest)
+        {
+            var tickets = await _ticketService.GenerateTicketsAsync(ticketRequest, quantity);
+            return tickets is null ? NotFound() : Ok(tickets);
+
         }
     }
 }

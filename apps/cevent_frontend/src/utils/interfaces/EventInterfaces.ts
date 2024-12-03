@@ -6,11 +6,11 @@ export interface Location {
 }
 
 export interface Activity {
-  eventId: number;
   name: string;
   description: string;
   startTime: Date;
   endTime: Date;
+  status: number;
   capacity: number;
 }
 
@@ -42,6 +42,22 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   coOrganizers: string[];
 }
 
+export interface EventEditlDto extends Omit<EventHomePageDto, 'category'> {
+  location: Location;
+  venue: string;
+  attendanceTrackingEnabled: boolean;
+  status: number;
+  capacity: number;
+  organizerUserId: string;
+  createdAt: Date;
+  category: EventCategory;
+  description: string;
+  isPromoted?: boolean;
+  address: string;
+  activities: Activity[];
+  coOrganizers: string[];
+}
+
 export interface EventSearchToUserDto
   extends Omit<EventHomePageDto, 'category'> {
   location: Location;
@@ -51,10 +67,11 @@ export interface EventSearchToUserDto
   capacity: number;
   organizerUserId: string;
   createdAt: Date;
-  category: EventCategory;
+  category: string;
   description: string;
   activities: number;
   ticketCount?: number;
+  address: string;
 }
 
 export enum SortOptions {
@@ -95,6 +112,7 @@ export interface EventInputDto {
   createdAt: Date;
   address: string;
   attendeeCount: number;
+  activities: Activity[];
 }
 
 export enum SizeBanner {
@@ -126,11 +144,12 @@ export interface EventStatus {
   attendeeCount?: number;
 }
 
-export const mapStatus: Record<number, string> = {
+export const statusData: Record<number, string> = {
+  0: 'Pending',
   1: 'Pending',
   2: 'Cancelled',
   3: 'Postponed',
-  4: 'InProgress',
+  4: 'In Progress',
   5: 'Completed',
-  6: 'OnHold',
+  6: 'On Hold',
 };

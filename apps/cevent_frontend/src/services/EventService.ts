@@ -7,9 +7,17 @@ import {
   EventInputDto,
   EventSearchToUserDto,
   EventStatus,
+  EventEditlDto,
 } from '@/utils/interfaces/EventInterfaces';
 import { PromoteEventDto } from '@/utils/interfaces/Promotions';
 import { EventsStadistic } from '@/utils/interfaces/EventStadistic';
+import {
+  EventActivity,
+  EventActivityDto,
+} from '@/utils/interfaces/EventActivities';
+import { NextResponse } from 'next/server';
+
+const BASE_URL = process.env.NEXTAUTH_URL || '';
 
 /**
  * Fetches the events for the home page
@@ -102,10 +110,10 @@ export const createClickedEvent = async (
 };
 
 /**
- * Crea un nuevo evento
+ * Creates a new event
  *
- * @param eventData objeto que contiene los datos del evento
- * @returns el evento creado o null en caso de error
+ * @param eventData object containing the event data
+ * @returns the created event or null in case of an error
  */
 export const createEvent = async (
   eventData: EventInputDto,
@@ -186,5 +194,130 @@ export const updateStatusEvent = async (
     return response.status === 201;
   } catch (error) {
     return false;
+  }
+};
+
+export const getEventsByIds = async (
+  eventsIds: number[],
+): Promise<EventSearchToUserDto[]> => {
+  try {
+    const response = await axios.post<EventSearchToUserDto[]>(
+      '/api/events/list/ids',
+      { ids: eventsIds },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+/**
+ *  Fetches the activities of the events
+ *
+ * @returns Event activities object
+ */
+export const getEventActivities = async (
+  id: string,
+  status: string,
+): Promise<EventActivity[] | null> => {
+  try {
+    console.log('first');
+    const apiUrl = `${BASE_URL}/api/events/${id}/activities?status=${status}`;
+    console.log(apiUrl);
+    const response = await axios.get<EventActivity[]>(apiUrl);
+    console.log(response.data);
+    return response.data || [];
+  } catch (error) {
+    console.error('Failed to fetch event activities:', error);
+    return [];
+  }
+};
+
+export const updateEventActivity = async (
+  id: string,
+  activityId: string,
+  updatedActivity: EventActivityDto,
+): Promise<EventActivity | null> => {
+  try {
+    const apiUrl = `${BASE_URL}/api/events/${id}/activities/${activityId}`;
+    console.log('API URL:', apiUrl);
+    console.log('Payload:', updatedActivity);
+
+    const response = await axios.put<EventActivity>(apiUrl, updatedActivity);
+
+    console.log('Updated Activity:', response.data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Failed to update event activity:',
+        error.response?.data || error.message,
+      );
+    } else {
+      console.error('An unexpected error occurred:', error);
+    }
+    return null;
+  }
+};
+
+export const createEventActivity = async (
+  id: string,
+  newActivity: EventActivityDto,
+): Promise<EventActivity | null> => {
+  try {
+    const apiUrl = `${BASE_URL}/api/events/${id}/activities`;
+    console.log('API URL:', apiUrl);
+    console.log(
+      'Payload---------------------------------------------------------------------------------------------:',
+      newActivity,
+    );
+
+    const response = await axios.post<EventActivity>(apiUrl, newActivity, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('Created Activity:', response.data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Failed to create event activity:',
+        error.response?.data || error.message,
+      );
+    } else {
+      console.error('An unexpected error occurred:', error);
+    }
+    return null;
+  }
+};
+
+export const deleteEventActivity = async (
+  id: string,
+  activityId: string,
+): Promise<EventActivity | null> => {
+  try {
+    const apiUrl = `${BASE_URL}/api/events/${id}/activities/${activityId}`;
+    console.log('API URL:', apiUrl);
+
+    const response = await axios.delete<EventActivity>(apiUrl, {
+      headers: { accept: 'text/plain' },
+    });
+
+    console.log('Deleted Activity:', response.data);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        'Failed to delete event activity:',
+        error.response?.data || error.message,
+      );
+    } else {
+      console.error('An unexpected error occurred:', error);
+    }
+    return null;
   }
 };
