@@ -4,6 +4,8 @@ import {
   TicketValidatedDto,
 } from '@/utils/interfaces/TicketInterfaces';
 import {
+  Ticket,
+  TicketFilter,
   TicketPostInterface,
   TicketViewInterface,
 } from '@/utils/interfaces/TIcketsInterfaces';
@@ -46,9 +48,15 @@ export const fetchTickets = async (
  */
 export const fetchTicketsByUserId = async (
   userId: string | undefined,
-): Promise<TicketRequestDto[]> => {
+  filterTicket?: TicketFilter,
+): Promise<Ticket[]> => {
   try {
-    const response = await axios.get<any[]>(`/api/tickets/list/user/${userId}`);
+    const response = await axios.get<any[]>(
+      `/api/tickets/list/user/${userId}`,
+      {
+        params: filterTicket,
+      },
+    );
 
     if (Array.isArray(response.data)) {
       return response.data;

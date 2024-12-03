@@ -90,7 +90,7 @@ namespace TicketService.API.Services
             return true;
         }
 
-        public async Task<TicketResponseDto?> GetTicketByIdAsync(string ticketId)
+        public async Task<Ticket?> GetTicketByIdAsync(string ticketId)
         {
             if (!Guid.TryParse(ticketId, out var ticketGuid))
             {
@@ -104,13 +104,8 @@ namespace TicketService.API.Services
                 return null;
             }
 
-            return new TicketResponseDto
-            {
-                TicketId = ticket.TicketId.ToString(),
-                QRContent = ticket.QRContent,
-                EventId = ticket.EventId,
-                IsUsed = ticket.IsUsed
-            };
+
+            return ticket;
         }
 
 
@@ -137,9 +132,9 @@ namespace TicketService.API.Services
             };
         }
 
-        public async Task<ICollection<TicketInfoDto>> GetTicketsByUserId(string userId)
+        public async Task<ICollection<TicketInfoDto>> GetTicketsByUserId(string userId, TicketFilterDto filterDto)
         {
-            var tickets = await _ticketRepository.GetTicketsByUser(userId);
+            var tickets = await _ticketRepository.GetTicketsByUser(userId, filterDto);
 
             var response = tickets.Select(ticket => new TicketInfoDto
             {
