@@ -17,7 +17,7 @@ import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import { messageOfRequest } from '@/utils/messageOfRequest';
 import { routes } from '@/utils/navigation/Routes';
-import AddCollaborators from './collaborators/AddCollaborators';
+import AddCollaborators, { Collaborator } from './collaborators/AddCollaborators';
 
 export interface GeneralInfoProps {
   title: string;
@@ -57,10 +57,6 @@ const Steps = ({
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
   const [coOrganizers, setCoOrganizers] = useState<string[]>([]);
 
-  const handleCollaboratorsSubmit = (emails: string[]) => {
-    const ids = emails.map(email => email);
-    setCoOrganizers(["user1","user2"]);
-  };
 
   const router = useRouter();
 
@@ -88,6 +84,12 @@ const Steps = ({
   }, [generalInfo, dateLocation, priceCapacity, activities]);
 
   const user = useSelector((state: RootState) => state.user.userInfo);
+
+  const handleCollaboratorsSubmit = (collaborators: Collaborator[]) => {
+    const emails = collaborators.map((collaborator) => collaborator.email);
+    console.log("Confirmed Emails:", emails);
+    setCoOrganizers(emails);
+  };
 
   const handleSubmit = async () => {
     if (
@@ -135,7 +137,7 @@ const Steps = ({
       messageOfRequest.logCompletionMessage();
       1;
     }
-  };
+  };  
 
   return (
     <Box mb={4} p={3}>
@@ -157,10 +159,9 @@ const Steps = ({
           label="Price and capacity"
         />
       </Box>
+      <AddCollaborators onAddCollaborators={handleCollaboratorsSubmit} />
 
       <Box className="reminder-container">
-        <AddCollaborators onAddCollaborators={handleCollaboratorsSubmit} />
-
         <Box mt={4} p={2}>
           <Typography variant="h6" className="checkbox-label">
             Set Reminder
