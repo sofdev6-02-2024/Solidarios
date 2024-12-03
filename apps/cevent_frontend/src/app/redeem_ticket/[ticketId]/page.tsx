@@ -1,87 +1,120 @@
 'use client';
+import { getTicketById, validateTicket } from '@/services/TicketService';
+import { useParams } from 'next/navigation';
 import {
   Box,
   TextField,
   Button,
-  MenuItem,
-  Select,
-  InputLabel,
   FormControl,
   FormGroup,
-  FormHelperText,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { TicketValidatedDto } from '@/utils/interfaces/TicketInterfaces';
+import { useRouter } from 'next/navigation';
+import '@/styles/components/redeemTicket.css';
+import { RegistrationInputDto } from '@/utils/interfaces/Registration';
+import { registerRegistration } from '@/services/RegistrationService';
 
 export default function RedeemTicket() {
-  const [formData, setFormData] = useState({
+  const params = useParams();
+  const id = params.ticketId;
+  const router = useRouter();
+
+  const [ticket, setTicket] = useState<TicketValidatedDto | null>(null);
+  const [formData, setFormData] = useState<RegistrationInputDto>({
     name: '',
     lastName: '',
     phoneNumber: '',
-    code: '',
-    documentType: '',
-    documentNumber: '',
+    ticketId: id.toString(),
+    eventId: -1,
     email: '',
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Partial<FormData>>({
     name: '',
     lastName: '',
     phoneNumber: '',
-    code: '',
-    documentType: '',
-    documentNumber: '',
     email: '',
   });
 
-  const validate = () => {
-    const newErrors = {
-      name: '',
-      lastName: '',
-      phoneNumber: '',
-      code: '',
-      documentType: '',
-      documentNumber: '',
-      email: '',
+  useEffect(() => {
+    if (id) {
+      getTicketById(id.toString())
+        .then((data) => {
+          if (data === null || data.isUsed) {
+            router.push('/not_found');
+          } else {
+            setTicket(data);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          router.push('/not_found');
+        });
+    }
+  }, [id, router]);
+
+  useEffect(() => {
+    formData.eventId = Number(ticket?.eventId);
+  }, [ticket]);
+
+  type FormData = {
+    name: string;
+    lastName: string;
+    phoneNumber: string;
+    email: string;
+  };
+
+  type Errors = Partial<Record<keyof FormData, string>>;
+
+  const validate = (): boolean => {
+    const validators: Record<keyof FormData, (value: string) => string> = {
+      name: (value) => (value ? '' : 'Name is required'),
+      lastName: (value) => (value ? '' : 'Last Name is required'),
+      phoneNumber: (value) => {
+        if (!value) return 'Phone number is required';
+        if (!/^[0-9]{10}$/.test(value)) return 'Phone number must be 10 digits';
+        return '';
+      },
+      email: (value) => {
+        if (!value) return 'Email is required';
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+          return 'Please enter a valid email address';
+        }
+        return '';
+      },
     };
 
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.lastName) newErrors.lastName = 'Last Name is required';
+    const newErrors: Errors = {};
+    let hasErrors = false;
 
-    const phoneRegex = /^[0-9]{10}$/;
-    if (!formData.phoneNumber) {
-      newErrors.phoneNumber = 'Phone number is required';
-    } else if (!phoneRegex.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Phone number must be 10 digits';
-    }
-
-    if (!formData.code) newErrors.code = 'Code is required';
-
-    if (!formData.documentType)
-      newErrors.documentType = 'Please select a document type';
-
-    if (!formData.documentNumber)
-      newErrors.documentNumber = 'Document number is required';
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!formData.email) {
-      newErrors.email = 'Email is required';
-    } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+    for (const [field, validateField] of Object.entries(validators) as [
+      keyof FormData,
+      (value: string) => string,
+    ][]) {
+      const error = validateField(formData[field] as string);
+      if (error) {
+        newErrors[field] = error;
+        hasErrors = true;
+      }
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+
+    return !hasErrors;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (validate()) {
-      alert('Form submitted successfully!');
+      await registerRegistration(formData);
+      if (ticket) {
+        await validateTicket(ticket.qrContent);
+      }
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -95,40 +128,50 @@ export default function RedeemTicket() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        height: '100%',
         backgroundColor: '#fff',
         padding: 2,
+        width: '100%',
       }}
     >
       <Box
         sx={{
           width: '100%',
-          maxWidth: 600,
+          maxWidth: 900,
           backgroundColor: 'white',
           padding: 4,
-          borderRadius: 2,
-          boxShadow: 3,
+
+          '@media (max-width: 600px)': {
+            padding: 3,
+            maxWidth: '100%',
+          },
         }}
       >
         <Typography
-          style={{
+          sx={{
             fontWeight: 'bold',
             fontSize: '2rem',
             textAlign: 'center',
             color: '#000',
+            '@media (max-width: 600px)': {
+              fontSize: '1.5rem',
+            },
+            marginBlock: '4rem',
           }}
         >
           Redeem Tickets
         </Typography>
 
         <FormGroup>
-          {/* Row 1: Name and Last Name */}
-          <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-            <FormControl
-              variant="outlined"
-              fullWidth
-              error={Boolean(errors.name)}
-            >
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 2,
+              '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
+            }}
+          >
+            <FormControl variant="outlined" color="primary" fullWidth>
               <TextField
                 label="Name"
                 variant="outlined"
@@ -136,16 +179,13 @@ export default function RedeemTicket() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                error={Boolean(errors.name)}
+                className="text-field"
                 helperText={errors.name}
-                sx={{ borderColor: '#1976d2' }}
               />
             </FormControl>
 
-            <FormControl
-              variant="outlined"
-              fullWidth
-              error={Boolean(errors.lastName)}
-            >
+            <FormControl variant="outlined" fullWidth>
               <TextField
                 label="Last Name"
                 variant="outlined"
@@ -153,26 +193,23 @@ export default function RedeemTicket() {
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
+                error={Boolean(errors.lastName)}
+                className="text-field"
                 helperText={errors.lastName}
-                sx={{ borderColor: '#1976d2' }}
               />
             </FormControl>
           </Box>
 
-          {/* Row 2: Phone Number and Code */}
           <Box
             sx={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
               gap: 2,
               marginTop: 2,
+              '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
             }}
           >
-            <FormControl
-              variant="outlined"
-              fullWidth
-              error={Boolean(errors.phoneNumber)}
-            >
+            <FormControl variant="outlined" fullWidth>
               <TextField
                 label="Phone Number"
                 variant="outlined"
@@ -180,83 +217,27 @@ export default function RedeemTicket() {
                 name="phoneNumber"
                 value={formData.phoneNumber}
                 onChange={handleChange}
+                error={Boolean(errors.phoneNumber)}
+                className="text-field"
                 helperText={errors.phoneNumber}
-                sx={{ borderColor: '#1976d2' }}
               />
             </FormControl>
 
-            <FormControl
-              variant="outlined"
-              fullWidth
-              error={Boolean(errors.code)}
-            >
+            <FormControl variant="outlined" fullWidth>
               <TextField
                 label="Code"
                 variant="outlined"
                 fullWidth
                 name="code"
-                value={formData.code}
+                value={id}
                 onChange={handleChange}
-                helperText={errors.code}
-                sx={{ borderColor: '#1976d2' }}
+                disabled={true}
               />
             </FormControl>
           </Box>
 
-          {/* Row 3: Type of Document and Document Number */}
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: 2,
-              marginTop: 2,
-            }}
-          >
-            <FormControl
-              fullWidth
-              variant="outlined"
-              error={Boolean(errors.documentType)}
-            >
-              <InputLabel>Type of Document</InputLabel>
-              <Select
-                label="Type of Document"
-                value={formData.documentType}
-                onChange={handleChange}
-                name="documentType"
-              >
-                <MenuItem value="">Select Document</MenuItem>
-                <MenuItem value="id">ID</MenuItem>
-                <MenuItem value="passport">Passport</MenuItem>
-                <MenuItem value="drivers_license">Driver's License</MenuItem>
-              </Select>
-              <FormHelperText>{errors.documentType}</FormHelperText>
-            </FormControl>
-
-            <FormControl
-              variant="outlined"
-              fullWidth
-              error={Boolean(errors.documentNumber)}
-            >
-              <TextField
-                label="Document Number"
-                variant="outlined"
-                fullWidth
-                name="documentNumber"
-                value={formData.documentNumber}
-                onChange={handleChange}
-                helperText={errors.documentNumber}
-                sx={{ borderColor: '#1976d2' }}
-              />
-            </FormControl>
-          </Box>
-
-          {/* Row 4: Email Address */}
           <Box sx={{ marginTop: 2 }}>
-            <FormControl
-              variant="outlined"
-              fullWidth
-              error={Boolean(errors.email)}
-            >
+            <FormControl variant="outlined" fullWidth>
               <TextField
                 label="Email Address"
                 variant="outlined"
@@ -264,26 +245,30 @@ export default function RedeemTicket() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                helperText={errors.email}
-                sx={{ borderColor: '#1976d2' }}
+                error={Boolean(errors.email)}
+                className="text-field"
+                helperText={
+                  errors.email ||
+                  'This email will be used to send you the ticket'
+                }
               />
             </FormControl>
-            <FormHelperText>
-              This email will be used to send you the ticket
-            </FormHelperText>
           </Box>
 
-          {/* Confirm Button */}
           <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}>
             <Button
               variant="contained"
               color="primary"
               sx={{
-                width: '100%',
+                width: '50%',
                 padding: '12px 0',
                 fontWeight: 'bold',
                 fontSize: '1rem',
                 borderRadius: 2,
+                '@media (max-width: 600px)': {
+                  width: '100%',
+                  padding: '10px 0',
+                },
               }}
               onClick={handleSubmit}
             >
