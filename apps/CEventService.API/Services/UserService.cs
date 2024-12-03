@@ -11,4 +11,19 @@ public class UserService : BaseService<User, Guid>, IUserService
     {
         _repository = repository;
     }
+
+    public override async Task<User> CreateAsync(User entity)
+    {
+        var existingUser = await GetUserByEmail(entity.Email);
+        if (existingUser != null && existingUser.Id != default)
+        {
+            return await base.UpdateAsync(existingUser.Id, existingUser);
+        }
+        return await base.CreateAsync(entity);
+    }
+
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        return await _repository.GetFilteredAsync(u => u.Email.Equals(email)); 
+    }
 }
