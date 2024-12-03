@@ -17,6 +17,7 @@ import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import { messageOfRequest } from '@/utils/messageOfRequest';
 import { routes } from '@/utils/navigation/Routes';
+import AddCollaborators from './collaborators/AddCollaborators';
 
 export interface GeneralInfoProps {
   title: string;
@@ -54,6 +55,12 @@ const Steps = ({
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
+  const [coOrganizers, setCoOrganizers] = useState<string[]>([]);
+
+  const handleCollaboratorsSubmit = (emails: string[]) => {
+    const ids = emails.map(email => email);
+    setCoOrganizers(["user1","user2"]);
+  };
 
   const router = useRouter();
 
@@ -114,7 +121,8 @@ const Steps = ({
       };
 
       try {
-        const response = await createEvent(eventData);
+        const fullEventData = {...eventData, coOrganizers}
+        const response = await createEvent(fullEventData);
         if (response === null) {
           messageOfRequest.logEventCreationError(response);
         } else {
@@ -151,16 +159,7 @@ const Steps = ({
       </Box>
 
       <Box className="reminder-container">
-        <Box mt={4} p={2}>
-          <Typography variant="h6" className="checkbox-label">
-            Add Collaborators
-          </Typography>
-          <Box display="flex" alignItems="center" mt={2}>
-            <IconButton color="primary">
-              <AddCircleOutline fontSize="large" />
-            </IconButton>
-          </Box>
-        </Box>
+        <AddCollaborators onAddCollaborators={handleCollaboratorsSubmit} />
 
         <Box mt={4} p={2}>
           <Typography variant="h6" className="checkbox-label">
