@@ -6,7 +6,7 @@ namespace CEventService.API.Validations;
 public class ActivityInputDtoValidator : AbstractValidator<ActivityInputDto>
 {
     public ActivityInputDtoValidator()
-    {        
+    {
         RuleForName();
         RuleForDescription();
         RuleForStartTime();
