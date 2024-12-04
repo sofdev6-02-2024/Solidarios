@@ -20,6 +20,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 export interface Collaborator {
   id?: string;
   email: string;
+  confirmed: boolean;
 }
 
 const AddCollaborators: React.FC<{
@@ -48,7 +49,7 @@ const AddCollaborators: React.FC<{
       setEmailError('This email is already added');
       return;
     }
-    const newCollaborator: Collaborator = { email: collaboratorEmail };
+    const newCollaborator: Collaborator = { email: collaboratorEmail, confirmed: false };
     setCollaborators([...collaborators, newCollaborator]);
     setCollaboratorEmail('');
   };
@@ -61,7 +62,10 @@ const AddCollaborators: React.FC<{
 
   const handleSubmit = () => {
     if (collaborators.length > 0) {
-      onAddCollaborators(collaborators);
+      const confirmedCollaborators = collaborators.map(c => ({ ...c, confirmed: true }));
+      onAddCollaborators(confirmedCollaborators);
+      setCollaborators(confirmedCollaborators);
+      console.log(confirmedCollaborators)
     }
   };
 
@@ -154,7 +158,7 @@ const AddCollaborators: React.FC<{
                       label={collaborator.email}
                       onDelete={() => handleRemove(collaborator.email)}
                       deleteIcon={<CloseIcon />}
-                      color="primary"
+                      color={collaborator.confirmed ? "success" : "primary"}
                       variant="outlined"
                     />
                   </motion.div>
