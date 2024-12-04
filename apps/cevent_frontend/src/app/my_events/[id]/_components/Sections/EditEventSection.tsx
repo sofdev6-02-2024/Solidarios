@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import {
   ImageUpload,
@@ -10,10 +10,12 @@ import {
 } from '@/components/imports';
 import EditEvent from '@/app/edit_event/EditEvent';
 import { EventDetailDto, Activity } from '@/utils/interfaces/EventInterfaces';
-import Layout from '@/components/Layout';
 import styles from '@/app/create_event/_styles/CreateEvent.module.css';
 
 interface DateLocationData {
+  date: Date;
+  time: string;
+  location: string;
   latitude: number | null;
   longitude: number | null;
 }
@@ -27,10 +29,16 @@ const EditEventSection = ({ event }: SectionProps) => {
     title: event.name,
     shortDescription: event.shortDescription,
     description: event.description,
-    categoryId: 0,
+    categoryId: 1,
   });
 
   const [dateLocation, setDateLocation] = useState<DateLocationData>({
+    date: new Date(event.eventDate),
+    time: new Date(event.eventDate).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    }).toString(),
+    location: event.address,
     latitude: event.location.latitude,
     longitude: event.location.longitude,
   });
