@@ -8,6 +8,13 @@ export interface TicketViewInterface {
   qrContent: string;
 }
 
+export interface TicketQrContentInterface {
+  ticketId: number;
+  qrContent: string;
+  userId: string;
+}
+
+
 export interface TicketFilter {
   eventId?: number;
   isUsed?: boolean;

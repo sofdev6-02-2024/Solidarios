@@ -5,6 +5,7 @@ import {
   TicketFilter,
   TicketPostInterface,
   TicketViewInterface,
+  TicketQrContentInterface,
 } from '@/utils/interfaces/TIcketsInterfaces';
 
 /**
@@ -19,9 +20,9 @@ export const fetchTickets = async (
   try {
     const params = ticketRequestDto
       ? {
-          eventId: ticketRequestDto.eventId,
-          userId: ticketRequestDto.userId,
-        }
+        eventId: ticketRequestDto.eventId,
+        userId: ticketRequestDto.userId,
+      }
       : {};
 
     const response = await axios.get<any[]>('/api/tickets/list', { params });
@@ -79,6 +80,37 @@ export const generateTickets = async (
 
     return response.data;
   } catch (error) {
+    return null;
+  }
+};
+
+/**
+ * Fetches a ticket based on QR content
+ *
+ * @param qrContent - The QR content to search for
+ * @returns TicketQrContentInterface object or null if an error occurs
+ */
+export const fetchGetTicketByQr = async (
+  qrContent: string
+): Promise<TicketQrContentInterface | null> => {
+  try {
+    if (!qrContent) {
+      throw new Error('QR content is required');
+    }
+
+    const response = await axios.post<TicketQrContentInterface>(
+      `/api/tickets/list/qr/`,
+      { qrContent },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error('Error fetching ticket by QR:', error.response?.data || error.message);
     return null;
   }
 };

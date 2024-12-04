@@ -71,6 +71,24 @@ namespace TicketService.API.Controllers
             return Ok(ticket);
         }
 
+        [HttpPost("qr")]
+        public async Task<IActionResult> GetTicketByQrCode([FromBody] string qrContent)
+        {
+            if (string.IsNullOrEmpty(qrContent))
+            {
+                return BadRequest("QR content is required");
+            }
+
+            var ticket = await _ticketService.GetTicketByQrCodeAsync(qrContent);
+
+            if (ticket == null)
+            {
+                return NotFound("Ticket not found");
+            }
+            
+            return Ok(ticket);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllTickets()
         {

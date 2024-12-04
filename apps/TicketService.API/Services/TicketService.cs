@@ -108,7 +108,7 @@ namespace TicketService.API.Services
         }
 
 
-        public async Task<TicketResponseDto?> GetTicketByQrCodeAsync(string qrContent)
+        public async Task<TicketResponseQrDtop?> GetTicketByQrCodeAsync(string qrContent)
         {
             if (string.IsNullOrEmpty(qrContent))
             {
@@ -122,10 +122,11 @@ namespace TicketService.API.Services
                 return null;
             }
 
-            return new TicketResponseDto
+            return new TicketResponseQrDtop
             {
-                TicketId = ticket.TicketId.ToString(),
-                QRContent = ticket.QRContent
+                TicketId = ticket.TicketId.ToString(),                
+                QRContent = ticket.QRContent,
+                UserId = ticket.UserId.ToString()      
             };
         }
 
