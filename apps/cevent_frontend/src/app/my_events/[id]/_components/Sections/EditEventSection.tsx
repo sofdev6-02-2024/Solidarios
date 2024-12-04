@@ -6,7 +6,6 @@ import {
   GeneralInfo,
   DateLocation,
   PriceCapacity,
-  Activities,
 } from '@/components/imports';
 import EditEvent from '@/app/edit_event/EditEvent';
 import { EventDetailDto, Activity } from '@/utils/interfaces/EventInterfaces';
@@ -116,13 +115,6 @@ const EditEventSection = ({ event }: SectionProps) => {
         <PriceCapacity
           onComplete={handlePriceCapacityComplete}
           initialData={priceCapacity}
-        />
-
-        <Activities
-          initialActivities={activities}
-          onAddActivity={handleAddActivity}
-          onEditActivity={handleEditActivity}
-          onDeleteActivity={handleDeleteActivity}
         />
       </Box>
 
