@@ -336,11 +336,7 @@ export const updateEvent = async (
   userId: string,
 ): Promise<EventInputDto | null> => {
   try {
-    //ToDo: Change the hardcoded Url
-    const apiUrl = `http://localhost:5000/api/Event/${eventId}`;
-    console.log('Request URL:', apiUrl);
-    console.log('Updated Event:', updatedEvent);
-    console.log('User ID:', userId);
+    const apiUrl = `/api/events/${eventId}`;
 
     const response = await axios.put<EventInputDto>(apiUrl, updatedEvent, {
       headers: {
