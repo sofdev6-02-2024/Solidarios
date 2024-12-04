@@ -52,7 +52,7 @@ const EditEvent = ({
       ticketPrice: priceCapacity.ticketPrice,
       coverPhotoUrl:
         selectedImage ||
-        'https://i.postimg.cc/XvfZ2cSP/47b39a54d7fa589dd5cf851ee1d2fb61.jpg',
+        '',
       attendanceTrackingEnabled: false,
       status: 1,
       capacity: priceCapacity.capacity,
