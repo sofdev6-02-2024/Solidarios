@@ -333,7 +333,7 @@ export const deleteEventActivity = async (
 export const updateEvent = async (
   eventId: string,
   updatedEvent: EventInputDto,
-  userId: string
+  userId: string,
 ): Promise<EventInputDto | null> => {
   try {
     //ToDo: Change the hardcoded Url
@@ -342,16 +342,12 @@ export const updateEvent = async (
     console.log('Updated Event:', updatedEvent);
     console.log('User ID:', userId);
 
-    const response = await axios.put<EventInputDto>(
-      apiUrl,
-      updatedEvent,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          userId: userId,
-        },
-      }
-    );
+    const response = await axios.put<EventInputDto>(apiUrl, updatedEvent, {
+      headers: {
+        'Content-Type': 'application/json',
+        userId: userId,
+      },
+    });
 
     if (response.status === 200) {
       return response.data;

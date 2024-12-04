@@ -7,8 +7,13 @@ interface ImageUploadProps {
   initialImage?: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onComplete, initialImage }) => {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(initialImage || null);
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  onComplete,
+  initialImage,
+}) => {
+  const [uploadedImage, setUploadedImage] = useState<string | null>(
+    initialImage || null,
+  );
 
   const handleImageUpload = (fileUrl: string) => {
     setUploadedImage(fileUrl);

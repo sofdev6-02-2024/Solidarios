@@ -34,10 +34,12 @@ const EditEventSection = ({ event }: SectionProps) => {
 
   const [dateLocation, setDateLocation] = useState<DateLocationData>({
     date: new Date(event.eventDate),
-    time: new Date(event.eventDate).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }).toString(),
+    time: new Date(event.eventDate)
+      .toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+      .toString(),
     location: event.address,
     latitude: event.location.latitude,
     longitude: event.location.longitude,
@@ -52,7 +54,9 @@ const EditEventSection = ({ event }: SectionProps) => {
     coverPhotoUrl: event.coverPhotoUrl,
   });
 
-  const [activities, setActivities] = useState<Activity[]>(event.activities || []);
+  const [activities, setActivities] = useState<Activity[]>(
+    event.activities || [],
+  );
 
   const handleImageChange = (data: { coverPhotoUrl: string }) => {
     setImageData(data);

@@ -24,11 +24,11 @@ type ActivitiesProps = {
 };
 
 const Activities: React.FC<ActivitiesProps> = ({
-                                                 initialActivities = [],
-                                                 onAddActivity,
-                                                 onEditActivity,
-                                                 onDeleteActivity,
-                                               }) => {
+  initialActivities = [],
+  onAddActivity,
+  onEditActivity,
+  onDeleteActivity,
+}) => {
   const [activities, setActivities] = useState<Activity[]>(initialActivities);
   const [activityTitle, setActivityTitle] = useState<string>('');
   const [activityDescription, setActivityDescription] = useState<string>('');

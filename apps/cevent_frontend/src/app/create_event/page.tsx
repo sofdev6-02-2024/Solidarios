@@ -8,7 +8,7 @@ import {
   PriceCapacity,
   Activities,
   AditionalSettings,
-  Steps
+  Steps,
 } from '../../components/imports';
 import { Activity } from '@/utils/interfaces/EventInterfaces';
 import styles from './_styles/CreateEvent.module.css';
@@ -95,21 +95,13 @@ const CreateEvent = () => {
           </Typography>
         </Box>
 
-        <ImageUpload
-          onComplete={handleImageChange}
-        />
+        <ImageUpload onComplete={handleImageChange} />
 
-        <GeneralInfo
-          onComplete={handleGeneralInfoComplete}
-        />
+        <GeneralInfo onComplete={handleGeneralInfoComplete} />
 
-        <DateLocation
-          onComplete={handleDateLocationComplete}
-        />
+        <DateLocation onComplete={handleDateLocationComplete} />
 
-        <PriceCapacity
-          onComplete={handlePriceCapacityComplete}
-        />
+        <PriceCapacity onComplete={handlePriceCapacityComplete} />
 
         <Activities
           onAddActivity={handleAddActivity}

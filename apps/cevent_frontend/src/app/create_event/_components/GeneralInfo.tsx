@@ -17,14 +17,17 @@ interface GeneralInfoProps {
   initialData?: FieldsGeneralInfo;
 }
 
-const GeneralInfo: React.FC<GeneralInfoProps> = ({ onComplete, initialData }) => {
+const GeneralInfo: React.FC<GeneralInfoProps> = ({
+  onComplete,
+  initialData,
+}) => {
   const [fields, setFields] = useState<FieldsGeneralInfo>(
     initialData || {
       title: '',
       shortDescription: '',
       description: '',
       categoryId: 0,
-    }
+    },
   );
 
   const [categories, setCategories] = useState<
@@ -71,10 +74,10 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ onComplete, initialData }) =>
     onComplete(
       fields,
       isValid &&
-      !!title &&
-      !!shortDescription &&
-      !!description &&
-      categoryId !== 0
+        !!title &&
+        !!shortDescription &&
+        !!description &&
+        categoryId !== 0,
     );
   };
 

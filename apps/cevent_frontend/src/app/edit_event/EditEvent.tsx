@@ -6,19 +6,23 @@ import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import { messageOfRequest } from '@/utils/messageOfRequest';
 import { EventInputDto, Activity } from '@/utils/interfaces/EventInterfaces';
-import { GeneralInfoProps, DateLocationProps, PriceCapacityProps } from '@/app/create_event/_components/Steps';
+import {
+  GeneralInfoProps,
+  DateLocationProps,
+  PriceCapacityProps,
+} from '@/app/create_event/_components/Steps';
 import { AddCircleOutline } from '@mui/icons-material';
 import '@/app/edit_event/EditEvent.css';
 
 const EditEvent = ({
-                     eventId,
-                     generalInfo,
-                     dateLocation,
-                     priceCapacity,
-                     selectedImage,
-                     activities,
-                     onUpdate,
-                   }: {
+  eventId,
+  generalInfo,
+  dateLocation,
+  priceCapacity,
+  selectedImage,
+  activities,
+  onUpdate,
+}: {
   eventId: string;
   generalInfo: GeneralInfoProps;
   dateLocation: DateLocationProps;
@@ -50,9 +54,7 @@ const EditEvent = ({
       },
       venue: dateLocation.location || '',
       ticketPrice: priceCapacity.ticketPrice,
-      coverPhotoUrl:
-        selectedImage ||
-        '',
+      coverPhotoUrl: selectedImage || '',
       attendanceTrackingEnabled: false,
       status: 1,
       capacity: priceCapacity.capacity,
@@ -65,7 +67,11 @@ const EditEvent = ({
 
     try {
       setIsSubmitting(true);
-      const response = await updateEvent(eventId, updatedEvent, updatedEvent.organizerUserId);
+      const response = await updateEvent(
+        eventId,
+        updatedEvent,
+        updatedEvent.organizerUserId,
+      );
       if (response) {
         console.log('Event updated successfully:', response);
         onUpdate(updatedEvent);
