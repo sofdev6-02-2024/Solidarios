@@ -101,12 +101,6 @@ const CreateEvent = () => {
 
         <GeneralInfo
           onComplete={handleGeneralInfoComplete}
-          initialData={{
-            title: 'Tech Conference 2024',
-            shortDescription: 'An event about the latest in tech.',
-            description: 'Join us for a deep dive into the future of technology.',
-            categoryId: 1,
-          }}
         />
 
         <DateLocation
