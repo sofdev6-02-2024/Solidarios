@@ -91,7 +91,6 @@ const Steps = ({
     const emails = collaborators.map((collaborator) => collaborator.email);
     try {
       const ids = await fetchIdsByEmails(emails);
-      console.log(ids);
       if (ids) {
         setCoOrganizers(ids);
       } else {
@@ -135,7 +134,6 @@ const Steps = ({
       };
 
       try {
-        console.log(eventData.coOrganizers);
         const response = await createEvent(eventData);
         if (response === null) {
           messageOfRequest.logEventCreationError(response);

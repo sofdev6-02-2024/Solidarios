@@ -6,7 +6,6 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 export async function POST(request: Request) {
   try {
     const emails: string[] = await request.json();
-    console.log(emails, `${BASE_URL}/events/api/User/GetIdsByEmails`);
     const response = await axios.post<string[]>(
       `${BASE_URL}/events/api/User/GetIdsByEmails`,
       emails,

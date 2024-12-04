@@ -73,7 +73,6 @@ const AddCollaborators: React.FC<{
       }));
       onAddCollaborators(confirmedCollaborators);
       setCollaborators(confirmedCollaborators);
-      console.log(confirmedCollaborators);
     }
   };
 
