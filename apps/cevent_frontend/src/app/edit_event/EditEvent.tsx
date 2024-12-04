@@ -65,7 +65,7 @@ const EditEvent = ({
 
     try {
       setIsSubmitting(true);
-      const response = await updateEvent(eventId, updatedEvent);
+      const response = await updateEvent(eventId, updatedEvent, updatedEvent.organizerUserId);
       if (response) {
         console.log('Event updated successfully:', response);
         onUpdate(updatedEvent);

@@ -327,19 +327,30 @@ export const deleteEventActivity = async (
  *
  * @param eventId ID of the event to update
  * @param updatedEvent Object containing the updated event data
+ * @param userId Owner's ID of the event
  * @returns the updated event or null in case of an error
  */
 export const updateEvent = async (
   eventId: string,
   updatedEvent: EventInputDto,
+  userId: string
 ): Promise<EventInputDto | null> => {
   try {
-    const apiUrl = `${BASE_URL}/api/events/${eventId}`;
-    const response = await axios.put<EventInputDto>(apiUrl, updatedEvent, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const apiUrl = `http://localhost:5000/api/Event/${eventId}`;
+    console.log('Request URL:', apiUrl);
+    console.log('Updated Event:', updatedEvent);
+    console.log('User ID:', userId);
+
+    const response = await axios.put<EventInputDto>(
+      apiUrl,
+      updatedEvent,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          userId: userId,
+        },
+      }
+    );
 
     if (response.status === 200) {
       return response.data;
@@ -351,4 +362,3 @@ export const updateEvent = async (
     return null;
   }
 };
-
