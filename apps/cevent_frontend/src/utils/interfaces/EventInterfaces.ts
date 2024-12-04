@@ -113,6 +113,7 @@ export interface EventInputDto {
   address: string;
   attendeeCount: number;
   activities: Activity[];
+  coOrganizers?: string[];
 }
 
 export enum SizeBanner {

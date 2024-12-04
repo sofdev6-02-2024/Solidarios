@@ -34,9 +34,12 @@ export const updateUser = async (
   }
 };
 
-export const fetchIdsByEmails = async (emails: string[]): Promise<string[] | null> => {
+export const fetchIdsByEmails = async (
+  emails: string[],
+): Promise<string[] | null> => {
   try {
-    const response = await axios.post<string[]>('/api/user/emails', emails);
+    console.log(emails);
+    const response = await axios.post<string[]>('/api/users/emails', emails);
     return response.data;
   } catch (error) {
     console.error('Error fetching IDs by emails:', error);

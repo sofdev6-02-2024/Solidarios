@@ -6,16 +6,12 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 export async function POST(request: Request) {
   try {
     const emails: string[] = await request.json();
+    console.log(emails, `${BASE_URL}/events/api/User/GetIdsByEmails`);
     const response = await axios.post<string[]>(
       `${BASE_URL}/events/api/User/GetIdsByEmails`,
       emails,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
     );
-    
+
     return NextResponse.json(response.data, { status: 200 });
   } catch (error) {
     let statusCode = 500;
