@@ -126,7 +126,9 @@ namespace TicketService.API.Services
             {
                 TicketId = ticket.TicketId.ToString(),                
                 QRContent = ticket.QRContent,
-                UserId = ticket.UserId.ToString()      
+                UserId = ticket.UserId.ToString(),
+                EventId = ticket.EventId,
+                IsUsed = ticket.IsUsed
             };
         }
 

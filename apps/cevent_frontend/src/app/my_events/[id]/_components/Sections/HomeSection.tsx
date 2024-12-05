@@ -1,11 +1,12 @@
 import Layout from '@/components/Layout';
-import { Box, Typography, Alert, Paper } from '@mui/material';
+import { Box, Typography, Alert, Paper, Button } from '@mui/material';
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import CardEventSummary from '../CardEventInfo';
 import { fetchGetTicketByQr } from '@/services/TicketService';
 import { useEffect, useState } from 'react';
-import QrScanner from 'react-qr-scanner'; // Importa react-qr-scanner
+import QrScanner from 'react-qr-scanner';
+import AttendanceModal from './AttendanceModal';
 
 export interface SectionProps {
   event: EventDetailDto;
@@ -15,18 +16,35 @@ const HomeSection = ({ event }: SectionProps) => {
   const [qrContent, setQrContent] = useState<string | null>(null);
   const [ticketInfo, setTicketInfo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  
+  const [isCameraEnabled, setIsCameraEnabled] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [ticketUserId, setTicketUserId] = useState<string | null>(null);
+
   const handleScan = (data: string | null) => {
     if (data) {
       setQrContent(data.text);
+      setIsCameraEnabled(false);
     } else {
       console.log('No QR detected');
     }
   };
 
-
   const handleError = (err: any) => {
     console.error(err);
+  };
+
+  const handleEnableCamera = () => {
+    setIsCameraEnabled(true);
+    setQrContent(null);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleRegisterAttendance = (type: 'event' | 'activity') => {
+    console.log(`Registering attendance for ${type}...`);
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -35,7 +53,9 @@ const HomeSection = ({ event }: SectionProps) => {
         if (qrContent) {
           const ticket = await fetchGetTicketByQr(qrContent);
           if (ticket) {
-            setTicketInfo(`Ticket found: ${ticket.userId}`);
+            setTicketUserId(ticket.userId);
+            setTicketInfo(`Ticket found by user: ${ticket.userId}`);
+            setIsModalOpen(true);
           } else {
             setTicketInfo('No ticket found for the provided QR content.');
           }
@@ -47,7 +67,7 @@ const HomeSection = ({ event }: SectionProps) => {
     };
 
     verifyQrContent();
-  }, [qrContent]); 
+  }, [qrContent]);
 
   return (
     <Box sx={stylesPage.container}>
@@ -66,29 +86,49 @@ const HomeSection = ({ event }: SectionProps) => {
 
         <CardEventSummary eventData={event} />
 
-        <Paper
-          elevation={3}
-          sx={{
-            padding: 2,
-            marginTop: 4,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: 400,
-            width: '100%',
-            position: 'relative',
-          }}
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ marginTop: 4 }}
+          onClick={handleEnableCamera}
         >
-          <QrScanner
-            delay={300}
-            style={{ width: '100%', height: '100%' }}
-            onError={handleError}
-            onScan={handleScan}
-          />
-        </Paper>
+          Activate Camera
+        </Button>
+
+        {isCameraEnabled && (
+          <Paper
+            elevation={3}
+            sx={{
+              padding: 2,
+              marginTop: 4,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 400,
+              width: '100%',
+              position: 'relative',
+            }}
+          >
+            <QrScanner
+              delay={300}
+              style={{ width: '100%', height: '100%' }}
+              onError={handleError}
+              onScan={handleScan}
+            />
+          </Paper>
+        )}
 
         {ticketInfo && <Alert severity="info">{ticketInfo}</Alert>}
         {error && <Alert severity="error">{error}</Alert>}
+
+        {ticketUserId && (
+          <AttendanceModal
+            open={isModalOpen}
+            onClose={handleModalClose}
+            onRegisterAttendance={handleRegisterAttendance}
+            userId={ticketUserId}
+          />
+        )}
       </Layout>
     </Box>
   );
