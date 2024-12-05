@@ -25,9 +25,9 @@ export const validateTicketRedeemForm = (
   }
 
   if (!formData.phoneNumber?.trim()) {
-    errors.phoneNumber = 'Phone number is required';
-  } else if (!/^[0-9]{10}$/.test(formData.phoneNumber)) {
-    errors.phoneNumber = 'Phone number must be 10 digits';
+    errors.phoneNumber = 'Phone number is required.';
+  } else if (!/^\+?[1-9]\d{1,14}$/.test(formData.phoneNumber)) {
+    errors.phoneNumber = 'Invalid phone number format.';
   }
 
   if (!formData.email?.trim()) {

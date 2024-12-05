@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { registerRegistration } from '@/services/RegistrationService';
@@ -13,6 +13,9 @@ import eventDetailsHtml from '@/utils/EmailBody';
 import { NotificationScheduleRequestDto } from '@/utils/interfaces/NotificationInterfaces';
 import { scheduleEmail } from '@/services/NotificationService';
 import { RegistrationInputDto } from '@/utils/interfaces/Registration';
+import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 import { Snackbar } from '@mui/material';
 
@@ -22,6 +25,8 @@ export const useTicketRedemption = (
   ticket: TicketValidatedDto | null,
 ) => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+  const user = useSelector((state: RootState) => state.user.userInfo);
   const [formData, setFormData] = useState<RegistrationInputDto>({
     name: '',
     lastName: '',
@@ -37,6 +42,27 @@ export const useTicketRedemption = (
     message: '',
     severity: 'success' as 'success' | 'error',
   });
+
+  function validateAllEmpty(): boolean {
+    return (
+      formData.name === '' &&
+      formData.lastName === '' &&
+      formData.phoneNumber === '' &&
+      formData.email === ''
+    );
+  }
+
+  useEffect(() => {
+    if ((session?.user || user) && validateAllEmpty()) {
+      setFormData((prev) => ({
+        ...prev,
+        name: session?.user?.name || user?.name || '',
+        email: session?.user?.email || user?.email || '',
+        phoneNumber: user?.phoneNumber || prev.phoneNumber,
+        lastName: user?.lastName || prev.lastName,
+      }));
+    }
+  }, [user]);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +104,7 @@ export const useTicketRedemption = (
             .replace(/{address}/g, event.address)
             .replace(/{category}/g, event.category.keyWord)
             .replace(/{description}/g, event.description)
-            .replace(/{qrCode}/g, ticket.qrContent);
+            .replace(/{qrCode}/g, `data:image/png;base64,${ticket.qrContent}`);
           const notificationBody: NotificationScheduleRequestDto = {
             emails: [formData.email],
             notificationBody: eventHtml,

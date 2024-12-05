@@ -4,7 +4,7 @@ const eventDetailsHtml = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Details</title>
+    <title>Event Ticket Details</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -39,11 +39,21 @@ const eventDetailsHtml = `
         .content p {
             margin: 8px 0;
         }
-        .qr-code {
+        .qr-link {
             display: block;
             margin: 20px auto;
-            width: 150px;
-            height: 150px;
+            padding: 10px 15px;
+            text-align: center;
+            background-color: #085ce4;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            width: fit-content;
+        }
+        .qr-link:hover {
+            background-color: #064bb1;
         }
         .footer {
             margin-top: 30px;
@@ -64,7 +74,7 @@ const eventDetailsHtml = `
             <p><strong>Category:</strong> {category}</p>
             <p><strong>Description:</strong> {description}</p>
         </div>
-        <img class="qr-code" src="data:image/png;base64,{qrCode}" alt="QR Code"/>
+        <a class="qr-link" href="{qrCode}" target="_blank">View Event QR Code</a>
     </div>
 </body>
 </html>
