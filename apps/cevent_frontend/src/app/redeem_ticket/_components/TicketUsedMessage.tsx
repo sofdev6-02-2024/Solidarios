@@ -63,8 +63,9 @@ const TicketMessage = () => {
               maxWidth: '500px',
             }}
           >
-            This ticket has already been redeemed and cannot be used again.
-            Please check your ticket details or contact support for assistance.
+            This ticket does not exist or has already been redeemed and cannot
+            be used again. Please check your ticket details or contact support
+            for assistance.
           </Typography>
         </Box>
       </MessageContainer>

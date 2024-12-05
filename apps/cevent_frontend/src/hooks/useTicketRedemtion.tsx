@@ -14,6 +14,8 @@ import { NotificationScheduleRequestDto } from '@/utils/interfaces/NotificationI
 import { scheduleEmail } from '@/services/NotificationService';
 import { RegistrationInputDto } from '@/utils/interfaces/Registration';
 
+import { Snackbar } from '@mui/material';
+
 export const useTicketRedemption = (
   ticketId: string,
   event: EventDetailDto | null,
@@ -30,6 +32,11 @@ export const useTicketRedemption = (
   });
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: '',
+    severity: 'success' as 'success' | 'error',
+  });
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,21 +85,35 @@ export const useTicketRedemption = (
             date: date,
             hour: hour,
           };
-          await registerRegistration(formData); 
+          await registerRegistration(formData);
           await scheduleEmail(notificationBody);
 
-          router.push('/');
+          setAlert({
+            open: true,
+            message: 'Ticket redeemed successfully!',
+            severity: 'success',
+          });
+
+          setTimeout(() => router.push('/'), 3000);
         }
         return true;
       }
     } catch (error) {
       console.error('Ticket redemption failed', error);
-      setErrors({ email: 'Submission failed. Please try again.' });
+      setAlert({
+        open: true,
+        message: 'Ticket redemption failed. Please try again.',
+        severity: 'error',
+      });
       return false;
     } finally {
       setIsSubmitting(false);
     }
   }, [formData, ticket, router]);
+
+  const handleAlertClose = () => {
+    setAlert((prev) => ({ ...prev, open: false }));
+  };
 
   return {
     formData,
@@ -101,5 +122,7 @@ export const useTicketRedemption = (
     handleInputChange,
     handleSubmit,
     setFormData,
+    alert,
+    handleAlertClose,
   };
 };

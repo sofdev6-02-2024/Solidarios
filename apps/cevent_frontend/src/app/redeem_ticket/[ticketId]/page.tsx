@@ -8,6 +8,8 @@ import {
   FormControl,
   FormGroup,
   Typography,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 
 import { getTicketById } from '@/services/TicketService';
@@ -54,8 +56,15 @@ export default function RedeemTicket() {
     fetchTicketData();
   }, [id, router]);
 
-  const { formData, errors, isSubmitting, handleInputChange, handleSubmit } =
-    useTicketRedemption(id, event, ticket);
+  const {
+    formData,
+    errors,
+    isSubmitting,
+    handleInputChange,
+    handleSubmit,
+    alert,
+    handleAlertClose,
+  } = useTicketRedemption(id, event, ticket);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,162 +87,193 @@ export default function RedeemTicket() {
   }
 
   if (ticketUsed) {
-    return <TicketMessage />;
-  }
-
-  if (ticket && event) {
     return (
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
+          minHeight: '74vh',
           alignItems: 'center',
-          height: '100%',
-          backgroundColor: '#fff',
-          padding: 2,
-          width: '100%',
         }}
       >
+        <TicketMessage />
+      </Box>
+    );
+  }
+
+  if (ticket && event) {
+    return (
+      <>
         <Box
           sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            backgroundColor: '#fff',
+            padding: 2,
             width: '100%',
-            maxWidth: 900,
-            backgroundColor: 'white',
-            padding: 4,
           }}
         >
-          <Typography
+          <Box
             sx={{
-              fontWeight: 'bold',
-              fontSize: '2rem',
-              textAlign: 'center',
-              color: '#000',
-              marginBlock: '4rem',
+              width: '100%',
+              maxWidth: 900,
+              backgroundColor: 'white',
+              padding: 4,
             }}
           >
-            Redeem Tickets
-          </Typography>
+            <Typography
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '2rem',
+                textAlign: 'center',
+                color: '#000',
+                marginBlock: '4rem',
+              }}
+            >
+              Redeem Tickets
+            </Typography>
 
-          <form onSubmit={onSubmit}>
-            <FormGroup>
-              <Box
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: 2,
-                  '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
-                }}
-              >
-                <FormControl variant="outlined" color="primary" fullWidth>
-                  <TextField
-                    label="Name"
-                    variant="outlined"
-                    fullWidth
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="text-field"
-                    error={Boolean(errors.name)}
-                    helperText={errors.name}
-                  />
-                </FormControl>
-
-                <FormControl variant="outlined" fullWidth>
-                  <TextField
-                    label="Last Name"
-                    variant="outlined"
-                    fullWidth
-                    name="lastName"
-                    value={formData.lastName}
-                    className="text-field"
-                    onChange={handleInputChange}
-                    error={Boolean(errors.lastName)}
-                    helperText={errors.lastName}
-                  />
-                </FormControl>
-              </Box>
-
-              <Box
-                sx={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: 2,
-                  marginTop: 2,
-                  '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
-                }}
-              >
-                <FormControl variant="outlined" fullWidth>
-                  <TextField
-                    label="Phone Number"
-                    variant="outlined"
-                    fullWidth
-                    name="phoneNumber"
-                    className="text-field"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    error={Boolean(errors.phoneNumber)}
-                    helperText={errors.phoneNumber}
-                  />
-                </FormControl>
-
-                <FormControl variant="outlined" fullWidth>
-                  <TextField
-                    label="Code"
-                    variant="outlined"
-                    fullWidth
-                    name="code"
-                    value={id}
-                    disabled
-                  />
-                </FormControl>
-              </Box>
-
-              <Box sx={{ marginTop: 2 }}>
-                <FormControl variant="outlined" fullWidth>
-                  <TextField
-                    label="Email Address"
-                    variant="outlined"
-                    fullWidth
-                    name="email"
-                    className="text-field"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    error={Boolean(errors.email)}
-                    helperText={
-                      errors.email ||
-                      'This email will be used to send you the ticket'
-                    }
-                  />
-                </FormControl>
-              </Box>
-
-              <Box
-                sx={{ display: 'flex', justifyContent: 'center', marginTop: 4 }}
-              >
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
+            <form onSubmit={onSubmit}>
+              <FormGroup>
+                <Box
                   sx={{
-                    width: '50%',
-                    padding: '12px 0',
-                    fontWeight: 'bold',
-                    fontSize: '1rem',
-                    borderRadius: 2,
-                    '@media (max-width: 600px)': {
-                      width: '100%',
-                      padding: '10px 0',
-                    },
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 2,
+                    '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
                   }}
-                  disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Saving...' : 'Confirm'}
-                </Button>
-              </Box>
-            </FormGroup>
-          </form>
+                  <FormControl variant="outlined" color="primary" fullWidth>
+                    <TextField
+                      label="Name"
+                      variant="outlined"
+                      fullWidth
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="text-field"
+                      error={Boolean(errors.name)}
+                      helperText={errors.name}
+                    />
+                  </FormControl>
+
+                  <FormControl variant="outlined" fullWidth>
+                    <TextField
+                      label="Last Name"
+                      variant="outlined"
+                      fullWidth
+                      name="lastName"
+                      value={formData.lastName}
+                      className="text-field"
+                      onChange={handleInputChange}
+                      error={Boolean(errors.lastName)}
+                      helperText={errors.lastName}
+                    />
+                  </FormControl>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 2,
+                    marginTop: 2,
+                    '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
+                  }}
+                >
+                  <FormControl variant="outlined" fullWidth>
+                    <TextField
+                      label="Phone Number"
+                      variant="outlined"
+                      fullWidth
+                      name="phoneNumber"
+                      className="text-field"
+                      value={formData.phoneNumber}
+                      onChange={handleInputChange}
+                      error={Boolean(errors.phoneNumber)}
+                      helperText={errors.phoneNumber}
+                    />
+                  </FormControl>
+
+                  <FormControl variant="outlined" fullWidth>
+                    <TextField
+                      label="Code"
+                      variant="outlined"
+                      fullWidth
+                      name="code"
+                      value={id}
+                      disabled
+                    />
+                  </FormControl>
+                </Box>
+
+                <Box sx={{ marginTop: 2 }}>
+                  <FormControl variant="outlined" fullWidth>
+                    <TextField
+                      label="Email Address"
+                      variant="outlined"
+                      fullWidth
+                      name="email"
+                      className="text-field"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      error={Boolean(errors.email)}
+                      helperText={
+                        errors.email ||
+                        'This email will be used to send you the ticket'
+                      }
+                    />
+                  </FormControl>
+                </Box>
+
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: 4,
+                  }}
+                >
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      width: '50%',
+                      padding: '12px 0',
+                      fontWeight: 'bold',
+                      fontSize: '1rem',
+                      borderRadius: 2,
+                      '@media (max-width: 600px)': {
+                        width: '100%',
+                        padding: '10px 0',
+                      },
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Saving...' : 'Confirm'}
+                  </Button>
+                </Box>
+              </FormGroup>
+            </form>
+          </Box>
         </Box>
-      </Box>
+        <Snackbar
+          open={alert.open}
+          autoHideDuration={3000}
+          onClose={handleAlertClose}
+        >
+          <Alert
+            onClose={handleAlertClose}
+            severity={alert.severity}
+            sx={{ width: '100%' }}
+            variant="filled"
+          >
+            {alert.message}
+          </Alert>
+        </Snackbar>
+      </>
     );
   }
 }
