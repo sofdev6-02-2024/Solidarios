@@ -12,8 +12,8 @@ export interface TicketQrContentInterface {
   ticketId: number;
   qrContent: string;
   userId: string;
-  EventId: string;
-  IsUsed: boolean;
+  eventId: string;
+  isUsed: boolean;
 }
 
 

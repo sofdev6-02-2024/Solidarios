@@ -7,6 +7,7 @@ import { fetchGetTicketByQr } from '@/services/TicketService';
 import { useEffect, useState } from 'react';
 import QrScanner from 'react-qr-scanner';
 import AttendanceModal from './AttendanceModal';
+import { createAttendance } from '@/services/AttendanceService';
 
 export interface SectionProps {
   event: EventDetailDto;
@@ -42,10 +43,35 @@ const HomeSection = ({ event }: SectionProps) => {
     setIsModalOpen(false);
   };
 
-  const handleRegisterAttendance = (type: 'event' | 'activity') => {
-    console.log(`Registering attendance for ${type}...`);
-    setIsModalOpen(false);
+  const handleRegisterAttendance = async (
+    type: 'event' | 'activity',
+    activityId?: number,
+  ) => {
+    try {
+      if (!ticketUserId) {
+        console.error('No ticket user ID available');
+        return;
+      }
+  
+      if (type === 'event') {
+        console.log('Registering attendance for the event...');
+        
+      } else if (type === 'activity' && activityId) {        
+        await createAttendance({
+          userId: ticketUserId,
+          activityId,
+        });
+        console.log('Attendance successfully created for activity:', activityId);
+      }
+  
+      setIsModalOpen(false);
+      setTicketInfo('Attendance successfully registered!');
+    } catch (err) {
+      console.error('Error registering attendance:', err);
+      setError('Failed to register attendance. Please try again.');
+    }
   };
+  
 
   useEffect(() => {
     const verifyQrContent = async () => {
@@ -127,6 +153,7 @@ const HomeSection = ({ event }: SectionProps) => {
             onClose={handleModalClose}
             onRegisterAttendance={handleRegisterAttendance}
             userId={ticketUserId}
+            activities={event.activities}
           />
         )}
       </Layout>
