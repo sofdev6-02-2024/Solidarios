@@ -26,3 +26,42 @@ export async function GET(
     );
   }
 }
+
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } },
+) {
+  const { id } = params;
+
+  try {
+    const body = await request.json();
+    const userId = request.headers.get('userId');
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'User ID is required in headers' },
+        { status: 400 },
+      );
+    }
+
+    const response = await axios.put(
+      `${BASE_URL}/events/api/event/${id}`,
+      body,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          userId,
+        },
+      },
+    );
+
+    return NextResponse.json(response.data, { status: response.status });
+  } catch (error) {
+    console.error('Error updating event:', error);
+
+    return NextResponse.json(
+      { error: 'Failed to update event' },
+      { status: 500 },
+    );
+  }
+}
