@@ -17,6 +17,10 @@ import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import { messageOfRequest } from '@/utils/messageOfRequest';
 import { routes } from '@/utils/navigation/Routes';
+import AddCollaborators, {
+  Collaborator,
+} from './collaborators/AddCollaborators';
+import { fetchIdsByEmails } from '@/services/UserService';
 
 export interface GeneralInfoProps {
   title: string;
@@ -54,6 +58,7 @@ const Steps = ({
   const [isGeneralInfoComplete, setIsGeneralInfoComplete] = useState(false);
   const [isDateLocationComplete, setIsDateLocationComplete] = useState(false);
   const [isPriceCapacityComplete, setIsPriceCapacityComplete] = useState(false);
+  const [coOrganizers, setCoOrganizers] = useState<string[]>([]);
 
   const router = useRouter();
 
@@ -81,6 +86,20 @@ const Steps = ({
   }, [generalInfo, dateLocation, priceCapacity, activities]);
 
   const user = useSelector((state: RootState) => state.user.userInfo);
+
+  const handleCollaboratorsSubmit = async (collaborators: Collaborator[]) => {
+    const emails = collaborators.map((collaborator) => collaborator.email);
+    try {
+      const ids = await fetchIdsByEmails(emails);
+      if (ids) {
+        setCoOrganizers(ids);
+      } else {
+        console.error('Failed to fetch IDs for emails');
+      }
+    } catch (error) {
+      console.error('Error in handleCollaboratorsSubmit:', error);
+    }
+  };
 
   const handleSubmit = async () => {
     if (
@@ -111,6 +130,7 @@ const Steps = ({
         address: dateLocation.location || '',
         attendeeCount: 0,
         activities,
+        coOrganizers,
       };
 
       try {
@@ -149,19 +169,9 @@ const Steps = ({
           label="Price and capacity"
         />
       </Box>
+      <AddCollaborators onAddCollaborators={handleCollaboratorsSubmit} />
 
       <Box className="reminder-container">
-        <Box mt={4} p={2}>
-          <Typography variant="h6" className="checkbox-label">
-            Add Collaborators
-          </Typography>
-          <Box display="flex" alignItems="center" mt={2}>
-            <IconButton color="primary">
-              <AddCircleOutline fontSize="large" />
-            </IconButton>
-          </Box>
-        </Box>
-
         <Box mt={4} p={2}>
           <Typography variant="h6" className="checkbox-label">
             Set Reminder

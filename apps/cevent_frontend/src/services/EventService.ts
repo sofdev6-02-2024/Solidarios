@@ -223,11 +223,8 @@ export const getEventActivities = async (
   status: string,
 ): Promise<EventActivity[] | null> => {
   try {
-    console.log('first');
     const apiUrl = `${BASE_URL}/api/events/${id}/activities?status=${status}`;
-    console.log(apiUrl);
     const response = await axios.get<EventActivity[]>(apiUrl);
-    console.log(response.data);
     return response.data || [];
   } catch (error) {
     console.error('Failed to fetch event activities:', error);
@@ -242,12 +239,7 @@ export const updateEventActivity = async (
 ): Promise<EventActivity | null> => {
   try {
     const apiUrl = `${BASE_URL}/api/events/${id}/activities/${activityId}`;
-    console.log('API URL:', apiUrl);
-    console.log('Payload:', updatedActivity);
-
     const response = await axios.put<EventActivity>(apiUrl, updatedActivity);
-
-    console.log('Updated Activity:', response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -268,19 +260,11 @@ export const createEventActivity = async (
 ): Promise<EventActivity | null> => {
   try {
     const apiUrl = `${BASE_URL}/api/events/${id}/activities`;
-    console.log('API URL:', apiUrl);
-    console.log(
-      'Payload---------------------------------------------------------------------------------------------:',
-      newActivity,
-    );
-
     const response = await axios.post<EventActivity>(apiUrl, newActivity, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
-    console.log('Created Activity:', response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -301,13 +285,9 @@ export const deleteEventActivity = async (
 ): Promise<EventActivity | null> => {
   try {
     const apiUrl = `${BASE_URL}/api/events/${id}/activities/${activityId}`;
-    console.log('API URL:', apiUrl);
-
     const response = await axios.delete<EventActivity>(apiUrl, {
       headers: { accept: 'text/plain' },
     });
-
-    console.log('Deleted Activity:', response.data);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
