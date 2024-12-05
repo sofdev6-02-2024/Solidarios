@@ -12,13 +12,23 @@ import {
 } from '@/utils/Validations';
 import '../_styles/GeneralInfo.css';
 
-const GeneralInfo = ({ onComplete }: { onComplete: OnCompleteCallback }) => {
-  const [fields, setFields] = useState<FieldsGeneralInfo>({
-    title: '',
-    shortDescription: '',
-    description: '',
-    categoryId: 0,
-  });
+interface GeneralInfoProps {
+  onComplete: OnCompleteCallback;
+  initialData?: FieldsGeneralInfo;
+}
+
+const GeneralInfo: React.FC<GeneralInfoProps> = ({
+  onComplete,
+  initialData,
+}) => {
+  const [fields, setFields] = useState<FieldsGeneralInfo>(
+    initialData || {
+      title: '',
+      shortDescription: '',
+      description: '',
+      categoryId: 0,
+    },
+  );
 
   const [categories, setCategories] = useState<
     { keyWord: string; phrase: string; color: string; id: number }[]

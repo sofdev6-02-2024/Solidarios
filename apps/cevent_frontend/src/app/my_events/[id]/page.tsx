@@ -62,7 +62,9 @@ const EventManagementPage = () => {
           {section === ManagementSections.PromoteEvent && (
             <PromoteEventSection event={event} />
           )}
-          {section === ManagementSections.EditEvent && <EditEventSection />}
+          {section === ManagementSections.EditEvent && (
+            <EditEventSection event={event} />
+          )}
         </>
       ) : (
         <Layout>

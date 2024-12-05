@@ -8,10 +8,12 @@ import {
 import '../_styles/PriceCapacity.css';
 import { validateCapacity, validateTicketPrice } from '@/utils/Validations';
 
-const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
+const PriceCapacity: React.FC<
+  PriceCapacityProps & { initialData?: FieldsPriceCapacity }
+> = ({ onComplete, initialData }) => {
   const [fields, setFields] = useState<FieldsPriceCapacity>({
-    capacity: 0,
-    ticketPrice: 0,
+    capacity: initialData?.capacity || 0,
+    ticketPrice: initialData?.ticketPrice || 0,
   });
 
   const [errors, setErrors] = useState<Partial<FieldsPriceCapacity>>({
@@ -104,8 +106,7 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
               color="error"
               style={{ fontSize: '8px', marginTop: '4px' }}
             >
-              {getErrorMessage(errors.capacity || 0)}{' '}
-              {/* Asegura que se pasa un número */}
+              {getErrorMessage(errors.capacity || 0)}
             </Typography>
           )}
         </Box>
@@ -138,8 +139,7 @@ const PriceCapacity: React.FC<PriceCapacityProps> = ({ onComplete }) => {
               color="error"
               style={{ fontSize: '8px', marginTop: '4px' }}
             >
-              {getErrorMessage(errors.ticketPrice || 0)}{' '}
-              {/* Asegura que se pasa un número */}
+              {getErrorMessage(errors.ticketPrice || 0)}
             </Typography>
           )}
         </Box>

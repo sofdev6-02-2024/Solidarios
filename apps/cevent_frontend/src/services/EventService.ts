@@ -321,3 +321,37 @@ export const deleteEventActivity = async (
     return null;
   }
 };
+
+/**
+ * Updates an existing event
+ *
+ * @param eventId ID of the event to update
+ * @param updatedEvent Object containing the updated event data
+ * @param userId Owner's ID of the event
+ * @returns the updated event or null in case of an error
+ */
+export const updateEvent = async (
+  eventId: string,
+  updatedEvent: EventInputDto,
+  userId: string,
+): Promise<EventInputDto | null> => {
+  try {
+    const apiUrl = `/api/events/${eventId}`;
+
+    const response = await axios.put<EventInputDto>(apiUrl, updatedEvent, {
+      headers: {
+        'Content-Type': 'application/json',
+        userId: userId,
+      },
+    });
+
+    if (response.status === 200) {
+      return response.data;
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Failed to update event:', error);
+    return null;
+  }
+};

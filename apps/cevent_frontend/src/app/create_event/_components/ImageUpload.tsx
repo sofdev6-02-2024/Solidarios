@@ -4,10 +4,16 @@ import UploadImageButton from '@/components/UploadImageButton';
 
 interface ImageUploadProps {
   onComplete: (imageData: { coverPhotoUrl: string }) => void;
+  initialImage?: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onComplete }) => {
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  onComplete,
+  initialImage,
+}) => {
+  const [uploadedImage, setUploadedImage] = useState<string | null>(
+    initialImage || null,
+  );
 
   const handleImageUpload = (fileUrl: string) => {
     setUploadedImage(fileUrl);
