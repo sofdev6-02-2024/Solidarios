@@ -21,6 +21,7 @@ import { TicketValidatedDto } from '@/utils/interfaces/TicketInterfaces';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
 import { useTicketRedemption } from '@/hooks/useTicketRedemtion';
 import '@/styles/components/redeemTicket.css';
+import RedeemFormField from '../_components/FormField';
 
 export default function RedeemTicket() {
   const params = useParams();
@@ -121,6 +122,7 @@ export default function RedeemTicket() {
               maxWidth: 900,
               backgroundColor: 'white',
               padding: 4,
+              minHeight: '70vh',
             }}
           >
             <Typography
@@ -145,33 +147,22 @@ export default function RedeemTicket() {
                     '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
                   }}
                 >
-                  <FormControl variant="outlined" color="primary" fullWidth>
-                    <TextField
-                      label="Name"
-                      variant="outlined"
-                      fullWidth
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="text-field"
-                      error={Boolean(errors.name)}
-                      helperText={errors.name}
-                    />
-                  </FormControl>
-
-                  <FormControl variant="outlined" fullWidth>
-                    <TextField
-                      label="Last Name"
-                      variant="outlined"
-                      fullWidth
-                      name="lastName"
-                      value={formData.lastName}
-                      className="text-field"
-                      onChange={handleInputChange}
-                      error={Boolean(errors.lastName)}
-                      helperText={errors.lastName}
-                    />
-                  </FormControl>
+                  <RedeemFormField
+                    label="Name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    error={Boolean(errors.name)}
+                    helperText={errors.name}
+                  />
+                  <RedeemFormField
+                    label="Last Name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    error={Boolean(errors.lastName)}
+                    helperText={errors.lastName}
+                  />
                 </Box>
 
                 <Box
@@ -183,51 +174,35 @@ export default function RedeemTicket() {
                     '@media (max-width: 600px)': { gridTemplateColumns: '1fr' },
                   }}
                 >
-                  <FormControl variant="outlined" fullWidth>
-                    <TextField
-                      label="Phone Number"
-                      variant="outlined"
-                      fullWidth
-                      name="phoneNumber"
-                      className="text-field"
-                      value={formData.phoneNumber}
-                      onChange={handleInputChange}
-                      error={Boolean(errors.phoneNumber)}
-                      helperText={errors.phoneNumber}
-                    />
-                  </FormControl>
-
-                  <FormControl variant="outlined" fullWidth>
-                    <TextField
-                      label="Code"
-                      variant="outlined"
-                      fullWidth
-                      name="code"
-                      value={id}
-                      disabled
-                    />
-                  </FormControl>
+                  <RedeemFormField
+                    label="Phone Number"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                    error={Boolean(errors.phoneNumber)}
+                    helperText={errors.phoneNumber}
+                  />
+                  <RedeemFormField
+                    label="Code"
+                    name="code"
+                    value={id}
+                    disabled
+                  />
                 </Box>
 
                 <Box sx={{ marginTop: 2 }}>
-                  <FormControl variant="outlined" fullWidth>
-                    <TextField
-                      label="Email Address"
-                      variant="outlined"
-                      fullWidth
-                      name="email"
-                      className="text-field"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      error={Boolean(errors.email)}
-                      helperText={
-                        errors.email ||
-                        'This email will be used to send you the ticket'
-                      }
-                    />
-                  </FormControl>
+                  <RedeemFormField
+                    label="Email Address"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    error={Boolean(errors.email)}
+                    helperText={
+                      errors.email ||
+                      'This email will be used to send you the ticket'
+                    }
+                  />
                 </Box>
-
                 <Box
                   sx={{
                     display: 'flex',

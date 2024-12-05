@@ -17,7 +17,8 @@ public class UserService : BaseService<User, Guid>, IUserService
         var existingUser = await GetUserByEmail(entity.Email);
         if (existingUser != null && existingUser.Id != default)
         {
-            return await base.UpdateAsync(existingUser.Id, existingUser);
+            entity.Id = existingUser.Id;
+            return await base.UpdateAsync(existingUser.Id, entity);
         }
         return await base.CreateAsync(entity);
     }

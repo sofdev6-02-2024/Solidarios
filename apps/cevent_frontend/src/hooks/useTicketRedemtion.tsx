@@ -16,8 +16,7 @@ import { RegistrationInputDto } from '@/utils/interfaces/Registration';
 import { useSession } from 'next-auth/react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-
-import { Snackbar } from '@mui/material';
+import { fullFormatDate } from '@/utils/methods/stringMethods';
 
 export const useTicketRedemption = (
   ticketId: string,
@@ -25,7 +24,7 @@ export const useTicketRedemption = (
   ticket: TicketValidatedDto | null,
 ) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const user = useSelector((state: RootState) => state.user.userInfo);
   const [formData, setFormData] = useState<RegistrationInputDto>({
     name: '',
@@ -100,10 +99,11 @@ export const useTicketRedemption = (
         const hour = now.toTimeString().split(' ')[0];
         if (ticket) {
           const eventHtml = eventDetailsHtml
+            .replace(/{event}/g, event.name)
             .replace(/{venue}/g, event.venue)
-            .replace(/{address}/g, event.address)
-            .replace(/{category}/g, event.category.keyWord)
-            .replace(/{description}/g, event.description)
+            .replace(/{date}/g, fullFormatDate(event.eventDate))
+            .replace(/{location}/g, event.address)
+            .replace(/{eventImage}/g, event.coverPhotoUrl)
             .replace(/{qrCode}/g, `data:image/png;base64,${ticket.qrContent}`);
           const notificationBody: NotificationScheduleRequestDto = {
             emails: [formData.email],
@@ -131,9 +131,8 @@ export const useTicketRedemption = (
         message: 'Ticket redemption failed. Please try again.',
         severity: 'error',
       });
-      return false;
-    } finally {
       setIsSubmitting(false);
+      return false;
     }
   }, [formData, ticket, router]);
 
