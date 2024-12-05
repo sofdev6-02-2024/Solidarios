@@ -14,6 +14,16 @@ export interface Activity {
   capacity: number;
 }
 
+export interface ActivityIdDTO {
+  id: number;
+  name: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  status: number;
+  capacity: number;
+}
+
 export interface EventHomePageDto {
   id: number;
   name: string;
@@ -39,6 +49,10 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   address: string;
   activities: Activity[];
   coOrganizers: string[];
+}
+
+export interface EventDetailsDto extends Omit<EventDetailDto, 'activities'> {
+  activities: ActivityIdDTO[];  
 }
 
 

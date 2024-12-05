@@ -1,16 +1,17 @@
 import Layout from '@/components/Layout';
 import { Box, Typography, Alert, Paper, Button } from '@mui/material';
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
-import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
+import { EventDetailsDto } from '@/utils/interfaces/EventInterfaces';
 import CardEventSummary from '../CardEventInfo';
 import { fetchGetTicketByQr } from '@/services/TicketService';
 import { useEffect, useState } from 'react';
 import QrScanner from 'react-qr-scanner';
 import AttendanceModal from './AttendanceModal';
+import { AttendanceData } from '@/utils/interfaces/EventInterfaces';
 import { createAttendance } from '@/services/AttendanceService';
 
 export interface SectionProps {
-  event: EventDetailDto;
+  event: EventDetailsDto;
 }
 
 const HomeSection = ({ event }: SectionProps) => {
@@ -25,8 +26,6 @@ const HomeSection = ({ event }: SectionProps) => {
     if (data) {
       setQrContent(data.text);
       setIsCameraEnabled(false);
-    } else {
-      console.log('No QR detected');
     }
   };
 
@@ -51,27 +50,26 @@ const HomeSection = ({ event }: SectionProps) => {
       if (!ticketUserId) {
         console.error('No ticket user ID available');
         return;
-      }
-  
+      }      
       if (type === 'event') {
         console.log('Registering attendance for the event...');
-        
-      } else if (type === 'activity' && activityId) {        
-        await createAttendance({
+
+      } else if (type === 'activity' && activityId) {
+        const attendanceData: AttendanceData = {
           userId: ticketUserId,
           activityId,
-        });
-        console.log('Attendance successfully created for activity:', activityId);
+        };
+
+        await createAttendance(attendanceData);        
       }
-  
+
       setIsModalOpen(false);
       setTicketInfo('Attendance successfully registered!');
-    } catch (err) {
-      console.error('Error registering attendance:', err);
+    } catch (err) {      
       setError('Failed to register attendance. Please try again.');
     }
   };
-  
+
 
   useEffect(() => {
     const verifyQrContent = async () => {
@@ -79,9 +77,13 @@ const HomeSection = ({ event }: SectionProps) => {
         if (qrContent) {
           const ticket = await fetchGetTicketByQr(qrContent);
           if (ticket) {
-            setTicketUserId(ticket.userId);
-            setTicketInfo(`Ticket found by user: ${ticket.userId}`);
-            setIsModalOpen(true);
+            if (ticket.eventId === event.id) {
+              setTicketUserId(ticket.userId);
+              setTicketInfo(`Ticket found for user: ${ticket.userId}`);
+              setIsModalOpen(true);
+            } else {
+              setTicketInfo('This ticket does not belong to the current event.');
+            }
           } else {
             setTicketInfo('No ticket found for the provided QR content.');
           }
@@ -93,7 +95,7 @@ const HomeSection = ({ event }: SectionProps) => {
     };
 
     verifyQrContent();
-  }, [qrContent]);
+  }, [qrContent, event.id]);
 
   return (
     <Box sx={stylesPage.container}>
@@ -152,7 +154,7 @@ const HomeSection = ({ event }: SectionProps) => {
             open={isModalOpen}
             onClose={handleModalClose}
             onRegisterAttendance={handleRegisterAttendance}
-            userId={ticketUserId}
+            userId={ticketUserId!}
             activities={event.activities}
           />
         )}

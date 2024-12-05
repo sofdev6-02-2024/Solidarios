@@ -11,14 +11,14 @@ import {
   ListItemText,
 } from '@mui/material';
 import { useState } from 'react';
-import { Activity } from '@/utils/interfaces/EventInterfaces';
+import { ActivityIdDTO } from '@/utils/interfaces/EventInterfaces';
 
 interface AttendanceModalProps {
   open: boolean;
   onClose: () => void;
   onRegisterAttendance: (type: 'event' | 'activity', activityId?: number) => void;
   userId: string;
-  activities: Activity[];
+  activities: ActivityIdDTO[];
 }
 
 const AttendanceModal = ({
@@ -47,8 +47,8 @@ const AttendanceModal = ({
         ) : (
           <List>
             {activities.map((activity) => (
-              <ListItem key={activity.name}>
-                <ListItemButton onClick={() => handleActivitySelection(activity.capacity)}>
+              <ListItem key={activity.id}>
+                <ListItemButton onClick={() => handleActivitySelection(activity.id)}>
                   <ListItemText
                     primary={activity.name}
                     secondary={`${activity.startTime} - ${activity.endTime}`}
