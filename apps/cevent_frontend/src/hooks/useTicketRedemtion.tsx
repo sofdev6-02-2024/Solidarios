@@ -93,6 +93,7 @@ export const useTicketRedemption = (
         const now = new Date();
 
         now.setMinutes(now.getMinutes() + 1);
+        now.setHours(now.getHours() + 4);
 
         const date = now.toISOString().split('T')[0];
         const hour = now.toTimeString().split(' ')[0];
