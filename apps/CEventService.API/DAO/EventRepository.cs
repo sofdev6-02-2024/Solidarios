@@ -95,4 +95,29 @@ public class EventRepository : BaseRepository<Event, int>, IEventRepository
             .Include(e => e.Category)
             .ToListAsync();
     }
+
+    public override async Task<Event> CreateAsync(Event entity)
+{
+    entity.CreatedAt = DateTime.Now;
+    entity.IsDeleted = false;
+
+    await _dbContext.Set<Event>().AddAsync(entity);
+
+    if (entity.Activities != null && entity.Activities.Any())
+    {
+        foreach (var activity in entity.Activities)
+        {
+            activity.CreatedAt = DateTime.Now;
+            activity.IsDeleted = false;
+            activity.EventId = entity.Id;
+        }
+
+        await _dbContext.Set<Activity>().AddRangeAsync(entity.Activities);
+    }
+
+    await _dbContext.SaveChangesAsync();
+
+    return entity;
+}
+
 }

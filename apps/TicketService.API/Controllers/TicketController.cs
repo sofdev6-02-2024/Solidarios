@@ -92,9 +92,12 @@ namespace TicketService.API.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<ActionResult<ICollection<TicketInfoDto>>> GetTicketByUserId(string userId)
+        public async Task<ActionResult<ICollection<TicketInfoDto>>> GetTicketByUserId(
+            string userId,
+            [FromQuery] TicketFilterDto filterDto
+            )
         {
-            var tickets = await _ticketService.GetTicketsByUserId(userId);
+            var tickets = await _ticketService.GetTicketsByUserId(userId, filterDto);
             return tickets is null ? NotFound() : Ok(tickets);
         }
 

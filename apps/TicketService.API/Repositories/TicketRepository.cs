@@ -1,6 +1,7 @@
 ﻿using TicketService.API.Models;
 using Microsoft.EntityFrameworkCore;
 using TicketService.API.Database;
+using TicketService.API.DTOs;
 
 namespace TicketService.API.Repositories
 {
@@ -53,11 +54,18 @@ namespace TicketService.API.Repositories
             }
         }
 
-        public async Task<ICollection<Ticket>> GetTicketsByUser(string userId)
+        public async Task<ICollection<Ticket>> GetTicketsByUser(string userId, TicketFilterDto filter)
         {
-            return await _context.Set<Ticket>()
-                .Where(t => t.UserId.Equals(userId))
-                .ToListAsync();
+            var query = _context.Tickets
+                .Where(t => t.UserId == userId);
+
+            if (filter.EventId != -1 && filter.EventId != null)
+                query = query.Where(t => t.EventId == filter.EventId);
+
+            if (filter.IsUsed.HasValue)
+                query = query.Where(t => t.IsUsed == filter.IsUsed);
+        
+            return await query.ToListAsync();
         }
     }
 }

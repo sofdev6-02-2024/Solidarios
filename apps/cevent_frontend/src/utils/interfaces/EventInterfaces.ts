@@ -144,11 +144,12 @@ export interface EventStatus {
   attendeeCount?: number;
 }
 
-export const mapStatus: Record<number, string> = {
+export const statusData: Record<number, string> = {
+  0: 'Pending',
   1: 'Pending',
   2: 'Cancelled',
   3: 'Postponed',
-  4: 'InProgress',
+  4: 'In Progress',
   5: 'Completed',
-  6: 'OnHold',
+  6: 'On Hold',
 };

@@ -11,6 +11,9 @@ import EmptyTicketSection from './_components/EmptyTicketSection';
 import { fetchTicketsByUserId } from '@/services/TicketService';
 import { getEventsByIds } from '@/services/EventService';
 import { EventSearchToUserDto } from '@/utils/interfaces/EventInterfaces';
+import Layout from '@/components/Layout';
+import { useRouter } from 'next/navigation';
+import LinearLoading from '@/components/Loaders/LinearLoading';
 
 export default function MyTicketsPage() {
   const [filteredEvents, setFilteredEvents] = useState<EventSearchToUserDto[]>(
@@ -20,6 +23,7 @@ export default function MyTicketsPage() {
   const itemsPerPage = 4;
   const { data: session, status } = useSession();
   const user = useSelector((state: RootState) => state.user.userInfo);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserTicketsAndEvents = async () => {
@@ -42,6 +46,8 @@ export default function MyTicketsPage() {
           setFilteredEvents(eventsWithTicketCount);
         } catch (error) {
           console.error('Error fetching tickets or events:', error);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -60,10 +66,17 @@ export default function MyTicketsPage() {
     setPage(value);
   };
 
-  if (status === 'loading') {
+  if (status === 'loading' || loading) {
     return (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <CircularProgress />
+      <Box
+        display="flex"
+        justifyContent="center"
+        mt={4}
+        minHeight={'70vh'}
+        justifyItems={'center'}
+        alignItems={'center'}
+      >
+        <LinearLoading text="Loading tickets..." />
       </Box>
     );
   }
@@ -84,14 +97,12 @@ export default function MyTicketsPage() {
   return (
     <Box
       sx={{
-        padding: 3,
-        display: 'flex',
-        justifyContent: 'center',
+        width: '100%',
         minHeight: '70vh',
       }}
     >
-      <Box sx={{ maxWidth: '60%', width: '100%' }}>
-        <Box display={'flex'} flexDirection={'row'} gap={1}>
+      <Layout>
+        <Box display={'flex'} flexDirection={'row'} gap={1} marginBottom={3}>
           <Typography variant="h1" fontWeight={'bold'}>
             My
           </Typography>
@@ -133,7 +144,7 @@ export default function MyTicketsPage() {
             </Box>
           </>
         )}
-      </Box>
+      </Layout>
     </Box>
   );
 }

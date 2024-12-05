@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Card,
@@ -19,7 +19,7 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import QRCodeIcon from '@mui/icons-material/QrCodeScanner';
 
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
-import { EventDetailDto, mapStatus } from '@/utils/interfaces/EventInterfaces';
+import { EventDetailDto, statusData } from '@/utils/interfaces/EventInterfaces';
 import { fullFormatDate } from '@/utils/methods/stringMethods';
 
 interface SectionProps {
@@ -27,7 +27,14 @@ interface SectionProps {
 }
 
 const HomeSection = ({ event }: SectionProps) => {
-  const [eventStatus, setEventStatus] = useState('Ongoing');
+  const [eventStatus, setEventStatus] = useState('Pending');
+  const [displayedStatus, setDisplayedStatus] = useState(
+    `Status: ${statusData[event.status]}`,
+  );
+
+  useEffect(() => {
+    setDisplayedStatus(`Status: ${eventStatus}`);
+  }, [eventStatus]);
 
   const handleStatusChange = (e: SelectChangeEvent) => {
     setEventStatus(e.target.value);
@@ -62,13 +69,15 @@ const HomeSection = ({ event }: SectionProps) => {
                 <Typography variant="h5" sx={stylesPage.titleStyles}>
                   {event.name}
                 </Typography>
-                <Box sx={stylesPage.chipCategoryStyles}>
-                  {event.category.keyWord}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={stylesPage.chipCategoryStyles}>
+                    {event.category.keyWord}
+                  </Box>
+                  <Chip
+                    sx={stylesPage.ongoingStatusChip}
+                    label={displayedStatus}
+                  />
                 </Box>
-                <Chip
-                  sx={stylesPage.ongoingStatusChip}
-                  label={`Status: ${mapStatus[event.status]}`}
-                />
                 <Box
                   mt={2}
                   sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
@@ -88,12 +97,23 @@ const HomeSection = ({ event }: SectionProps) => {
                       <Typography variant="body2" sx={stylesPage.labelStyles}>
                         Address
                       </Typography>
-                      <ButtonBase onClick={handleOpenMap}></ButtonBase>
                     </Box>
-                    <Typography variant="body1" sx={stylesPage.linkStyles}>
-                      {event.address}
-                    </Typography>
+                    <ButtonBase
+                      onClick={handleOpenMap}
+                      sx={{
+                        textAlign: 'left',
+                        padding: 0,
+                        marginLeft: '-4px',
+                        width: 'fit-content',
+                        display: 'inline-flex',
+                      }}
+                    >
+                      <Typography variant="body1" sx={stylesPage.linkStyles}>
+                        {event.address}
+                      </Typography>
+                    </ButtonBase>
                   </Box>
+
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Box sx={stylesPage.infoRow}>
                       <Typography variant="body2">
@@ -109,7 +129,6 @@ const HomeSection = ({ event }: SectionProps) => {
                   </Box>
                 </Box>
               </Grid>
-
               <Grid
                 size={4}
                 display="flex"
@@ -120,7 +139,7 @@ const HomeSection = ({ event }: SectionProps) => {
                   component="img"
                   src={event.coverPhotoUrl}
                   alt="Event cover"
-                  sx={{ width: '100%', borderRadius: 4 }}
+                  sx={{ width: '100%', height: 'auto', borderRadius: 4 }}
                 />
               </Grid>
             </Grid>
@@ -142,8 +161,11 @@ const HomeSection = ({ event }: SectionProps) => {
                 sx={{ width: '150px' }}
               >
                 <MenuItem value="Pending">Pending</MenuItem>
-                <MenuItem value="In Progress">In Progress</MenuItem>
-                <MenuItem value="Finished">Finished</MenuItem>
+                <MenuItem value="Cancelled">Cancelled</MenuItem>
+                <MenuItem value="Postponed">Postponed</MenuItem>
+                <MenuItem value="InProgress">In Progress</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="OnHold">On Hold</MenuItem>
               </Select>
             </Card>
           </Box>

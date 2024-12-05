@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import LateralBar from './_components/LateralBar';
 import { ManagementSections } from '@/utils/interfaces/EventManagement';
 import HomeSection from './_components/Sections/HomeSection';
-import ActivitiesSection from './_components/Sections/ActivitiesSection';
+import ActivitiesSection from './_components/Sections/Activities/ActivitiesSection';
 import AttendanceListSection from './_components/Sections/AttendanceListSection';
 import PromoteEventSection from './_components/Sections/PromoteEventSection';
 import EditEventSection from './_components/Sections/EditEventSection';
@@ -53,7 +53,9 @@ const EventManagementPage = () => {
       ) : event ? (
         <>
           {section === ManagementSections.Home && <HomeSection event={event} />}
-          {section === ManagementSections.Activities && <ActivitiesSection />}
+          {section === ManagementSections.Activities && (
+            <ActivitiesSection id={id.toString()} />
+          )}
           {section === ManagementSections.AttendanceList && (
             <AttendanceListSection />
           )}
