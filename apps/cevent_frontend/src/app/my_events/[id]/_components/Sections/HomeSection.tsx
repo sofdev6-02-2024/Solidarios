@@ -15,8 +15,8 @@ import {
 import Grid from '@mui/material/Grid2';
 import EventIcon from '@mui/icons-material/Event';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import QRCodeIcon from '@mui/icons-material/QrCodeScanner';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopy';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
 import { EventDetailDto, statusData } from '@/utils/interfaces/EventInterfaces';
@@ -38,6 +38,7 @@ const HomeSection = ({ event }: SectionProps) => {
 
   const handleStatusChange = (e: SelectChangeEvent) => {
     setEventStatus(e.target.value);
+    console.log("event id" , event.id);
   };
 
   const handleOpenMap = () => {
@@ -194,7 +195,7 @@ const HomeSection = ({ event }: SectionProps) => {
             <Typography variant="body1" align="left">
               Validate Tickets
             </Typography>
-            <QRCodeIcon sx={{ fontSize: 60, color: 'primary.main' }} />
+            <QrCodeIcon sx={{ fontSize: 60, color: 'primary.main' }} />
             <Typography variant="body1" mt={2} align="center">
               Scan tickets to allow access to your event
             </Typography>

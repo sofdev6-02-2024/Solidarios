@@ -35,6 +35,7 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   organizerUserId: string;
   createdAt: Date;
   category: EventCategory;
+  categoryId: number;
   description: string;
   isPromoted?: boolean;
   address: string;
@@ -112,7 +113,7 @@ export interface EventInputDto {
   createdAt: Date;
   address: string;
   attendeeCount: number;
-  activities: Activity[];
+  activities?: Activity[];
 }
 
 export enum SizeBanner {
