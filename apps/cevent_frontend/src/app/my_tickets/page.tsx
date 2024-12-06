@@ -20,7 +20,7 @@ export default function MyTicketsPage() {
     [],
   );
   const [page, setPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const { data: session, status } = useSession();
   const user = useSelector((state: RootState) => state.user.userInfo);
   const [loading, setLoading] = useState(true);

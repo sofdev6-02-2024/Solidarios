@@ -96,7 +96,7 @@ const InfoTicket = ({
             color="primary"
             sx={{ borderRadius: 12 }}
             startIcon={<RedeemOutlinedIcon sx={{ color: 'white' }} />}
-            onClick={() => router.push(`/redeem/${ticketData.ticketId}`)}
+            onClick={() => router.push(`/redeem_ticket/${ticketData.ticketId}`)}
           >
             Redeem
           </Button>

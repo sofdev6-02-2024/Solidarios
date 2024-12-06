@@ -25,4 +25,16 @@ public class UserController : BaseController<User, UserOutputDto, UserInputDto, 
             return BadRequest("Id already in use");
         return await base.Create(inputDto);
     }
+
+    [HttpPost("GetIdsByEmails")]
+    public async Task<IActionResult> GetIdsByEmails([FromBody] IEnumerable<string> emails)
+    {
+        if (emails == null || !emails.Any())
+        {
+            return BadRequest("Emails list cannot be empty.");
+        }
+
+        var ids = await _userService.GetIdsByEmails(emails);
+        return Ok(ids);
+    }
 }

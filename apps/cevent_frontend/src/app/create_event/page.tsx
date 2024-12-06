@@ -96,9 +96,13 @@ const CreateEvent = () => {
         </Box>
 
         <ImageUpload onComplete={handleImageChange} />
+
         <GeneralInfo onComplete={handleGeneralInfoComplete} />
+
         <DateLocation onComplete={handleDateLocationComplete} />
+
         <PriceCapacity onComplete={handlePriceCapacityComplete} />
+
         <Activities
           onAddActivity={handleAddActivity}
           onEditActivity={handleEditActivity}
