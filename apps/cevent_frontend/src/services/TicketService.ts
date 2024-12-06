@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { TicketRequestDto } from '@/utils/interfaces/TicketInterfaces';
+import {
+  TicketRequestDto,
+  TicketValidatedDto,
+} from '@/utils/interfaces/TicketInterfaces';
 import {
   Ticket,
   TicketFilter,
@@ -81,6 +84,36 @@ export const generateTickets = async (
     return response.data;
   } catch (error) {
     return null;
+  }
+};
+
+export const getTicketById = async (
+  id: string,
+): Promise<TicketValidatedDto | null> => {
+  try {
+    const response = await axios.get<TicketValidatedDto>(
+      `/api/tickets/list/${id}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+
+    return null;
+  }
+};
+
+export const validateTicket = async (qrContent: string): Promise<void> => {
+  try {
+    if (!qrContent) {
+      throw new Error('qrContent is required');
+    }
+    await axios.post('/api/tickets/validate', qrContent, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  } catch (error) {
+    console.error('Error validating ticket:', error);
   }
 };
 
