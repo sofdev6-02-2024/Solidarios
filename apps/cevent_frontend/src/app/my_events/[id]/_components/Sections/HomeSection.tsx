@@ -19,15 +19,21 @@ import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopy';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
-import { EventDetailDto, statusData } from '@/utils/interfaces/EventInterfaces';
+import {
+  EventDetailDto,
+  EventStatus,
+  statusData,
+} from '@/utils/interfaces/EventInterfaces';
 import { fullFormatDate } from '@/utils/methods/stringMethods';
+import { updateStatusEvent } from '@/services/EventService';
+import { getStatusNumber } from '@/utils/methods/eventStatusUtils';
 
 interface SectionProps {
   event: EventDetailDto;
 }
 
 const HomeSection = ({ event }: SectionProps) => {
-  const [eventStatus, setEventStatus] = useState('Pending');
+  const [eventStatus, setEventStatus] = useState(`${statusData[event.status]}`);
   const [displayedStatus, setDisplayedStatus] = useState(
     `Status: ${statusData[event.status]}`,
   );
@@ -36,9 +42,13 @@ const HomeSection = ({ event }: SectionProps) => {
     setDisplayedStatus(`Status: ${eventStatus}`);
   }, [eventStatus]);
 
-  const handleStatusChange = (e: SelectChangeEvent) => {
+  const handleStatusChange = async (e: SelectChangeEvent) => {
     setEventStatus(e.target.value);
-    console.log("event id" , event.id);
+    const statusNumber = getStatusNumber(e.target.value);
+    const eventStatus: EventStatus = {
+      status: statusNumber,
+    };
+    const response = await updateStatusEvent(eventStatus, event.id);
   };
 
   const handleOpenMap = () => {
@@ -164,9 +174,9 @@ const HomeSection = ({ event }: SectionProps) => {
                 <MenuItem value="Pending">Pending</MenuItem>
                 <MenuItem value="Cancelled">Cancelled</MenuItem>
                 <MenuItem value="Postponed">Postponed</MenuItem>
-                <MenuItem value="InProgress">In Progress</MenuItem>
+                <MenuItem value="In Progress">In Progress</MenuItem>
                 <MenuItem value="Completed">Completed</MenuItem>
-                <MenuItem value="OnHold">On Hold</MenuItem>
+                <MenuItem value="On Hold">On Hold</MenuItem>
               </Select>
             </Card>
           </Box>
