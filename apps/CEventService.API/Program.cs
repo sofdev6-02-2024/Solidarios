@@ -101,6 +101,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
 builder.Services.AddScoped<IEventClickRepository, EventClickRepository>();
 builder.Services.AddScoped<IEventClickService, EventClickService>();
+builder.Services.AddScoped<IRegistrationRepository, RegistrationRepository>();
+builder.Services.AddScoped<IRegistrationService, RegistrationService>();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 

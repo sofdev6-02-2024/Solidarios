@@ -8,6 +8,6 @@ public class RegistrationOutputDto : IMapFrom<Registration>
     public required Guid UserId { get; set; }
     public int EventId { get; set; }
     public required AttendanceStatus AttendanceStatus { get; set; }
-    public DateTime RegisteredAt { get; set; }
+    public DateTime CreatedAt { get; set; }
     public required string TicketId { get; set; }
 }

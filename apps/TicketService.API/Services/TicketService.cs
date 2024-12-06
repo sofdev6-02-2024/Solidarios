@@ -35,7 +35,7 @@ namespace TicketService.API.Services
                 QRContent = createdTicket.QRContent,
             };
         }
-        
+
         public async Task<IEnumerable<TicketResponseDto>> GenerateTicketsAsync(TicketRequestDto ticketRequest, int quantity)
         {
             var tickets = new List<Ticket>();
@@ -104,6 +104,7 @@ namespace TicketService.API.Services
                 return null;
             }
 
+
             return ticket;
         }
 
@@ -125,7 +126,9 @@ namespace TicketService.API.Services
             return new TicketResponseDto
             {
                 TicketId = ticket.TicketId.ToString(),
-                QRContent = ticket.QRContent
+                QRContent = ticket.QRContent,
+                EventId = ticket.EventId,
+                IsUsed = ticket.IsUsed
             };
         }
 

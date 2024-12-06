@@ -70,13 +70,20 @@ public abstract class BaseRepository<T, TId> : IBaseRepository<T, TId> where T :
 
     public virtual async Task<ICollection<T>> GetFilteredPagedAsync(
         Expression<Func<T, bool>> filter,
-        int page,
-        int pageSize)
+        int page = 1,
+        int pageSize = 10)
     {
         return await _dbContext.Set<T>()
             .Where(filter)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+    }
+
+    public async Task<T?> GetFilteredAsync(Expression<Func<T, bool>> filter)
+    {
+        return await _dbContext.Set<T>()
+            .Where(filter)
+            .FirstOrDefaultAsync();
     }
 }

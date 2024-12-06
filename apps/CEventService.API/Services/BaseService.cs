@@ -12,32 +12,32 @@ public abstract class BaseService<T, TId> : IBaseService<T, TId> where T : BaseE
         _repository = repository;
     }
     
-    public async Task<IEnumerable<T>> GetAllAsync(int page, int pageSize)
+    public virtual async Task<IEnumerable<T>> GetAllAsync(int page, int pageSize)
     {
         return await _repository.GetAllAsync(page, pageSize);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public virtual async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _repository.GetAllAsync();
     }
 
-    public async Task<T?> GetByIdAsync(TId id)
+    public virtual async Task<T?> GetByIdAsync(TId id)
     {
         return await _repository.GetByIdAsync(id);
     }
 
-    public async Task<T> CreateAsync(T entity)
+    public virtual async Task<T> CreateAsync(T entity)
     {
         return await _repository.CreateAsync(entity);
     }
 
-    public async Task<T> UpdateAsync(TId id, T entity)
+    public virtual async Task<T> UpdateAsync(TId id, T entity)
     {
         return await _repository.UpdateAsync(id, entity);
     }
 
-    public async Task<int> SoftDeleteAsync(TId id)
+    public virtual async Task<int> SoftDeleteAsync(TId id)
     {
         return await _repository.SoftDeleteAsync(id);
     }
