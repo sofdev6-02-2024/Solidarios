@@ -8,7 +8,9 @@ import { useEffect, useState } from 'react';
 import QrScanner from 'react-qr-scanner';
 import AttendanceModal from './AttendanceModal';
 import { AttendanceData } from '@/utils/interfaces/EventInterfaces';
+import { UpdateStatusRegistration } from '@/utils/interfaces/Registration';
 import { createAttendance } from '@/services/AttendanceService';
+import { updateStatusRegistrationUser } from '@/services/RegistrationService';
 
 export interface SectionProps {
   event: EventDetailsDto;
@@ -21,6 +23,7 @@ const HomeSection = ({ event }: SectionProps) => {
   const [isCameraEnabled, setIsCameraEnabled] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [ticketUserId, setTicketUserId] = useState<string | null>(null);
+  const [ticketId, setTicketId] = useState<string | null>(null);
 
   const handleScan = (data: string | null) => {
     if (data) {
@@ -47,12 +50,16 @@ const HomeSection = ({ event }: SectionProps) => {
     activityId?: number,
   ) => {
     try {
-      if (!ticketUserId) {
-        console.error('No ticket user ID available');
+      if (!ticketId) {
+        console.error('No ticket ID available');
         return;
-      }      
+      }
+
       if (type === 'event') {
-        console.log('Registering attendance for the event...');
+        const updateStatus: UpdateStatusRegistration = {
+          attendanceStatus: 1,
+        };
+        await updateStatusRegistrationUser(ticketId, updateStatus);
 
       } else if (type === 'activity' && activityId) {
         const attendanceData: AttendanceData = {
@@ -70,7 +77,6 @@ const HomeSection = ({ event }: SectionProps) => {
     }
   };
 
-
   useEffect(() => {
     const verifyQrContent = async () => {
       try {
@@ -79,6 +85,7 @@ const HomeSection = ({ event }: SectionProps) => {
           if (ticket) {
             if (ticket.eventId === event.id) {
               setTicketUserId(ticket.userId);
+              setTicketId(ticket.ticketId);
               setTicketInfo(`Ticket found for user: ${ticket.userId}`);
               setIsModalOpen(true);
             } else {

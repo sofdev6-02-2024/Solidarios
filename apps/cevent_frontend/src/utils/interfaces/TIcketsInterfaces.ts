@@ -9,7 +9,7 @@ export interface TicketViewInterface {
 }
 
 export interface TicketQrContentInterface {
-  ticketId: number;
+  ticketId: string;
   qrContent: string;
   userId: string;
   eventId: number;
