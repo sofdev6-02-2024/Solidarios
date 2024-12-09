@@ -28,7 +28,7 @@ export const updateStatusRegistrationUser = async (
       updateRegistration,
     );
     return response.data;
-  } catch (error) {    
+  } catch (error) {
     return null;
   }
 };
