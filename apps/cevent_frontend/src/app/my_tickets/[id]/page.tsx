@@ -4,7 +4,7 @@ import { RootState } from '@/redux/store';
 import { getEventById } from '@/services/EventService';
 import { fetchTicketsByUserId } from '@/services/TicketService';
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
-import { Ticket, TicketFilter } from '@/utils/interfaces/TicketsInterfaces';
+import { Ticket, TicketFilter } from '@/utils/interfaces/TIcketsInterfaces';
 import {
   Alert,
   Box,

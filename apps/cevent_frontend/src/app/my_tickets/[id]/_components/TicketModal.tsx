@@ -1,5 +1,5 @@
 import { EventDetailDto } from '@/utils/interfaces/EventInterfaces';
-import { Ticket } from '@/utils/interfaces/TicketsInterfaces';
+import { Ticket } from '@/utils/interfaces/TIcketsInterfaces';
 import { Modal, Box, Typography, Chip } from '@mui/material';
 import { QRCodeSVG } from 'qrcode.react';
 

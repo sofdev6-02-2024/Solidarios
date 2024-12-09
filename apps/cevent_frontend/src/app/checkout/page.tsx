@@ -22,7 +22,7 @@ import { PaymentInterface } from '@/utils/interfaces/Payment';
 import LinearLoading from '@/components/Loaders/LinearLoading';
 import Layout from '@/components/Layout';
 import { generateTickets } from '@/services/TicketService';
-import { TicketPostInterface } from '@/utils/interfaces/TicketsInterfaces';
+import { TicketPostInterface } from '@/utils/interfaces/TIcketsInterfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 
