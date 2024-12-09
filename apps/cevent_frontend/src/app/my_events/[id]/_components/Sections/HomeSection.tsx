@@ -12,16 +12,13 @@ import {
   SelectChangeEvent,
   Chip,
   Alert,
-  Paper,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import EventIcon from '@mui/icons-material/Event';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopy';
-import QrCodeIcon from '@mui/icons-material/QrCode';
 import QrScanner from 'react-qr-scanner';
 import AttendanceModal from './AttendanceModal';
-
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
 import {
   EventDetailDto,
@@ -78,12 +75,13 @@ const HomeSection = ({ event }: SectionProps) => {
     alert('Link copied to clipboard');
   };
 
-  const handleScan = (data: string | null) => {
-    if (data) {
+  const handleScan = (data: { text: string } | null) => {
+    if (data && data.text) {
       setQrContent(data.text);
       setIsCameraEnabled(false);
     }
   };
+
 
   const handleError = (err: any) => {
     console.error(err);
@@ -115,7 +113,7 @@ const HomeSection = ({ event }: SectionProps) => {
         await updateStatusRegistrationUser(ticketId, updateStatus);
       } else if (type === 'activity' && activityId) {
         const attendanceData: AttendanceData = {
-          userId: ticketUserId,
+          userId: ticketUserId || '',
           activityId,
         };
         await createAttendance(attendanceData);
@@ -304,25 +302,41 @@ const HomeSection = ({ event }: SectionProps) => {
             }}
           >
             <Typography variant="h6">Validate Tickets</Typography>
-            <QrCodeIcon
-              sx={{
-                fontSize: '4rem',
-                cursor: 'pointer',
-                color: 'primary.main',
-              }}
-              onClick={handleEnableCamera}
-            />
 
-            {isCameraEnabled && (
-              <Box mt={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={isCameraEnabled ? () => setIsCameraEnabled(false) : handleEnableCamera}
+            >
+              {isCameraEnabled ? 'Apagar Cámara' : 'Escanear Ticket'}
+            </Button>
+
+            <Box
+              mt={2}
+              sx={{
+                width: '100%',
+                height: '300px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#f5f5f5',
+                borderRadius: '8px',
+                border: '1px dashed #ccc',
+              }}
+            >
+              {isCameraEnabled ? (
                 <QrScanner
                   delay={300}
                   onError={handleError}
                   onScan={handleScan}
                   style={{ width: '100%', height: '100%' }}
                 />
-              </Box>
-            )}
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  La cámara está apagada
+                </Typography>
+              )}
+            </Box>
 
             {ticketInfo && <Alert severity="info">{ticketInfo}</Alert>}
             {error && <Alert severity="error">{error}</Alert>}
@@ -330,12 +344,13 @@ const HomeSection = ({ event }: SectionProps) => {
         </Grid>
       </Grid>
       <AttendanceModal
-      open={isModalOpen}
-      onClose={handleModalClose}
-      onRegisterAttendance={handleRegisterAttendance}
-      userId={ticketUserId!}
-      activities={event.activities}
-    />
+        open={isModalOpen}
+        onClose={handleModalClose}
+        onRegisterAttendance={handleRegisterAttendance}
+        userId={ticketUserId || ''}
+        activities={event.activities}
+      />
+
     </Box>
   );
 };

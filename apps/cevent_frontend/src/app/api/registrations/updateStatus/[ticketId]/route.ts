@@ -6,18 +6,22 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 export async function POST(request: Request) {
   console.log('llego la solicitud');
-  try {        
-    const { ticketId, attendanceStatus }: { ticketId: string; attendanceStatus: number } = await request.json();
+  try {
+    const { attendanceStatus } = await request.json();
+    const { pathname } = new URL(request.url);
+    const ticketId = pathname.split('/').pop();
 
+
+    console.log('Datos recibidos:', { ticketId, attendanceStatus });
     if (!ticketId) {
       return NextResponse.json(
         { error: 'El campo "id" es obligatorio.' },
         { status: 400 }
       );
     }
-    
+
     const updateStatus: UpdateStatusRegistration = { attendanceStatus };
-    
+
     const response = await axios.post(
       `${BASE_URL}/events/api/registration/updateStatus/${ticketId}`,
       updateStatus,

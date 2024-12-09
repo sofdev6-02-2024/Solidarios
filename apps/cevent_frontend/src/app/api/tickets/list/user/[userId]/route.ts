@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { TicketFilter } from '@/utils/interfaces/TIcketsInterfaces';
+import { TicketFilter } from '@/utils/interfaces/TicketsInterfaces';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 

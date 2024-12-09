@@ -6,6 +6,7 @@ export interface Location {
 }
 
 export interface Activity {
+  id?: number;
   name: string;
   description: string;
   startTime: Date;
@@ -15,7 +16,7 @@ export interface Activity {
 }
 
 export interface ActivityIdDTO {
-  id: number;
+  ActivityId: number;
   name: string;
   description: string;
   startTime: Date;
@@ -52,7 +53,7 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   coOrganizers: string[];
 }
 
-export interface EventDetailsDto extends Omit<EventDetailDto, 'activities'> {
+export interface EventDetailActivitiesDto extends Omit<EventDetailDto, 'activities'> {
   activities: ActivityIdDTO[];  
 }
 

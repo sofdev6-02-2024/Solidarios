@@ -9,7 +9,7 @@ import {
   TicketPostInterface,
   TicketViewInterface,
   TicketQrContentInterface,
-} from '@/utils/interfaces/TIcketsInterfaces';
+} from '@/utils/interfaces/TicketsInterfaces';
 
 /**
  * Fetches tickets based on the given parameters
