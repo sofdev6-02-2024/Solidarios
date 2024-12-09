@@ -14,13 +14,20 @@ export async function POST(request: Request) {
     const { qrContent }: { qrContent: string } = await request.json();
 
     if (!qrContent) {
-      return NextResponse.json({ error: 'QR content is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'QR content is required' },
+        { status: 400 },
+      );
     }
 
     const fullUrl = `${BASE_URL}/ticket-service/api/Ticket/qr`;
-    const response = await axios.post<TicketQrContentInterface>(fullUrl, qrContent, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const response = await axios.post<TicketQrContentInterface>(
+      fullUrl,
+      qrContent,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      },
+    );
 
     return NextResponse.json(response.data, { status: 200 });
   } catch (error: any) {

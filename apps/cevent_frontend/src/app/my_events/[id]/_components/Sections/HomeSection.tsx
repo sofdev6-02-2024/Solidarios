@@ -82,7 +82,6 @@ const HomeSection = ({ event }: SectionProps) => {
     }
   };
 
-
   const handleError = (err: any) => {
     console.error(err);
   };
@@ -138,7 +137,9 @@ const HomeSection = ({ event }: SectionProps) => {
               setTicketInfo(`Ticket found for user: ${ticket.userId}`);
               setIsModalOpen(true);
             } else {
-              setTicketInfo('This ticket does not belong to the current event.');
+              setTicketInfo(
+                'This ticket does not belong to the current event.',
+              );
             }
           } else {
             setTicketInfo('No ticket found for the provided QR content.');
@@ -306,7 +307,11 @@ const HomeSection = ({ event }: SectionProps) => {
             <Button
               variant="contained"
               color="primary"
-              onClick={isCameraEnabled ? () => setIsCameraEnabled(false) : handleEnableCamera}
+              onClick={
+                isCameraEnabled
+                  ? () => setIsCameraEnabled(false)
+                  : handleEnableCamera
+              }
             >
               {isCameraEnabled ? 'Apagar Cámara' : 'Escanear Ticket'}
             </Button>
@@ -350,7 +355,6 @@ const HomeSection = ({ event }: SectionProps) => {
         userId={ticketUserId || ''}
         activities={event.activities}
       />
-
     </Box>
   );
 };

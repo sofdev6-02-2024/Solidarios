@@ -23,9 +23,9 @@ export const fetchTickets = async (
   try {
     const params = ticketRequestDto
       ? {
-        eventId: ticketRequestDto.eventId,
-        userId: ticketRequestDto.userId,
-      }
+          eventId: ticketRequestDto.eventId,
+          userId: ticketRequestDto.userId,
+        }
       : {};
 
     const response = await axios.get<any[]>('/api/tickets/list', { params });
@@ -124,7 +124,7 @@ export const validateTicket = async (qrContent: string): Promise<void> => {
  * @returns TicketQrContentInterface object or null if an error occurs
  */
 export const fetchGetTicketByQr = async (
-  qrContent: string
+  qrContent: string,
 ): Promise<TicketQrContentInterface | null> => {
   try {
     if (!qrContent) {
@@ -138,12 +138,15 @@ export const fetchGetTicketByQr = async (
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     return response.data;
   } catch (error: any) {
-    console.error('Error fetching ticket by QR:', error.response?.data || error.message);
+    console.error(
+      'Error fetching ticket by QR:',
+      error.response?.data || error.message,
+    );
     return null;
   }
 };

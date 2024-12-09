@@ -14,13 +14,13 @@ export async function POST(request: Request) {
   const fullUrl = `${BASE_URL}/events/api/attendance`;
 
   try {
-    const attendance: AttendanceData = await request.json();    
+    const attendance: AttendanceData = await request.json();
     const response = await axios.post(fullUrl, attendance, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    
+
     return NextResponse.json(response.data, { status: 201 });
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {

@@ -19,14 +19,17 @@ export const registerRegistration = async (
 
 export const updateStatusRegistrationUser = async (
   ticketId: string,
-  updateRegistration: UpdateStatusRegistration
+  updateRegistration: UpdateStatusRegistration,
 ): Promise<UpdateStatusRegistration | null> => {
-  console.log('datos a actualizar: ',updateRegistration);
-  console.log('Ticket Id: ',ticketId);
-  try {    
+  console.log('datos a actualizar: ', updateRegistration);
+  console.log('Ticket Id: ', ticketId);
+  try {
     console.log('entro al servicio');
-    const response = await axios.post<UpdateStatusRegistration>(`/api/registrations/updateStatus/${ticketId}`, updateRegistration);
-    return response.data;    
+    const response = await axios.post<UpdateStatusRegistration>(
+      `/api/registrations/updateStatus/${ticketId}`,
+      updateRegistration,
+    );
+    return response.data;
   } catch (error) {
     console.error('Error updating status:', error);
     return null;

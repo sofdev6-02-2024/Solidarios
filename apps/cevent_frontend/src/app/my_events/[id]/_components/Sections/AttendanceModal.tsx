@@ -16,7 +16,10 @@ import { Activity } from '@/utils/interfaces/EventInterfaces';
 interface AttendanceModalProps {
   open: boolean;
   onClose: () => void;
-  onRegisterAttendance: (type: 'event' | 'activity', activityId?: number) => void;
+  onRegisterAttendance: (
+    type: 'event' | 'activity',
+    activityId?: number,
+  ) => void;
   userId: string;
   activities: Activity[];
 }
@@ -42,7 +45,8 @@ const AttendanceModal = ({
       <DialogContent>
         {!showActivities ? (
           <Typography>
-            The ticket belongs to user <strong>{userId}</strong>. Would you like to register attendance for the event or for an activity?
+            The ticket belongs to user <strong>{userId}</strong>. Would you like
+            to register attendance for the event or for an activity?
           </Typography>
         ) : (
           <List>
@@ -68,7 +72,11 @@ const AttendanceModal = ({
       <DialogActions>
         {!showActivities ? (
           <>
-            <Button onClick={() => onRegisterAttendance('event')} color="primary" variant="contained">
+            <Button
+              onClick={() => onRegisterAttendance('event')}
+              color="primary"
+              variant="contained"
+            >
               Event
             </Button>
             <Button

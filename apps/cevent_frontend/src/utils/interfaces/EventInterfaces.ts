@@ -53,10 +53,10 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   coOrganizers: string[];
 }
 
-export interface EventDetailActivitiesDto extends Omit<EventDetailDto, 'activities'> {
-  activities: ActivityIdDTO[];  
+export interface EventDetailActivitiesDto
+  extends Omit<EventDetailDto, 'activities'> {
+  activities: ActivityIdDTO[];
 }
-
 
 export interface EventEditlDto extends Omit<EventHomePageDto, 'category'> {
   location: Location;

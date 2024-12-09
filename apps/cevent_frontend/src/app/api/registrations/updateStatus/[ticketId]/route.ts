@@ -11,12 +11,11 @@ export async function POST(request: Request) {
     const { pathname } = new URL(request.url);
     const ticketId = pathname.split('/').pop();
 
-
     console.log('Datos recibidos:', { ticketId, attendanceStatus });
     if (!ticketId) {
       return NextResponse.json(
         { error: 'El campo "id" es obligatorio.' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -27,9 +26,9 @@ export async function POST(request: Request) {
       updateStatus,
       {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-      }
+      },
     );
 
     return NextResponse.json(response.data, { status: 200 });

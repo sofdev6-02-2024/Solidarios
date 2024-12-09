@@ -16,7 +16,6 @@ export interface TicketQrContentInterface {
   isUsed: boolean;
 }
 
-
 export interface TicketFilter {
   eventId?: number;
   isUsed?: boolean;
