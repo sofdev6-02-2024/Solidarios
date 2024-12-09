@@ -9,7 +9,7 @@ import {
   TicketPostInterface,
   TicketViewInterface,
   TicketQrContentInterface,
-} from '@/utils/interfaces/TicketsInterfaces';
+} from '@/utils/interfaces/TIcketsInterfaces';
 
 /**
  * Fetches tickets based on the given parameters
@@ -132,7 +132,7 @@ export const fetchGetTicketByQr = async (
     }
 
     const response = await axios.post<TicketQrContentInterface>(
-      `/api/tickets/list/qr/`,
+      '/api/tickets/list/qr/',
       { qrContent },
       {
         headers: {

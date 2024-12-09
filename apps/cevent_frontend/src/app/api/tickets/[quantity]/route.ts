@@ -1,4 +1,4 @@
-import { TicketViewInterface } from '@/utils/interfaces/TicketsInterfaces';
+import { TicketViewInterface } from '@/utils/interfaces/TIcketsInterfaces';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 

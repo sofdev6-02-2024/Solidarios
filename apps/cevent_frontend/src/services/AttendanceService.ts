@@ -9,7 +9,7 @@ export const createAttendance = async (
   }
   try {
     const response = await axios.post<AttendanceData>(
-      `/api/attendance/`,
+      '/api/attendance/',
       attendanceData,
       {
         headers: {

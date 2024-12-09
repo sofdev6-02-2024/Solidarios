@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
-import { TicketQrContentInterface } from '@/utils/interfaces/TicketsInterfaces';
+import { TicketQrContentInterface } from '@/utils/interfaces/TIcketsInterfaces';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 

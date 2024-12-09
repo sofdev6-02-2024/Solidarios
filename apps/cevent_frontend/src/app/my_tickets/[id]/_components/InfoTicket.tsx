@@ -1,4 +1,4 @@
-import { Ticket } from '@/utils/interfaces/TicketsInterfaces';
+import { Ticket } from '@/utils/interfaces/TIcketsInterfaces';
 import {
   Box,
   Button,
