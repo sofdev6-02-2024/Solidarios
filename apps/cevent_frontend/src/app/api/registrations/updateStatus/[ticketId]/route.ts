@@ -5,13 +5,11 @@ import { UpdateStatusRegistration } from '@/utils/interfaces/Registration';
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 export async function POST(request: Request) {
-  console.log('llego la solicitud');
   try {
     const { attendanceStatus } = await request.json();
     const { pathname } = new URL(request.url);
     const ticketId = pathname.split('/').pop();
 
-    console.log('Datos recibidos:', { ticketId, attendanceStatus });
     if (!ticketId) {
       return NextResponse.json(
         { error: 'El campo "id" es obligatorio.' },
