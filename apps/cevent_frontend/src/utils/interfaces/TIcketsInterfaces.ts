@@ -1,3 +1,4 @@
+
 export interface TicketPostInterface {
   eventId: number;
   userId: string;
