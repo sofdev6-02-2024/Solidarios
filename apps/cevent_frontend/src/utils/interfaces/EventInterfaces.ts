@@ -6,6 +6,17 @@ export interface Location {
 }
 
 export interface Activity {
+  id?: number;
+  name: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  status: number;
+  capacity: number;
+}
+
+export interface ActivityIdDTO {
+  ActivityId: number;
   name: string;
   description: string;
   startTime: Date;
@@ -25,7 +36,6 @@ export interface EventHomePageDto {
   shortDescription: string;
   coverPhotoUrl: string;
 }
-
 export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   location: Location;
   venue: string;
@@ -41,6 +51,11 @@ export interface EventDetailDto extends Omit<EventHomePageDto, 'category'> {
   address: string;
   activities: Activity[];
   coOrganizers: string[];
+}
+
+export interface EventDetailActivitiesDto
+  extends Omit<EventDetailDto, 'activities'> {
+  activities: ActivityIdDTO[];
 }
 
 export interface EventEditlDto extends Omit<EventHomePageDto, 'category'> {
@@ -155,3 +170,8 @@ export const statusData: Record<number, string> = {
   5: 'Completed',
   6: 'On Hold',
 };
+
+export interface AttendanceData {
+  userId: string;
+  activityId: number;
+}

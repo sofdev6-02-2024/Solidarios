@@ -12,3 +12,7 @@ export interface RegistrationOutputDto extends RegistrationInputDto {
   createdAt: Date;
   attendanceStatus: number;
 }
+
+export interface UpdateStatusRegistration {
+  attendanceStatus: number;
+}

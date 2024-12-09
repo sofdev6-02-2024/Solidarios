@@ -10,6 +10,6 @@ public interface ITicketService
     Task<IEnumerable<TicketRequestDto>> GetAllTicketsAsync();
     Task<bool> ValidateTicketAsync(string ticketId);
     Task<Ticket?> GetTicketByIdAsync(string ticketId);
-    Task<TicketResponseDto?> GetTicketByQrCodeAsync(string qrContent);
+    Task<TicketResponseQrDtop?> GetTicketByQrCodeAsync(string qrContent);
     Task<ICollection<TicketInfoDto>> GetTicketsByUserId(string userId, TicketFilterDto filterDto);
 }

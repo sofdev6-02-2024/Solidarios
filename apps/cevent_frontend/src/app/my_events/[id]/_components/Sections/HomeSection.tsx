@@ -11,22 +11,28 @@ import {
   Select,
   SelectChangeEvent,
   Chip,
+  Alert,
 } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import EventIcon from '@mui/icons-material/Event';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopy';
-import QrCodeIcon from '@mui/icons-material/QrCode';
-
+import QrScanner from 'react-qr-scanner';
+import AttendanceModal from './AttendanceModal';
 import { stylesPage } from '../../_styles/homeEventSectionStyle';
 import {
   EventDetailDto,
   EventStatus,
   statusData,
+  AttendanceData,
 } from '@/utils/interfaces/EventInterfaces';
 import { fullFormatDate } from '@/utils/methods/stringMethods';
 import { updateStatusEvent } from '@/services/EventService';
 import { getStatusNumber } from '@/utils/methods/eventStatusUtils';
+import { fetchGetTicketByQr } from '@/services/TicketService';
+import { createAttendance } from '@/services/AttendanceService';
+import { UpdateStatusRegistration } from '@/utils/interfaces/Registration';
+import { updateStatusRegistrationUser } from '@/services/RegistrationService';
 
 interface SectionProps {
   event: EventDetailDto;
@@ -37,6 +43,13 @@ const HomeSection = ({ event }: SectionProps) => {
   const [displayedStatus, setDisplayedStatus] = useState(
     `Status: ${statusData[event.status]}`,
   );
+  const [qrContent, setQrContent] = useState<string | null>(null);
+  const [ticketInfo, setTicketInfo] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isCameraEnabled, setIsCameraEnabled] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [ticketUserId, setTicketUserId] = useState<string | null>(null);
+  const [ticketId, setTicketId] = useState<string | null>(null);
 
   useEffect(() => {
     setDisplayedStatus(`Status: ${eventStatus}`);
@@ -48,7 +61,7 @@ const HomeSection = ({ event }: SectionProps) => {
     const eventStatus: EventStatus = {
       status: statusNumber,
     };
-    const response = await updateStatusEvent(eventStatus, event.id);
+    await updateStatusEvent(eventStatus, event.id);
   };
 
   const handleOpenMap = () => {
@@ -61,6 +74,85 @@ const HomeSection = ({ event }: SectionProps) => {
     navigator.clipboard.writeText(window.location.href);
     alert('Link copied to clipboard');
   };
+
+  const handleScan = (data: { text: string } | null) => {
+    if (data && data.text) {
+      setQrContent(data.text);
+      setIsCameraEnabled(false);
+    }
+  };
+
+  const handleError = (err: any) => {
+    console.error(err);
+  };
+
+  const handleEnableCamera = () => {
+    setIsCameraEnabled(true);
+    setQrContent(null);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleRegisterAttendance = async (
+    type: 'event' | 'activity',
+    activityId?: number,
+  ) => {
+    try {
+      if (!ticketId) {
+        console.error('No ticket ID available');
+        return;
+      }
+
+      if (type === 'event') {
+        const updateStatus: UpdateStatusRegistration = {
+          attendanceStatus: 1,
+        };
+        await updateStatusRegistrationUser(ticketId, updateStatus);
+      } else if (type === 'activity' && activityId) {
+        const attendanceData: AttendanceData = {
+          userId: ticketUserId || '',
+          activityId,
+        };
+        await createAttendance(attendanceData);
+      }
+
+      setIsModalOpen(false);
+      setTicketInfo('Attendance successfully registered!');
+    } catch (err) {
+      setError('Failed to register attendance. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    const verifyQrContent = async () => {
+      try {
+        if (qrContent) {
+          const ticket = await fetchGetTicketByQr(qrContent);
+          if (ticket) {
+            if (ticket.eventId === event.id) {
+              setTicketUserId(ticket.userId);
+              setTicketId(ticket.ticketId);
+              setTicketInfo(`Ticket found for user: ${ticket.userId}`);
+              setIsModalOpen(true);
+            } else {
+              setTicketInfo(
+                'This ticket does not belong to the current event.',
+              );
+            }
+          } else {
+            setTicketInfo('No ticket found for the provided QR content.');
+          }
+        }
+      } catch (err: any) {
+        setError('An error occurred while verifying the QR content.');
+        console.error(err);
+      }
+    };
+
+    verifyQrContent();
+  }, [qrContent, event.id]);
 
   return (
     <Box sx={stylesPage.container}>
@@ -192,7 +284,7 @@ const HomeSection = ({ event }: SectionProps) => {
               </Grid>
               <Grid size={6}>
                 <Card sx={stylesPage.ticketCard}>
-                  <Typography>Tickets Redeemed</Typography>
+                  <Typography>Total Revenue</Typography>
                   <Typography>{event.attendeeCount}</Typography>
                 </Card>
               </Grid>
@@ -201,24 +293,68 @@ const HomeSection = ({ event }: SectionProps) => {
         </Grid>
 
         <Grid size={4}>
-          <Card sx={stylesPage.validateCard}>
-            <Typography variant="body1" align="left">
-              Validate Tickets
-            </Typography>
-            <QrCodeIcon sx={{ fontSize: 60, color: 'primary.main' }} />
-            <Typography variant="body1" mt={2} align="center">
-              Scan tickets to allow access to your event
-            </Typography>
+          <Card
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              padding: 3,
+            }}
+          >
+            <Typography variant="h6">Validate Tickets</Typography>
+
             <Button
               variant="contained"
               color="primary"
-              sx={stylesPage.ticketButtonStyles}
+              onClick={
+                isCameraEnabled
+                  ? () => setIsCameraEnabled(false)
+                  : handleEnableCamera
+              }
             >
-              Scan Tickets
+              {isCameraEnabled ? 'Apagar Cámara' : 'Escanear Ticket'}
             </Button>
+
+            <Box
+              mt={2}
+              sx={{
+                width: '100%',
+                height: '300px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#f5f5f5',
+                borderRadius: '8px',
+                border: '1px dashed #ccc',
+              }}
+            >
+              {isCameraEnabled ? (
+                <QrScanner
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScan}
+                  style={{ width: '100%', height: '100%' }}
+                />
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  La cámara está apagada
+                </Typography>
+              )}
+            </Box>
+
+            {ticketInfo && <Alert severity="info">{ticketInfo}</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
           </Card>
         </Grid>
       </Grid>
+      <AttendanceModal
+        open={isModalOpen}
+        onClose={handleModalClose}
+        onRegisterAttendance={handleRegisterAttendance}
+        userId={ticketUserId || ''}
+        activities={event.activities}
+      />
     </Box>
   );
 };
