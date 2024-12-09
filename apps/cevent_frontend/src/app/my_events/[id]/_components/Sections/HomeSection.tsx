@@ -1,22 +1,51 @@
-import Layout from '@/components/Layout';
-import { Box, Typography, Alert, Paper, Button } from '@mui/material';
-import { stylesPage } from '../../_styles/homeEventSectionStyle';
-import { EventDetailsDto } from '@/utils/interfaces/EventInterfaces';
-import CardEventSummary from '../CardEventInfo';
-import { fetchGetTicketByQr } from '@/services/TicketService';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Card,
+  Typography,
+  Button,
+  ButtonBase,
+  IconButton,
+  Toolbar,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Chip,
+  Alert,
+  Paper,
+} from '@mui/material';
+import Grid from '@mui/material/Grid2';
+import EventIcon from '@mui/icons-material/Event';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopy';
+import QrCodeIcon from '@mui/icons-material/QrCode';
 import QrScanner from 'react-qr-scanner';
 import AttendanceModal from './AttendanceModal';
-import { AttendanceData } from '@/utils/interfaces/EventInterfaces';
-import { UpdateStatusRegistration } from '@/utils/interfaces/Registration';
+
+import { stylesPage } from '../../_styles/homeEventSectionStyle';
+import {
+  EventDetailDto,
+  EventStatus,
+  statusData,
+  AttendanceData,
+} from '@/utils/interfaces/EventInterfaces';
+import { fullFormatDate } from '@/utils/methods/stringMethods';
+import { updateStatusEvent } from '@/services/EventService';
+import { getStatusNumber } from '@/utils/methods/eventStatusUtils';
+import { fetchGetTicketByQr } from '@/services/TicketService';
 import { createAttendance } from '@/services/AttendanceService';
+import { UpdateStatusRegistration } from '@/utils/interfaces/Registration';
 import { updateStatusRegistrationUser } from '@/services/RegistrationService';
 
-export interface SectionProps {
-  event: EventDetailsDto;
+interface SectionProps {
+  event: EventDetailDto;
 }
 
 const HomeSection = ({ event }: SectionProps) => {
+  const [eventStatus, setEventStatus] = useState(`${statusData[event.status]}`);
+  const [displayedStatus, setDisplayedStatus] = useState(
+    `Status: ${statusData[event.status]}`,
+  );
   const [qrContent, setQrContent] = useState<string | null>(null);
   const [ticketInfo, setTicketInfo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -24,6 +53,30 @@ const HomeSection = ({ event }: SectionProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [ticketUserId, setTicketUserId] = useState<string | null>(null);
   const [ticketId, setTicketId] = useState<string | null>(null);
+
+  useEffect(() => {
+    setDisplayedStatus(`Status: ${eventStatus}`);
+  }, [eventStatus]);
+
+  const handleStatusChange = async (e: SelectChangeEvent) => {
+    setEventStatus(e.target.value);
+    const statusNumber = getStatusNumber(e.target.value);
+    const eventStatus: EventStatus = {
+      status: statusNumber,
+    };
+    await updateStatusEvent(eventStatus, event.id);
+  };
+
+  const handleOpenMap = () => {
+    window.open(
+      `https://www.google.com/maps/search/?api=1&query=${event.location.latitude},${event.location.longitude}`,
+    );
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Link copied to clipboard');
+  };
 
   const handleScan = (data: string | null) => {
     if (data) {
@@ -60,19 +113,17 @@ const HomeSection = ({ event }: SectionProps) => {
           attendanceStatus: 1,
         };
         await updateStatusRegistrationUser(ticketId, updateStatus);
-
       } else if (type === 'activity' && activityId) {
         const attendanceData: AttendanceData = {
           userId: ticketUserId,
           activityId,
         };
-
-        await createAttendance(attendanceData);        
+        await createAttendance(attendanceData);
       }
 
       setIsModalOpen(false);
       setTicketInfo('Attendance successfully registered!');
-    } catch (err) {      
+    } catch (err) {
       setError('Failed to register attendance. Please try again.');
     }
   };
@@ -106,66 +157,185 @@ const HomeSection = ({ event }: SectionProps) => {
 
   return (
     <Box sx={stylesPage.container}>
-      <Layout>
-        <Box
-          display={'flex'}
-          flexDirection={'row'}
-          alignItems={'center'}
-          gap={2}
-        >
-          <Typography color="primary" variant="display">
-            Event
-          </Typography>
-          <Typography variant="display">Management</Typography>
-        </Box>
+      <Toolbar />
+      <Box display={'flex'} flexDirection={'row'} alignItems={'center'} gap={2}>
+        <Typography color="primary" variant="display">
+          Event
+        </Typography>
+        <Typography variant="display">Management</Typography>
+      </Box>
 
-        <CardEventSummary eventData={event} />
+      <Grid container spacing={3}>
+        <Grid size={8}>
+          <Card sx={stylesPage.cardStyles}>
+            <Grid container spacing={2}>
+              <Grid size={8}>
+                <Typography variant="h5" sx={stylesPage.titleStyles}>
+                  {event.name}
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Box sx={stylesPage.chipCategoryStyles}>
+                    {event.category.keyWord}
+                  </Box>
+                  <Chip
+                    sx={stylesPage.ongoingStatusChip}
+                    label={displayedStatus}
+                  />
+                </Box>
+                <Box
+                  mt={2}
+                  sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
+                >
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box sx={stylesPage.infoRow}>
+                      <EventIcon sx={stylesPage.iconStyles} />
+                      <Typography variant="body2" sx={stylesPage.labelStyles}>
+                        Date and Time
+                      </Typography>
+                    </Box>
+                    <Typography>{fullFormatDate(event.eventDate)}</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box sx={stylesPage.infoRow}>
+                      <LocationOnIcon sx={stylesPage.iconStyles} />
+                      <Typography variant="body2" sx={stylesPage.labelStyles}>
+                        Address
+                      </Typography>
+                    </Box>
+                    <ButtonBase
+                      onClick={handleOpenMap}
+                      sx={{
+                        textAlign: 'left',
+                        padding: 0,
+                        marginLeft: '-4px',
+                        width: 'fit-content',
+                        display: 'inline-flex',
+                      }}
+                    >
+                      <Typography variant="body1" sx={stylesPage.linkStyles}>
+                        {event.address}
+                      </Typography>
+                    </ButtonBase>
+                  </Box>
 
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ marginTop: 4 }}
-          onClick={handleEnableCamera}
-        >
-          Activate Camera
-        </Button>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box sx={stylesPage.infoRow}>
+                      <Typography variant="body2">
+                        Share with friends
+                      </Typography>
+                    </Box>
+                    <IconButton
+                      onClick={handleCopyLink}
+                      sx={stylesPage.iconStyles}
+                    >
+                      <ContentCopyOutlinedIcon sx={stylesPage.iconStyles} />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid
+                size={4}
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+              >
+                <Box
+                  component="img"
+                  src={event.coverPhotoUrl}
+                  alt="Event cover"
+                  sx={{ width: '100%', height: 'auto', borderRadius: 4 }}
+                />
+              </Grid>
+            </Grid>
+          </Card>
 
-        {isCameraEnabled && (
-          <Paper
-            elevation={3}
+          <Box mt={3}>
+            <Card
+              sx={{
+                padding: 2,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Typography variant="h6">Event Status</Typography>
+              <Select
+                value={eventStatus}
+                onChange={handleStatusChange}
+                sx={{ width: '150px' }}
+              >
+                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Cancelled">Cancelled</MenuItem>
+                <MenuItem value="Postponed">Postponed</MenuItem>
+                <MenuItem value="In Progress">In Progress</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="On Hold">On Hold</MenuItem>
+              </Select>
+            </Card>
+          </Box>
+
+          <Box mt={3}>
+            <Typography variant="h6">Ticket Information</Typography>
+            <Grid container spacing={2} mt={1}>
+              <Grid size={6}>
+                <Card sx={stylesPage.ticketCard}>
+                  <Typography>Tickets Sold</Typography>
+                  <Typography>{event.attendeeCount}</Typography>
+                </Card>
+              </Grid>
+              <Grid size={6}>
+                <Card sx={stylesPage.ticketCard}>
+                  <Typography>Total Revenue</Typography>
+                  <Typography>{event.attendeeCount}</Typography>
+                </Card>
+              </Grid>
+            </Grid>
+          </Box>
+        </Grid>
+
+        <Grid size={4}>
+          <Card
             sx={{
-              padding: 2,
-              marginTop: 4,
               display: 'flex',
-              justifyContent: 'center',
+              flexDirection: 'column',
               alignItems: 'center',
-              height: 400,
-              width: '100%',
-              position: 'relative',
+              gap: 2,
+              padding: 3,
             }}
           >
-            <QrScanner
-              delay={300}
-              style={{ width: '100%', height: '100%' }}
-              onError={handleError}
-              onScan={handleScan}
+            <Typography variant="h6">Validate Tickets</Typography>
+            <QrCodeIcon
+              sx={{
+                fontSize: '4rem',
+                cursor: 'pointer',
+                color: 'primary.main',
+              }}
+              onClick={handleEnableCamera}
             />
-          </Paper>
-        )}
 
-        {ticketInfo && <Alert severity="info">{ticketInfo}</Alert>}
-        {error && <Alert severity="error">{error}</Alert>}
+            {isCameraEnabled && (
+              <Box mt={2}>
+                <QrScanner
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScan}
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </Box>
+            )}
 
-        {ticketUserId && (
-          <AttendanceModal
-            open={isModalOpen}
-            onClose={handleModalClose}
-            onRegisterAttendance={handleRegisterAttendance}
-            userId={ticketUserId!}
-            activities={event.activities}
-          />
-        )}
-      </Layout>
+            {ticketInfo && <Alert severity="info">{ticketInfo}</Alert>}
+            {error && <Alert severity="error">{error}</Alert>}
+          </Card>
+        </Grid>
+      </Grid>
+      <AttendanceModal
+      open={isModalOpen}
+      onClose={handleModalClose}
+      onRegisterAttendance={handleRegisterAttendance}
+      userId={ticketUserId!}
+      activities={event.activities}
+    />
     </Box>
   );
 };
